@@ -71,8 +71,8 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
 .tab-content.active { display: block; }
 
 /* ── HERO PHOTO ── */
-.day-hero { width: 100%; height: 180px; background-size: cover; background-position: center; position: relative; overflow: hidden; }
-.day-hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, rgba(15,17,23,0.9) 100%); }
+.day-hero { width: 100%; min-height: 160px; background-size: cover; background-position: center; position: relative; overflow: hidden; background-color: var(--surface2); }
+.day-hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(15,17,23,0.88) 100%); }
 .day-hero-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 12px 16px; z-index: 2; }
 .day-hero-label { font-size: 18px; font-weight: 800; color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,.5); }
 .day-hero-sub { font-size: 11px; color: rgba(255,255,255,.75); margin-top: 2px; }
@@ -176,6 +176,23 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
 .warning { background: rgba(231,76,60,.08); border-left: 3px solid var(--red); padding: 7px 10px; border-radius: 0 8px 8px 0; font-size: 11px; color: #ff9999; margin-bottom: 8px; line-height: 1.5; }
 .luggage-note { background: rgba(124,92,191,.1); border: 1px solid var(--accent2); border-radius: 8px; padding: 9px 11px; font-size: 11px; color: #c3aaf0; margin-bottom: 10px; }
 
+/* ── LOCAL INTEL ── */
+details.intel { background: rgba(124,92,191,.08); border: 1px solid rgba(124,92,191,.3); border-radius: 12px; margin-bottom: 12px; overflow: hidden; }
+details.intel summary { padding: 12px 14px; font-size: 13px; font-weight: 700; color: #c3aaf0; cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px; }
+details.intel summary::-webkit-details-marker { display: none; }
+details.intel summary::after { content: '›'; margin-left: auto; font-size: 18px; transition: transform .2s; }
+details.intel[open] summary::after { transform: rotate(90deg); }
+.intel-body { padding: 0 14px 14px; }
+.intel-section { margin-bottom: 12px; }
+.intel-section:last-child { margin-bottom: 0; }
+.intel-section-title { font-size: 10px; font-weight: 700; color: var(--orange); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
+.intel-item { display: flex; gap: 8px; padding: 5px 0; border-bottom: 1px solid rgba(45,53,97,.5); font-size: 12px; line-height: 1.45; }
+.intel-item:last-child { border-bottom: none; }
+.intel-item-icon { flex-shrink: 0; font-size: 14px; margin-top: 1px; }
+.intel-item-body { flex: 1; }
+.intel-item-body strong { color: var(--text); }
+.intel-item-body span { color: var(--muted); }
+
 /* ── SWIPE INDICATOR ── */
 .swipe-nav { display: flex; justify-content: space-between; padding: 10px 16px; opacity: 0.35; font-size: 12px; color: var(--muted); }
 
@@ -253,7 +270,7 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
 
 <!-- OVERVIEW -->
 <div id="tab-overview" class="tab-content active">
-  <div class="day-hero" style="background-image:url('https://source.unsplash.com/featured/900x400/?italy,travel,map')">
+  <div class="day-hero" style="background-image:url('https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=900&q=80&auto=format&fit=crop')">
     <div class="day-hero-info"><div class="day-hero-label">🗺️ Trip Overview</div><div class="day-hero-sub">Italy + Switzerland · Mar 18–30 · 6 cities</div></div>
   </div>
   <div class="tab-inner">
@@ -300,24 +317,45 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
 
 <!-- MAR 18 -->
 <div id="tab-mar18" class="tab-content">
-  <div class="day-hero" style="background-image:url('https://source.unsplash.com/featured/900x400/?riomaggiore,cinque+terre,harbour')">
+  <div class="day-hero" style="background-image:url('https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=900&q=80&auto=format&fit=crop')">
     <div class="day-hero-info"><div class="day-hero-label">Riomaggiore · Cinque Terre</div><div class="day-hero-sub">Wed Mar 18 · Arrive · Night 1 of 2</div></div>
   </div>
   <div class="tab-inner">
     <div class="hotel-box" style="margin-bottom:12px"><div class="hotel-name">Le Giare <span class="tag booked">✅ BOOKED · RM819</span></div><div class="hotel-meta"><div class="hotel-meta-item">📍 <span>Via Colombo 71, Riomaggiore</span></div></div><div class="map-links"><a href="https://maps.google.com/?q=Le+Giare+Riomaggiore" target="_blank" class="map-btn">📍 Hotel</a><a href="https://maps.google.com/?q=Riomaggiore+harbour" target="_blank" class="map-btn">📍 Harbour</a></div></div>
     <div class="card"><div class="card-header"><span class="card-icon">🕐</span><span class="card-title">Day Plan</span></div>
       <div class="timeline">
-        <div class="tl-item done"><div class="tl-time">Arriving from Nice</div><div class="tl-text">Train → La Spezia → Riomaggiore (~5min, €2)</div><div class="map-links"><a href="https://maps.google.com/?q=La+Spezia+Centrale+train+station" target="_blank" class="map-btn">📍 La Spezia</a></div></div>
-        <div class="tl-item"><div class="tl-time">Evening</div><div class="tl-text">Check in · Walk to harbour</div><div class="map-links"><a href="https://maps.google.com/?q=Riomaggiore+harbour+Cinque+Terre" target="_blank" class="map-btn">📍 Harbour</a></div></div>
-        <div class="tl-item highlight"><div class="tl-time">Dinner</div><div class="tl-text">🍽️ Dau Cila — best seafood in Riomaggiore</div><div class="tl-sub">Trofie al pesto + branzino · ~€35pp · Harbour views</div><div class="map-links"><a href="https://maps.google.com/?q=Dau+Cila+Riomaggiore" target="_blank" class="map-btn">📍 Dau Cila</a></div></div>
+        <div class="tl-item done"><div class="tl-time">Arriving from Nice</div><div class="tl-text">Train → La Spezia → Riomaggiore (~5min, €2)</div><div class="tl-sub">Buy ticket at kiosk on platform. Local train takes the cliff tunnel route — scenic.</div><div class="map-links"><a href="https://maps.google.com/?q=La+Spezia+Centrale+train+station" target="_blank" class="map-btn">📍 La Spezia</a></div></div>
+        <div class="tl-item"><div class="tl-time">Evening</div><div class="tl-text">Drop bags · Walk Via Colombo (main street) down to harbour</div><div class="tl-sub">Via Colombo: colourful steep street, limoncino shops, focaccia bakeries. The whole village is on this one street basically.</div><div class="map-links"><a href="https://maps.google.com/?q=Riomaggiore+harbour+Cinque+Terre" target="_blank" class="map-btn">📍 Harbour</a><a href="https://maps.google.com/?q=Via+Colombo+Riomaggiore" target="_blank" class="map-btn">📍 Via Colombo</a></div></div>
+        <div class="tl-item"><div class="tl-time">Pre-dinner</div><div class="tl-text">🏰 Castle of Riomaggiore — free, 15min walk up from harbour</div><div class="tl-sub">Best panoramic view of the village. Walk up Via del Castello. Sunset light is golden on the coloured buildings from here.</div><div class="map-links"><a href="https://maps.google.com/?q=Castello+di+Riomaggiore" target="_blank" class="map-btn">📍 Castle</a></div></div>
+        <div class="tl-item highlight"><div class="tl-time">Dinner</div><div class="tl-text">🍽️ Dau Cila — harbour-side, best seafood in Riomaggiore</div><div class="tl-sub">Get outdoor harbour table (ask specifically). Order: Trofie al pesto (THE dish of Liguria) + Branzino al forno (sea bass) + house white wine. ~€35pp. Avoid the tourist trap places on Via Colombo.</div><div class="map-links"><a href="https://maps.google.com/?q=Dau+Cila+Riomaggiore" target="_blank" class="map-btn">📍 Dau Cila</a></div></div>
+        <div class="tl-item"><div class="tl-time">After dinner</div><div class="tl-text">🍋 Bar Centrale — buy a bottle of local Limoncino to take home</div><div class="tl-sub">~€8 a bottle. Made from local Ligurian lemons. Different from limoncello (smoother, less sweet). The one souvenir worth buying in Cinque Terre.</div><div class="map-links"><a href="https://maps.google.com/?q=Bar+Centrale+Riomaggiore" target="_blank" class="map-btn">📍 Bar Centrale</a></div></div>
       </div>
     </div>
+    <details class="intel">
+      <summary>🔍 Local Intel — Riomaggiore</summary>
+      <div class="intel-body">
+        <div class="intel-section"><div class="intel-section-title">🍽️ Eat & Drink</div>
+          <div class="intel-item"><span class="intel-item-icon">🌿</span><div class="intel-item-body"><strong>Trofie al pesto</strong> — <span>short twisted pasta with fresh Ligurian basil pesto. Always handmade here. The pesto in Liguria is completely different from anything in Malaysia — no cream, no nuts, just basil, pine nuts, olive oil, Parmesan. Order it everywhere.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🐟</span><div class="intel-item-body"><strong>Fritto misto di mare</strong> — <span>mixed fried seafood. Crispy, fresh, eaten with lemon. ~€14. Order as a starter.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🍷</span><div class="intel-item-body"><strong>Sciacchetrà wine</strong> — <span>local sweet dessert wine made from semi-dried grapes. Ask for a glass after dinner. ~€8. Only made in Cinque Terre, can't get it elsewhere.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🧀</span><div class="intel-item-body"><strong>Farinata</strong> — <span>thin chickpea flatbread baked in wood oven. Street food, ~€2 a slice. Grab at any bakery on Via Colombo.</span></div></div>
+        </div>
+        <div class="intel-section"><div class="intel-section-title">🛍️ Buy</div>
+          <div class="intel-item"><span class="intel-item-icon">🍋</span><div class="intel-item-body"><strong>Limoncino liqueur</strong> — <span>€8-12 a bottle. Smoother than limoncello. Only available locally. Bar Centrale has the best selection. Good gift.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🫙</span><div class="intel-item-body"><strong>Pesto in jars</strong> — <span>€5-7. Buy "Antichi Sapori Liguri" brand if you see it — genuine local product. Last 1 year sealed.</span></div></div>
+        </div>
+        <div class="intel-section"><div class="intel-section-title">💡 Tips</div>
+          <div class="intel-item"><span class="intel-item-icon">⚠️</span><div class="intel-item-body"><strong>Card not always accepted</strong> — <span>carry €20-30 cash. Many small places are cash-only.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🚫</span><div class="intel-item-body"><strong>Don't swim at night</strong> — <span>strong currents after dark at the harbour rocks.</span></div></div>
+        </div>
+      </div>
+    </details>
   </div>
 </div>
 
 <!-- MAR 19 -->
 <div id="tab-mar19" class="tab-content">
-  <div class="day-hero" style="background-image:url('https://source.unsplash.com/featured/900x400/?vernazza,cinque+terre,village')">
+  <div class="day-hero" style="background-image:url('https://images.unsplash.com/photo-1533104816931-20fa691ff6ca?w=900&q=80&auto=format&fit=crop')">
     <div class="day-hero-info"><div class="day-hero-label">Cinque Terre — Full Day</div><div class="day-hero-sub">Thu Mar 19 · Vernazza · Nessun Dorma sunset</div></div>
   </div>
   <div class="tab-inner">
@@ -330,24 +368,52 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
         <div class="tl-item highlight"><div class="tl-time">~13:10</div><div class="tl-text">🚂 Train: Manarola → Vernazza</div><div class="map-links"><a href="https://maps.google.com/?q=Manarola+train+station" target="_blank" class="map-btn">📍 Manarola Station</a></div></div>
         <div class="tl-item highlight"><div class="tl-time">13:30 LUNCH</div><div class="tl-text">🍝 Gambero Rosso — harbour piazza ✅</div><div class="tl-sub">Trofie al pesto · Acciughe · Fritto misto · ~€20pp</div><div class="map-links"><a href="https://maps.google.com/?q=Gambero+Rosso+Vernazza+Cinque+Terre" target="_blank" class="map-btn">📍 Gambero Rosso</a></div></div>
         <div class="tl-item"><div class="tl-time">14:30</div><div class="tl-text">🏰 Torre Doria Castle — rooftop views (€2)</div><div class="map-links"><a href="https://maps.google.com/?q=Torre+Doria+Vernazza" target="_blank" class="map-btn">📍 Torre Doria</a></div></div>
-        <div class="tl-item"><div class="tl-time">16:00</div><div class="tl-text">🚂 Vernazza → Monterosso · Beach + anchovies</div><div class="map-links"><a href="https://maps.google.com/?q=Monterosso+al+Mare" target="_blank" class="map-btn">📍 Monterosso</a></div></div>
-        <div class="tl-item highlight"><div class="tl-time">18:00 ⚡ MUST HIT</div><div class="tl-text">⭐ Nessun Dorma — sunset aperitivo over the sea</div><div class="tl-sub">Arrive before 18:15 · Sciacchetrà wine · Sunset ~18:25</div><div class="map-links"><a href="https://maps.google.com/?q=Nessun+Dorma+Manarola+Cinque+Terre" target="_blank" class="map-btn">📍 Nessun Dorma</a></div></div>
-        <div class="tl-item"><div class="tl-time">20:00</div><div class="tl-text">🍽️ Il Pescato Cucinato — fried seafood to go</div><div class="map-links"><a href="https://maps.google.com/?q=Il+Pescato+Cucinato+Riomaggiore" target="_blank" class="map-btn">📍 Il Pescato</a></div></div>
+        <div class="tl-item"><div class="tl-time">16:00</div><div class="tl-text">🚂 Vernazza → Monterosso (5min, €2)</div></div>
+        <div class="tl-item"><div class="tl-time">16:10</div><div class="tl-text">🏖️ Fegina Beach — only sandy beach in all of Cinque Terre</div><div class="tl-sub">Walk the waterfront promenade. 10min from station. Take the photo looking back at the cliff backdrop.</div><div class="map-links"><a href="https://maps.google.com/?q=Spiaggia+di+Fegina+Monterosso" target="_blank" class="map-btn">📍 Fegina Beach</a></div></div>
+        <div class="tl-item"><div class="tl-time">16:20</div><div class="tl-text">🗿 Il Gigante — giant carved rock figure on the beachfront cliff</div><div class="tl-sub">Easy to miss — look for the massive figure built into the cliff face near the rocky headland. One of the most unusual sculptures in Italy, partially destroyed by a storm.</div><div class="map-links"><a href="https://maps.google.com/?q=Il+Gigante+Monterosso+al+Mare" target="_blank" class="map-btn">📍 Il Gigante</a></div></div>
+        <div class="tl-item highlight"><div class="tl-time">16:35</div><div class="tl-text">🐟 Via Roma deli shops — BUY ANCHOVIES HERE</div><div class="tl-sub">Walk through Aurora Tower arch into old town → Via Roma. Ask for "Acciughe sotto olio" (ah-CHOO-gay). Buy one jar (~€6). Also grab a jar of pesto Genovese (€6-7). Eat anchovies with bread at the counter — they'll offer. These anchovies are world-famous, completely different from anything at home. Also the last chance for authentic Monterosso product.</div><div class="map-links"><a href="https://maps.google.com/?q=Via+Roma+Monterosso+al+Mare" target="_blank" class="map-btn">📍 Via Roma shops</a></div></div>
+        <div class="tl-item"><div class="tl-time">16:50</div><div class="tl-text">🏰 Aurora Tower — medieval arch connecting new and old town</div><div class="tl-sub">Walk through it. Old town has San Giovanni Battista church (13th century, free entry, beautiful Gothic interior). 10min wander.</div><div class="map-links"><a href="https://maps.google.com/?q=Torre+Aurora+Monterosso" target="_blank" class="map-btn">📍 Aurora Tower</a></div></div>
+        <div class="tl-item highlight"><div class="tl-time">17:40 ⚠️ LEAVE NOW</div><div class="tl-text">🚂 Train: Monterosso → Manarola (10min)</div><div class="tl-sub">DO NOT miss this train. Nessun Dorma fills up fast. Get there before 18:10 or you won't get a spot.</div></div>
+        <div class="tl-item highlight"><div class="tl-time">18:00 ⚡ MUST HIT</div><div class="tl-text">⭐ Nessun Dorma — sunset aperitivo bar perched above the sea</div><div class="tl-sub">Walk up path LEFT of Manarola station — follow the signs. Arrive before 18:15. Order Sciacchetrà wine (local sweet wine, €8) or Aperol Spritz. Sunset is ~18:25. The view looking across the sea with the villages behind you is the best moment of Cinque Terre. Stand at the wall, not the tables — better angle.</div><div class="map-links"><a href="https://maps.google.com/?q=Nessun+Dorma+Manarola+Cinque+Terre" target="_blank" class="map-btn">📍 Nessun Dorma</a></div></div>
+        <div class="tl-item"><div class="tl-time">19:30</div><div class="tl-text">🚂 Manarola → Riomaggiore (5min)</div></div>
+        <div class="tl-item"><div class="tl-time">20:00</div><div class="tl-text">🍽️ Il Pescato Cucinato — fried seafood eaten at harbour steps</div><div class="tl-sub">Walk-up window on Via Colombo. Order the "misto" (mixed) for ~€10pp. Calamari + anchovies + shrimp in a paper cone. Sit on the harbour rocks and eat with your hands. Pure Cinque Terre. No reservation, cash only.</div><div class="map-links"><a href="https://maps.google.com/?q=Il+Pescato+Cucinato+Riomaggiore" target="_blank" class="map-btn">📍 Il Pescato</a></div></div>
+        <div class="tl-item"><div class="tl-time">Night</div><div class="tl-text">Pack EVERYTHING tonight for early Mar 20 checkout</div><div class="tl-sub">Train is 08:50 from Riomaggiore. Don't leave packing to the morning.</div></div>
       </div>
     </div>
-    <div class="card"><div class="card-header"><span class="card-icon">🍋</span><span class="card-title">Must Eat Today</span></div>
-      <div class="food-item">🌿 Trofie al pesto — Ligurian fresh basil pesto pasta</div>
-      <div class="food-item">🐟 Acciughe — Monterosso marinated anchovies</div>
-      <div class="food-item">🍤 Fritto misto di mare — mixed fried seafood</div>
-      <div class="food-item">🍷 Sciacchetrà — local sweet wine at Nessun Dorma</div>
-      <div class="food-item">🍋 Limoncino — local lemon liqueur after dinner</div>
-    </div>
+    <details class="intel">
+      <summary>🔍 Local Intel — Cinque Terre</summary>
+      <div class="intel-body">
+        <div class="intel-section"><div class="intel-section-title">🗺️ Village Guide</div>
+          <div class="intel-item"><span class="intel-item-icon">🟢</span><div class="intel-item-body"><strong>Vernazza</strong> — <span>best harbour, best restaurants (Gambero Rosso), most photogenic piazza. Worth the most time.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🟢</span><div class="intel-item-body"><strong>Monterosso</strong> — <span>biggest village, only beach, best for shopping (anchovies, pesto), most "normal" town feel.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🟡</span><div class="intel-item-body"><strong>Manarola</strong> — <span>best viewpoint photo, Nessun Dorma sunset bar. Great for photos, less to do.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🔴</span><div class="intel-item-body"><strong>Corniglia</strong> — <span>SKIP. 382 steps up from train station, no harbour, least interesting. Not worth it.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🟡</span><div class="intel-item-body"><strong>Riomaggiore</strong> — <span>your base. Great evening village. Less touristy than Vernazza.</span></div></div>
+        </div>
+        <div class="intel-section"><div class="intel-section-title">🍽️ What to Order at Gambero Rosso (Vernazza)</div>
+          <div class="intel-item"><span class="intel-item-icon">🌿</span><div class="intel-item-body"><strong>Trofie al pesto</strong> — <span>mandatory. Their pesto is made fresh daily.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🐟</span><div class="intel-item-body"><strong>Acciughe al verde</strong> — <span>anchovies with green herb sauce. Starter, €10.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🦐</span><div class="intel-item-body"><strong>Spaghetti alle vongole</strong> — <span>clams in white wine sauce. Order if available.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🐠</span><div class="intel-item-body"><strong>Branzino al forno</strong> — <span>whole baked sea bass. Share one between two.</span></div></div>
+        </div>
+        <div class="intel-section"><div class="intel-section-title">🛍️ Buy in Monterosso (Via Roma)</div>
+          <div class="intel-item"><span class="intel-item-icon">🐟</span><div class="intel-item-body"><strong>Acciughe sotto olio</strong> — <span>anchovies in olive oil. €5-8 a jar. THE Monterosso souvenir. Eat within 1 year.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🌿</span><div class="intel-item-body"><strong>Pesto Genovese (jar)</strong> — <span>€6-7. Antichi Sapori Liguri brand best. Keeps 1 year sealed.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🍷</span><div class="intel-item-body"><strong>Sciacchetrà wine</strong> — <span>€15-25 a bottle. Only produced in Cinque Terre. Cannot buy this anywhere else.</span></div></div>
+        </div>
+        <div class="intel-section"><div class="intel-section-title">💡 Tips</div>
+          <div class="intel-item"><span class="intel-item-icon">🎫</span><div class="intel-item-body"><strong>Cinque Terre Card</strong> — <span>€16pp. Buy at Riomaggiore station. Covers all trains between villages + hiking trails. Worth it for a full day.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🕐</span><div class="intel-item-body"><strong>Trains run ~every 30min</strong> — <span>check board at station. Direction "La Spezia" = south (Riomaggiore), direction "Levanto" = north (Monterosso).</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">💧</span><div class="intel-item-body"><strong>Free drinking water</strong> — <span>look for "acqua potabile" fountains in each village. Refill your bottle, saves money.</span></div></div>
+        </div>
+      </div>
+    </details>
   </div>
 </div>
 
 <!-- MAR 20 -->
 <div id="tab-mar20" class="tab-content">
-  <div class="day-hero" style="background-image:url('https://source.unsplash.com/featured/900x400/?lake+como,varenna,italy')">
+  <div class="day-hero" style="background-image:url('https://images.unsplash.com/photo-1599736375341-54cf8add3ad4?w=900&q=80&auto=format&fit=crop')">
     <div class="day-hero-info"><div class="day-hero-label">Lake Como — Varenna</div><div class="day-hero-sub">Fri Mar 20 · Travel day · Cinque Terre → Como</div></div>
   </div>
   <div class="tab-inner">
@@ -368,19 +434,42 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
       </div>
     </div>
     <div class="hotel-box"><div class="hotel-name">Hotel Olivedo <span class="tag booked">✅ BOOKED · RM671</span></div><div class="hotel-meta"><div class="hotel-meta-item">📍 <span>Varenna waterfront · 2min ferry · 3min station</span></div></div><div class="map-links"><a href="https://maps.google.com/?q=Hotel+Olivedo+Varenna+Lake+Como" target="_blank" class="map-btn">📍 Hotel</a><a href="https://maps.google.com/?q=Varenna+ferry+dock+Lake+Como" target="_blank" class="map-btn">📍 Ferry Dock</a></div></div>
-    <div class="card"><div class="card-header"><span class="card-icon">🕐</span><span class="card-title">Evening</span></div>
+    <div class="card"><div class="card-header"><span class="card-icon">🕐</span><span class="card-title">Evening in Varenna</span></div>
       <div class="timeline">
-        <div class="tl-item"><div class="tl-time">~15:40</div><div class="tl-text">Check in Hotel Olivedo</div></div>
-        <div class="tl-item"><div class="tl-time">16:00</div><div class="tl-text">🚤 Boat rental — golden hour on the lake</div><div class="tl-sub">€50-65/hr · CASH · Walk-up at dock</div><div class="map-links"><a href="https://maps.google.com/?q=Varenna+ferry+dock+Lake+Como" target="_blank" class="map-btn">📍 Dock</a></div></div>
-        <div class="tl-item highlight"><div class="tl-time">20:00</div><div class="tl-text">🍽️ Ristorante Il Molo — lake fish + Risotto al lago</div><div class="map-links"><a href="https://maps.google.com/?q=Ristorante+Il+Molo+Varenna" target="_blank" class="map-btn">📍 Il Molo</a></div></div>
+        <div class="tl-item"><div class="tl-time">~15:40</div><div class="tl-text">Check in Hotel Olivedo · Ask for lake-view room</div></div>
+        <div class="tl-item"><div class="tl-time">16:00</div><div class="tl-text">🚶 Passeggiata degli Innamorati (Lovers' Walk)</div><div class="tl-sub">Free lakefront promenade carved into the cliff face, 500m. Spectacular Como views, overhanging rock sections, romantic. Don't skip this — it's Varenna's best hidden gem.</div><div class="map-links"><a href="https://maps.google.com/?q=Passeggiata+degli+Innamorati+Varenna" target="_blank" class="map-btn">📍 Lovers' Walk</a></div></div>
+        <div class="tl-item"><div class="tl-time">16:30</div><div class="tl-text">🚤 Boat rental at ferry dock — golden hour on the lake</div><div class="tl-sub">€50-65/hr · CASH only · Walk-up at dock · Head toward Bellagio for the best angle back at Varenna. Water is glassy at this time. Best photos of the trip.</div><div class="map-links"><a href="https://maps.google.com/?q=Varenna+ferry+dock+Lake+Como" target="_blank" class="map-btn">📍 Ferry Dock</a></div></div>
+        <div class="tl-item"><div class="tl-time">17:30</div><div class="tl-text">🏰 Castello di Vezio — optional 15min hike above village</div><div class="tl-sub">Medieval castle, free or €5 entry. Falconry shows on weekends. Best aerial view of Varenna from above. Worth it if legs are still good.</div><div class="map-links"><a href="https://maps.google.com/?q=Castello+di+Vezio+Varenna" target="_blank" class="map-btn">📍 Castello di Vezio</a></div></div>
+        <div class="tl-item highlight"><div class="tl-time">20:00</div><div class="tl-text">🍽️ Ristorante Il Molo — lakeside, best in Varenna</div><div class="tl-sub">Order: Risotto al pesce del lago (lake fish risotto), Persico fritto (fried lake perch — local specialty, very different from sea fish), local Valtellina red wine. ~€35pp. Outdoor terrace, lake view.</div><div class="map-links"><a href="https://maps.google.com/?q=Ristorante+Il+Molo+Varenna" target="_blank" class="map-btn">📍 Il Molo</a></div></div>
       </div>
     </div>
+    <details class="intel">
+      <summary>🔍 Local Intel — Lake Como / Varenna</summary>
+      <div class="intel-body">
+        <div class="intel-section"><div class="intel-section-title">🗺️ Varenna vs Bellagio</div>
+          <div class="intel-item"><span class="intel-item-icon">✅</span><div class="intel-item-body"><strong>Varenna (your base)</strong> — <span>quieter, more authentic, fewer tourists. Better value. 3min from train.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">ℹ️</span><div class="intel-item-body"><strong>Bellagio</strong> — <span>called "Pearl of Como" but very touristy. Worth a 30min ferry trip just to see it. 30min ferry from Varenna dock (~€5).</span></div></div>
+        </div>
+        <div class="intel-section"><div class="intel-section-title">🍽️ What to Eat</div>
+          <div class="intel-item"><span class="intel-item-icon">🐟</span><div class="intel-item-body"><strong>Persico fritto</strong> — <span>fried lake perch. Freshwater fish unique to the lakes. Mild, delicate flavour. Very different from sea fish. €14-18.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🍚</span><div class="intel-item-body"><strong>Risotto al pesce del lago</strong> — <span>risotto with lake fish. Rich, creamy. Order as main not starter.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🍟</span><div class="intel-item-body"><strong>Missoltino</strong> — <span>traditional dried and pressed lake fish, very local. Strong flavour — try it if adventurous.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🍷</span><div class="intel-item-body"><strong>Valtellina wine</strong> — <span>local red from the valley above Como. Nebbiolo grape. Ask for "Sforzato" — powerful and good.</span></div></div>
+        </div>
+        <div class="intel-section"><div class="intel-section-title">💡 Balbianello Tips (for tomorrow)</div>
+          <div class="intel-item"><span class="intel-item-icon">🎫</span><div class="intel-item-body"><strong>Buy combined ticket</strong> — <span>gardens + villa interior (not just gardens). The interior has original furnishings, art, and the rooms where Casino Royale scenes were filmed.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">📸</span><div class="intel-item-body"><strong>Best photo spot</strong> — <span>the loggia (covered terrace) at the tip of the headland. Lake on both sides, mountains in background. THE photo of this trip.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">⛵</span><div class="intel-item-body"><strong>Boat taxi alternative</strong> — <span>from Lenno dock, private water taxi (~€10pp) is faster than walking 15min. Ask at the dock.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🎬</span><div class="intel-item-body"><strong>Films shot here</strong> — <span>Casino Royale (2006) — the villa exterior + lake scenes. Star Wars Episode II — the lake retreat scenes. The gardens look exactly the same as in the films.</span></div></div>
+        </div>
+      </div>
+    </details>
   </div>
 </div>
 
 <!-- MAR 21 -->
 <div id="tab-mar21" class="tab-content">
-  <div class="day-hero" style="background-image:url('https://source.unsplash.com/featured/900x400/?lucerne,switzerland,chapel+bridge')">
+  <div class="day-hero" style="background-image:url('https://images.unsplash.com/photo-1527489377706-5bf97e608852?w=900&q=80&auto=format&fit=crop')">
     <div class="day-hero-info"><div class="day-hero-label">Balbianello → Lucerne</div><div class="day-hero-sub">Sat Mar 21 · Ferry morning · Swiss Alps evening</div></div>
   </div>
   <div class="tab-inner">
@@ -400,16 +489,40 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
         <div class="tl-item"><div class="tl-time">13:35</div><div class="tl-text">🚂 Depart Varenna → Lucerne via Alps</div></div>
         <div class="tl-item highlight"><div class="tl-time">~17:41</div><div class="tl-text">🏨 Arrive Luzern · Check in Barabas</div><div class="map-links"><a href="https://maps.google.com/?q=Luzern+Hauptbahnhof" target="_blank" class="map-btn">📍 Luzern HBF</a><a href="https://maps.google.com/?q=Barabas+Luzern+hotel" target="_blank" class="map-btn">📍 Barabas</a></div></div>
         <div class="tl-item"><div class="tl-time">18:30</div><div class="tl-text">🌉 Chapel Bridge evening walk</div><div class="map-links"><a href="https://maps.google.com/?q=Kapellbrücke+Lucerne" target="_blank" class="map-btn">📍 Chapel Bridge</a></div></div>
-        <div class="tl-item highlight"><div class="tl-time">20:00</div><div class="tl-text">🍽️ Käsefondue dinner — Wirtshaus Galliker</div><div class="map-links"><a href="https://maps.google.com/?q=Wirtshaus+Galliker+Luzern" target="_blank" class="map-btn">📍 Galliker</a></div></div>
+        <div class="tl-item"><div class="tl-time">18:30</div><div class="tl-text">🌉 Kapellbrücke (Chapel Bridge) — walk across it</div><div class="tl-sub">Built 1333. Oldest covered wooden bridge in Europe. Look UP inside at the painted triangular panels — 17th century scenes depicting death and Lucerne history. Water Tower attached to bridge (used as treasury, then prison). Best photo: from the riverside looking at bridge + Water Tower together at dusk.</div><div class="map-links"><a href="https://maps.google.com/?q=Kapellbrücke+Lucerne" target="_blank" class="map-btn">📍 Chapel Bridge</a></div></div>
+        <div class="tl-item"><div class="tl-time">19:00</div><div class="tl-text">🦁 Lion Monument — 10min walk from bridge, free</div><div class="tl-sub">Dying lion carved directly into a rock face. Commemorates Swiss guards killed defending Louis XVI in 1792. Mark Twain called it "the most mournful and moving piece of stone in the world." Takes 5min to see but you'll stand there longer. Very affecting.</div><div class="map-links"><a href="https://maps.google.com/?q=Löwendenkmal+Lion+Monument+Lucerne" target="_blank" class="map-btn">📍 Lion Monument</a></div></div>
+        <div class="tl-item"><div class="tl-time">19:30</div><div class="tl-text">Schweizerhofquai — lakefront promenade lit up at night</div><div class="map-links"><a href="https://maps.google.com/?q=Schweizerhofquai+Lucerne" target="_blank" class="map-btn">📍 Lakefront</a></div></div>
+        <div class="tl-item highlight"><div class="tl-time">20:00</div><div class="tl-text">🍽️ Käsefondue dinner — Wirtshaus Galliker</div><div class="tl-sub">Order the Käsefondue for two (CHF 55 total). Dip the bread cubes — if your bread falls in, you owe the table a round of drinks (Swiss tradition). Also try Raclette (melted cheese scraped over potatoes, €22pp). This is your only Swiss tradition dinner — commit to it.</div><div class="map-links"><a href="https://maps.google.com/?q=Wirtshaus+Galliker+Luzern" target="_blank" class="map-btn">📍 Galliker</a></div></div>
       </div>
     </div>
     <div class="hotel-box"><div class="hotel-name">Barabas Luzern ⭐⭐⭐⭐ <span class="tag book-now">BOOK NOW</span></div><div class="hotel-meta"><div class="hotel-meta-item">💰 <span>~RM1,499/3 nights</span></div><div class="hotel-meta-item">📊 <span>8.0 Very Good</span></div><div class="hotel-meta-item">📍 <span>350m Old Town · 9min station</span></div></div><div class="map-links"><a href="https://www.booking.com/hotel/ch/barabas.html?checkin=2026-03-21&checkout=2026-03-24&group_adults=2&no_rooms=1" target="_blank" class="book-link">🏨 Book →</a><a href="https://maps.google.com/?q=Barabas+Luzern+hotel" target="_blank" class="map-btn">📍 Maps</a></div></div>
+    <details class="intel">
+      <summary>🔍 Local Intel — Lucerne</summary>
+      <div class="intel-body">
+        <div class="intel-section"><div class="intel-section-title">🗺️ Must See in Lucerne</div>
+          <div class="intel-item"><span class="intel-item-icon">🌉</span><div class="intel-item-body"><strong>Kapellbrücke</strong> — <span>walk it morning and evening. Different light, different mood. Look at the 67 painted panels on the ceiling — most are originals from 1600s.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🦁</span><div class="intel-item-body"><strong>Lion Monument</strong> — <span>10min walk from bridge. Free. 5 minutes but memorable. Don't skip it.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🏰</span><div class="intel-item-body"><strong>Musegg Wall</strong> — <span>free walk along the medieval city wall with 9 towers. Great views over Old Town. 20min walk.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">⛪</span><div class="intel-item-body"><strong>Jesuit Church</strong> — <span>oldest Jesuit church in Switzerland, stunning pink baroque interior, free entry, 5min walk from bridge.</span></div></div>
+        </div>
+        <div class="intel-section"><div class="intel-section-title">🍽️ Eat & Drink</div>
+          <div class="intel-item"><span class="intel-item-icon">🧀</span><div class="intel-item-body"><strong>Käsefondue</strong> — <span>melted Gruyère + Emmental mixed with white wine. Bread dippers. CHF 25-30pp. If your bread falls in = buy everyone drinks (Swiss rule).</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🥔</span><div class="intel-item-body"><strong>Raclette</strong> — <span>big wheel of cheese melted under heat lamp, scraped over boiled potatoes + pickles. CHF 20-25pp. Very Swiss, very filling.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🐄</span><div class="intel-item-body"><strong>Zürcher Geschnetzeltes</strong> — <span>veal strips in cream mushroom sauce over Rösti (potato cake). Classic Swiss German dish. CHF 28-35.</span></div></div>
+        </div>
+        <div class="intel-section"><div class="intel-section-title">💡 Tips</div>
+          <div class="intel-item"><span class="intel-item-icon">🚂</span><div class="intel-item-body"><strong>Swiss trains run on time</strong> — <span>to the minute. If your train says 08:10, be on the platform at 08:08. They close doors at 08:09.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">💳</span><div class="intel-item-body"><strong>Cards accepted everywhere</strong> — <span>Switzerland is very card-friendly. Tap pay works at almost everything including trains.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">💰</span><div class="intel-item-body"><strong>CHF ≈ RM5</strong> — <span>Switzerland is expensive. Budget CHF 80-100pp per day (meals + activities). Everything costs ~5x Malaysia price.</span></div></div>
+        </div>
+      </div>
+    </details>
   </div>
 </div>
 
 <!-- MAR 22 -->
 <div id="tab-mar22" class="tab-content">
-  <div class="day-hero" style="background-image:url('https://source.unsplash.com/featured/900x400/?mount+titlis,engelberg,snow,alps')">
+  <div class="day-hero" style="background-image:url('https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=900&q=80&auto=format&fit=crop')">
     <div class="day-hero-info"><div class="day-hero-label">Mount Titlis — 3,238m</div><div class="day-hero-sub">Sun Mar 22 · Engelberg day trip · Europe's highest suspension bridge</div></div>
   </div>
   <div class="tab-inner">
@@ -424,18 +537,38 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
       <div class="timeline">
         <div class="tl-item"><div class="tl-time">07:15</div><div class="tl-text">Early breakfast · Wear warm layers (summit −5°C)</div></div>
         <div class="tl-item highlight"><div class="tl-time">09:15</div><div class="tl-text">🚡 Rotair Cable Car → 3,238m · World's first rotating gondola</div><div class="map-links"><a href="https://maps.google.com/?q=Titlis+Rotair+cable+car+Engelberg" target="_blank" class="map-btn">📍 Rotair</a></div></div>
-        <div class="tl-item highlight"><div class="tl-time">10:00–13:00</div><div class="tl-text">🏔️ Summit: Cliff Walk + Glacier Cave + Ice Flyer</div><div class="tl-sub">Cliff Walk = Europe's highest suspension bridge 😱 · Snow guaranteed ❄️</div><div class="map-links"><a href="https://maps.google.com/?q=Mount+Titlis+summit+Switzerland" target="_blank" class="map-btn">📍 Summit</a></div></div>
-        <div class="tl-item"><div class="tl-time">13:00</div><div class="tl-text">🍽️ Summit restaurant · Rösti + soup · CHF 25-35</div></div>
-        <div class="tl-item"><div class="tl-time">15:00</div><div class="tl-text">Engelberg monastery village</div><div class="map-links"><a href="https://maps.google.com/?q=Kloster+Engelberg+monastery" target="_blank" class="map-btn">📍 Monastery</a></div></div>
+        <div class="tl-item highlight"><div class="tl-time">10:00–13:00</div><div class="tl-text">🏔️ Summit 3,238m — do these in order:</div><div class="tl-sub"><strong>① Titlis Cliff Walk</strong> — Europe's highest suspension bridge. Only 1m wide, 500m long, drops 500m below you. Do it before your legs go wobbly. Free with ticket.<br><strong>② Glacier Cave</strong> — walk inside an actual glacier tunnel carved from ice, 15°C. Blue-green ice walls. Surreal. Included in ticket.<br><strong>③ Ice Flyer chairlift</strong> — CHF 20 extra but worth it. Open chairlift over glacier crevasses, totally exposed. 10min ride.<br><strong>④ Trübsee alpine lake</strong> — stop here on the way down (intermediate station). Frozen lake in March, mountain reflection shots.</div><div class="map-links"><a href="https://maps.google.com/?q=Mount+Titlis+summit+Switzerland" target="_blank" class="map-btn">📍 Summit</a></div></div>
+        <div class="tl-item"><div class="tl-time">13:00</div><div class="tl-text">🍽️ Summit restaurant — panoramic lunch at 3,238m</div><div class="tl-sub">Order: Rösti (potato cake, CHF 18), tomato soup (CHF 12), hot chocolate. You're in the clouds. Best lunch view of the entire trip. CHF 30-40pp total.</div></div>
+        <div class="tl-item"><div class="tl-time">14:30</div><div class="tl-text">Cable car back down · Stop at Trübsee (mid-station)</div></div>
+        <div class="tl-item"><div class="tl-time">15:00</div><div class="tl-text">🏛️ Engelberg Monastery village — Kloster Engelberg</div><div class="tl-sub">Active Benedictine monastery founded 1120. Church is free to enter (beautiful baroque interior, monks still live here). Monastery shop sells local cheese, honey, and herbal schnapps made by the monks. Buy the cheese — it's excellent.</div><div class="map-links"><a href="https://maps.google.com/?q=Kloster+Engelberg+monastery" target="_blank" class="map-btn">📍 Monastery</a></div></div>
         <div class="tl-item"><div class="tl-time">16:10</div><div class="tl-text">🚂 Return → Lucerne (43min direct)</div></div>
       </div>
     </div>
+    <details class="intel">
+      <summary>🔍 Local Intel — Mount Titlis</summary>
+      <div class="intel-body">
+        <div class="intel-section"><div class="intel-section-title">🎿 Summit Activities</div>
+          <div class="intel-item"><span class="intel-item-icon">🌉</span><div class="intel-item-body"><strong>Titlis Cliff Walk</strong> — <span>included in cable car ticket. Europe's highest suspension bridge at 3,041m. Free with your Rotair ticket. Non-negotiable — do this first thing.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🧊</span><div class="intel-item-body"><strong>Glacier Cave</strong> — <span>included in ticket. Walk into the actual Titlis glacier. Ice is blue-green, carved tunnels, alien-looking. Temperature inside is cold even in summer — bring a layer.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🪑</span><div class="intel-item-body"><strong>Ice Flyer Chairlift</strong> — <span>CHF 20 extra. Open chairlift over the glacier — you can look down into crevasses. 10min each way. Worth every franc.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🏔️</span><div class="intel-item-body"><strong>Snow Tubing</strong> — <span>CHF 5 for a session. Slide down on inflatable tubes. Fun 20min activity if queue isn't long.</span></div></div>
+        </div>
+        <div class="intel-section"><div class="intel-section-title">👗 What to Wear</div>
+          <div class="intel-item"><span class="intel-item-icon">🧥</span><div class="intel-item-body"><strong>Summit is −5°C in March</strong> — <span>wear your warmest jacket + gloves. Down jacket mandatory. Jeans are fine for legs (it's not that cold on legs).</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🕶️</span><div class="intel-item-body"><strong>Sunglasses essential</strong> — <span>snow reflects UV. Without sunglasses, 2hrs at summit = sore eyes for 2 days.</span></div></div>
+        </div>
+        <div class="intel-section"><div class="intel-section-title">🛍️ Buy at Summit</div>
+          <div class="intel-item"><span class="intel-item-icon">🍫</span><div class="intel-item-body"><strong>Swiss chocolate</strong> — <span>Lindt + Toblerone are actually slightly cheaper at summit gift shops than at airports. Buy here. Lindor bags, Toblerone white chocolate.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🧀</span><div class="intel-item-body"><strong>Monastery cheese</strong> — <span>buy at Engelberg monastery shop on the way back. Aged Alpkäse, €12-15 per piece. Excellent quality.</span></div></div>
+        </div>
+      </div>
+    </details>
   </div>
 </div>
 
 <!-- MAR 23 -->
 <div id="tab-mar23" class="tab-content">
-  <div class="day-hero" style="background-image:url('https://source.unsplash.com/featured/900x400/?grindelwald,eiger,bernese+alps')">
+  <div class="day-hero" style="background-image:url('https://images.unsplash.com/photo-1501183007986-d0d080b147f9?w=900&q=80&auto=format&fit=crop')">
     <div class="day-hero-info"><div class="day-hero-label">Grindelwald + Interlaken</div><div class="day-hero-sub">Mon Mar 23 · PanoramaExpress · Eiger north face</div></div>
   </div>
   <div class="tab-inner">
@@ -449,18 +582,33 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
     <div class="card"><div class="card-header"><span class="card-icon">🕐</span><span class="card-title">Day Plan</span></div>
       <div class="timeline">
         <div class="tl-item highlight"><div class="tl-time">10:05</div><div class="tl-text">BOB Railway → Grindelwald (~35min) · Eiger comes into view</div><div class="map-links"><a href="https://maps.google.com/?q=Grindelwald+village+Switzerland" target="_blank" class="map-btn">📍 Grindelwald</a></div></div>
-        <div class="tl-item highlight"><div class="tl-time">11:00</div><div class="tl-text">🏔️ Grindelwald First Gondola → 2,168m</div><div class="tl-sub">CHF 65pp · Eiger + Mönch + Jungfrau visible · First Cliff Walk</div><div class="map-links"><a href="https://maps.google.com/?q=Grindelwald+First+gondola+station" target="_blank" class="map-btn">📍 First Gondola</a></div></div>
-        <div class="tl-item"><div class="tl-time">13:30</div><div class="tl-text">🍽️ Lunch in Grindelwald village · CHF 25-30</div><div class="map-links"><a href="https://maps.google.com/?q=restaurants+Grindelwald+Switzerland" target="_blank" class="map-btn">📍 Restaurants</a></div></div>
-        <div class="tl-item"><div class="tl-time">15:15</div><div class="tl-text">Interlaken Höheweg promenade · Both lakes visible</div><div class="map-links"><a href="https://maps.google.com/?q=Höheweg+Interlaken+Switzerland" target="_blank" class="map-btn">📍 Höheweg</a></div></div>
-        <div class="tl-item"><div class="tl-time">17:06</div><div class="tl-text">🚂 PanoramaExpress return → Lucerne</div></div>
+        <div class="tl-item highlight"><div class="tl-time">11:00</div><div class="tl-text">🏔️ Grindelwald First Gondola → 2,168m (CHF 65pp return)</div><div class="tl-sub">On the gondola: look LEFT for Eiger north face — the infamous "murder wall" where 64 climbers died attempting it. From the top: Eiger (3,970m), Mönch (4,107m), Jungfrau (4,158m) all visible together — this is the classic Swiss Alps panorama.<br><strong>First Cliff Walk</strong> — free once you're up top. 45min loop. Walk to the platform that juts out over the valley with nothing below. Vertigo warning.<br><strong>Bachalpsee option</strong> — 45min walk from First station. Alpine lake perfectly reflecting the Eiger. Best photo in Grindelwald. Do it if energy is good.</div><div class="map-links"><a href="https://maps.google.com/?q=Grindelwald+First+gondola+station" target="_blank" class="map-btn">📍 First Gondola</a><a href="https://maps.google.com/?q=Bachalpsee+Grindelwald" target="_blank" class="map-btn">📍 Bachalpsee</a></div></div>
+        <div class="tl-item"><div class="tl-time">13:30</div><div class="tl-text">🍽️ Lunch in Grindelwald village — Restaurant Onkel Tom</div><div class="tl-sub">Order: Rösti with fried egg + cheese (CHF 22), hot soup, apple strudel. Sit outside — Eiger is right there above you. CHF 25-30pp.</div><div class="map-links"><a href="https://maps.google.com/?q=restaurants+Grindelwald+Switzerland" target="_blank" class="map-btn">📍 Restaurants</a></div></div>
+        <div class="tl-item"><div class="tl-time">14:30</div><div class="tl-text">Grindelwald Dorfstrasse (main street) · Swiss souvenir shopping</div><div class="tl-sub">Best place to buy Swiss army knife (Victorinox) — CHF 25-60. Also Ricola herb candies, Swiss chocolate, cowbells (touristy but funny). Better prices than Lucerne or Zurich.</div></div>
+        <div class="tl-item"><div class="tl-time">15:15</div><div class="tl-text">Interlaken — Höheweg promenade between two lakes</div><div class="tl-sub">Höheweg is a long straight boulevard with Lake Thun one side and Lake Brienz the other. Walk 15min to the end for the classic Jungfrau-with-two-lakes photo. Horse-drawn carriages run along it.</div><div class="map-links"><a href="https://maps.google.com/?q=Höheweg+Interlaken+Switzerland" target="_blank" class="map-btn">📍 Höheweg</a></div></div>
+        <div class="tl-item"><div class="tl-time">17:06</div><div class="tl-text">🚂 PanoramaExpress return → Lucerne (sit RIGHT side again)</div></div>
       </div>
     </div>
+    <details class="intel">
+      <summary>🔍 Local Intel — Grindelwald & Interlaken</summary>
+      <div class="intel-body">
+        <div class="intel-section"><div class="intel-section-title">🏔️ The Eiger North Face</div>
+          <div class="intel-item"><span class="intel-item-icon">☠️</span><div class="intel-item-body"><strong>The "Murder Wall"</strong> — <span>the Eiger's north face is 1,800m of near-vertical rock and ice. Called Mordwand (murder wall) in German. First successfully climbed in 1938 after many deaths. You'll see the exact face from Grindelwald village — it's directly above you.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">📖</span><div class="intel-item-body"><strong>Read before you go</strong> — <span>"The White Spider" by Heinrich Harrer — the classic account of the first ascent. Google "Eiger 1936 tragedy" for the full story.</span></div></div>
+        </div>
+        <div class="intel-section"><div class="intel-section-title">🛍️ Buy in Grindelwald</div>
+          <div class="intel-item"><span class="intel-item-icon">🔪</span><div class="intel-item-body"><strong>Victorinox Swiss Army Knife</strong> — <span>CHF 25-60 depending on model. Get the Classic SD (smallest, keychain) or the Climber. Cannot take on hand luggage — pack in checked bag.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🍬</span><div class="intel-item-body"><strong>Ricola</strong> — <span>Swiss herb candy. CHF 3 a bag. Very different from the export version. The green tea flavour is excellent.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🐄</span><div class="intel-item-body"><strong>Cowbell</strong> — <span>CHF 15-30. Tacky but genuinely Swiss. They actually use these on cows.</span></div></div>
+        </div>
+      </div>
+    </details>
   </div>
 </div>
 
 <!-- MAR 24 -->
 <div id="tab-mar24" class="tab-content">
-  <div class="day-hero" style="background-image:url('https://source.unsplash.com/featured/900x400/?venice,grand+canal,gondola')">
+  <div class="day-hero" style="background-image:url('https://images.unsplash.com/photo-1514890547357-a9ee288728e0?w=900&q=80&auto=format&fit=crop')">
     <div class="day-hero-info"><div class="day-hero-label">Venice</div><div class="day-hero-sub">Tue Mar 24 · Travel day · Lucerne → Venice</div></div>
   </div>
   <div class="tab-inner">
@@ -476,18 +624,40 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
     <div class="hotel-box" style="margin-bottom:12px"><div class="hotel-name">Hotel Antiche Figure <span class="tag book-now">BOOK THIS WEEK</span></div><div class="hotel-meta"><div class="hotel-meta-item">📍 <span>Near Santa Lucia station · Mar 24–26</span></div></div><div class="map-links"><a href="https://www.booking.com/hotel/it/antiche-figure.html?checkin=2026-03-24&checkout=2026-03-26&group_adults=2&no_rooms=1" target="_blank" class="book-link">🏨 Book →</a><a href="https://maps.google.com/?q=Hotel+Antiche+Figure+Venice" target="_blank" class="map-btn">📍 Maps</a></div></div>
     <div class="card"><div class="card-header"><span class="card-icon">🕐</span><span class="card-title">Evening Plan</span></div>
       <div class="timeline">
-        <div class="tl-item highlight"><div class="tl-time">14:12</div><div class="tl-text">🚢 Arrive Venice — you're on an island!</div></div>
-        <div class="tl-item"><div class="tl-time">17:00</div><div class="tl-text">🌉 Rialto Bridge wander</div><div class="map-links"><a href="https://maps.google.com/?q=Rialto+Bridge+Venice" target="_blank" class="map-btn">📍 Rialto Bridge</a></div></div>
-        <div class="tl-item highlight"><div class="tl-time">19:00</div><div class="tl-text">🚣 Evening gondola ride · €80-100/gondola</div><div class="map-links"><a href="https://maps.google.com/?q=gondola+ride+Venice+Rialto" target="_blank" class="map-btn">📍 Gondola</a></div></div>
-        <div class="tl-item"><div class="tl-time">20:30</div><div class="tl-text">🍽️ Cicchetti + Spritz in Dorsoduro</div><div class="map-links"><a href="https://maps.google.com/?q=Dorsoduro+Venice+restaurants" target="_blank" class="map-btn">📍 Dorsoduro</a></div></div>
+        <div class="tl-item highlight"><div class="tl-time">14:12</div><div class="tl-text">🚢 Arrive Venezia Santa Lucia — step outside and stop</div><div class="tl-sub">One of travel's great moments: you walk out of the train station and the Grand Canal is IMMEDIATELY in front of you. No buffer. No road. Just water. Stand there for a moment. Then walk LEFT along the canal (not right — that's the tourist trap zone).</div><div class="map-links"><a href="https://maps.google.com/?q=Venezia+Santa+Lucia+train+station" target="_blank" class="map-btn">📍 Santa Lucia</a></div></div>
+        <div class="tl-item"><div class="tl-time">15:00</div><div class="tl-text">Cannaregio neighbourhood — most authentic Venice</div><div class="tl-sub">Walk away from the tourist crowds. Cannaregio has real Venetian life — locals shopping, kids cycling, bacari (wine bars) with workers drinking. Jewish Ghetto is here: the world's first ghetto (1516). 5 synagogues still functioning. Campo del Ghetto Nuovo is hauntingly beautiful and quiet.</div><div class="map-links"><a href="https://maps.google.com/?q=Cannaregio+Venice" target="_blank" class="map-btn">📍 Cannaregio</a><a href="https://maps.google.com/?q=Jewish+Ghetto+Venice" target="_blank" class="map-btn">📍 Jewish Ghetto</a></div></div>
+        <div class="tl-item"><div class="tl-time">16:30</div><div class="tl-text">🌉 Rialto Bridge + surroundings — get lost in the alleys</div><div class="tl-sub">Getting lost in Venice is literally the point. The streets (calli) are 1-2m wide. Follow your nose. Every corner is photogenic. If you find yourself somewhere with no tourists at all, you've won.</div><div class="map-links"><a href="https://maps.google.com/?q=Rialto+Bridge+Venice" target="_blank" class="map-btn">📍 Rialto Bridge</a></div></div>
+        <div class="tl-item highlight"><div class="tl-time">19:00</div><div class="tl-text">🚣 Gondola ride — evening is most atmospheric</div><div class="tl-sub">Station near Rialto or at Santa Maria del Giglio. Negotiate: standard is €80 daytime / €100 evening, 30min, up to 6 people. Don't pay more. The gondolier WILL sing if you ask (and tip CHF 10). Best canals: Rii Terà dei Assassini, narrow back canals (not Grand Canal — too trafficky).</div><div class="map-links"><a href="https://maps.google.com/?q=Gondola+station+Rialto+Venice" target="_blank" class="map-btn">📍 Gondola Station</a></div></div>
+        <div class="tl-item"><div class="tl-time">20:30</div><div class="tl-text">🍽️ Cicchetti dinner in Dorsoduro</div><div class="tl-sub"><strong>Cantina del Vino già Schiavi</strong> — locals-only wine bar, cicchetti (Venetian tapas) for €1.50-3 each, wine from €2 a glass. Stand at the bar, point at what you want. Order: baccalà mantecato (creamy salt cod on bread), sardele in saor (sweet/sour sardines). Best cheap meal in Venice.</div><div class="map-links"><a href="https://maps.google.com/?q=Cantina+del+Vino+già+Schiavi+Venice" target="_blank" class="map-btn">📍 Cantina Schiavi</a><a href="https://maps.google.com/?q=Dorsoduro+Venice+restaurants" target="_blank" class="map-btn">📍 Dorsoduro</a></div></div>
       </div>
     </div>
+    <details class="intel">
+      <summary>🔍 Local Intel — Venice Basics</summary>
+      <div class="intel-body">
+        <div class="intel-section"><div class="intel-section-title">🚌 Getting Around</div>
+          <div class="intel-item"><span class="intel-item-icon">🚢</span><div class="intel-item-body"><strong>Vaporetto (water bus)</strong> — <span>€9.50 for 24hr pass, €16.50 for 48hr. Line 1 along Grand Canal is beautiful and worth taking once just for the views. Buy at any ACTV booth.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🚶</span><div class="intel-item-body"><strong>Walk everywhere</strong> — <span>Venice is tiny. 30min walk crosses the whole island. Don't take water taxis (expensive, €15+) unless you have bags.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🗺️</span><div class="intel-item-body"><strong>Get lost on purpose</strong> — <span>follow "Per Rialto" or "Per San Marco" signs when you need to reorient. Otherwise, wander the back canals.</span></div></div>
+        </div>
+        <div class="intel-section"><div class="intel-section-title">🍽️ Eat Like a Local</div>
+          <div class="intel-item"><span class="intel-item-icon">🍷</span><div class="intel-item-body"><strong>Bacaro bars</strong> — <span>traditional wine bars with cicchetti (small bites). Look for places with locals standing at the bar, not tourists sitting down. Rule: if there's a menu with photos, leave.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🐟</span><div class="intel-item-body"><strong>Sarde in saor</strong> — <span>sweet-sour sardines with onion, pine nuts, raisins. Medieval Venetian dish. Unique flavour. Order it at every bacaro.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🍞</span><div class="intel-item-body"><strong>Baccalà mantecato</strong> — <span>whipped salt cod on grilled bread. Creamy, mild. Best cicchetto in Venice.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🍹</span><div class="intel-item-body"><strong>Aperol Spritz</strong> — <span>invented in Venice (or nearby). €3-5 at a bacaro standing bar. €12 at a tourist table on San Marco. Same drink, completely different experience.</span></div></div>
+        </div>
+        <div class="intel-section"><div class="intel-section-title">⚠️ Tourist Traps to Avoid</div>
+          <div class="intel-item"><span class="intel-item-icon">❌</span><div class="intel-item-body"><strong>Restaurants with photos on the menu</strong> — <span>always overpriced, never quality. Walk away.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">❌</span><div class="intel-item-body"><strong>Sitting at San Marco cafes</strong> — <span>€15 for a coffee with "music service charge." Standing at the bar = €1.50. Crazy difference.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">❌</span><div class="intel-item-body"><strong>Water taxis unnecessarily</strong> — <span>€15-25 minimum. Walk or vaporetto instead unless you have bags.</span></div></div>
+        </div>
+      </div>
+    </details>
   </div>
 </div>
 
 <!-- MAR 25 -->
 <div id="tab-mar25" class="tab-content">
-  <div class="day-hero" style="background-image:url('https://source.unsplash.com/featured/900x400/?venice,piazza+san+marco,basilica')">
+  <div class="day-hero" style="background-image:url('https://images.unsplash.com/photo-1533676802871-eca1ae998cd5?w=900&q=80&auto=format&fit=crop')">
     <div class="day-hero-info"><div class="day-hero-label">Venice — Full Day</div><div class="day-hero-sub">Wed Mar 25 · St Mark's · Doge's Palace · Bacari</div></div>
   </div>
   <div class="tab-inner">
@@ -503,9 +673,34 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
   </div>
 </div>
 
+    <details class="intel">
+      <summary>🔍 Local Intel — Venice Full Day</summary>
+      <div class="intel-body">
+        <div class="intel-section"><div class="intel-section-title">🏛️ St Mark's Tips</div>
+          <div class="intel-item"><span class="intel-item-icon">🎫</span><div class="intel-item-body"><strong>Pre-book timeslot</strong> — <span>basilicasanmarco.it. Free booking, saves 45min queue. Arrive 5min before your slot.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🏆</span><div class="intel-item-body"><strong>Worth paying for</strong> — <span>Loggia balcony (€7) — outdoors above piazza + original bronze horses. Pala d'Oro (€5) — 10th century gold altarpiece with 2,000 gems. Both worth it.</span></div></div>
+        </div>
+        <div class="intel-section"><div class="intel-section-title">📚 Hidden Gems</div>
+          <div class="intel-item"><span class="intel-item-icon">📖</span><div class="intel-item-body"><strong>Libreria Acqua Alta</strong> — <span>books stored in gondolas and bathtubs. Cats live inside. Staircase made of books. Free entry, 10min from San Marco. One of Europe's most charming bookshops.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🌅</span><div class="intel-item-body"><strong>Punta della Dogana</strong> — <span>tip of Dorsoduro, where Grand Canal meets the lagoon. Best sunset spot in Venice. Face the Salute dome. Free.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🌉</span><div class="intel-item-body"><strong>Accademia Bridge</strong> — <span>best Grand Canal panorama. Stand on bridge looking toward Salute church. Classic Venice shot.</span></div></div>
+        </div>
+        <div class="intel-section"><div class="intel-section-title">🍽️ What to Eat Today</div>
+          <div class="intel-item"><span class="intel-item-icon">🦑</span><div class="intel-item-body"><strong>Risotto al nero di seppia</strong> — <span>squid ink risotto. Jet black, rich, intense. Unique to Venice. Order it.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🐟</span><div class="intel-item-body"><strong>Baccalà mantecato</strong> — <span>whipped salt cod on grilled bread. Creamy, mild. Best cicchetto in Venice. €2 at any bacaro.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🍹</span><div class="intel-item-body"><strong>Spritz</strong> — <span>Aperol Spritz was invented near Venice. €3-5 at a bacaro standing. €12 at San Marco tourist cafes. Same drink.</span></div></div>
+        </div>
+        <div class="intel-section"><div class="intel-section-title">🛍️ Buy in Venice</div>
+          <div class="intel-item"><span class="intel-item-icon">🎭</span><div class="intel-item-body"><strong>Carnival mask</strong> — <span>Ca' Macana (Dorsoduro) for genuine hand-painted. €15-80. Avoid plastic market stall masks.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🏺</span><div class="intel-item-body"><strong>Murano glass</strong> — <span>must have "Vetro Murano" certificate to be real. Or take vaporetto to Murano island (20min) and buy direct from glassblowers. Watch them make it free.</span></div></div>
+        </div>
+      </div>
+    </details>
+
+
 <!-- MAR 26 -->
 <div id="tab-mar26" class="tab-content">
-  <div class="day-hero" style="background-image:url('https://source.unsplash.com/featured/900x400/?florence,ponte+vecchio,arno')">
+  <div class="day-hero" style="background-image:url('https://images.unsplash.com/photo-1541370976299-4d24be63d18f?w=900&q=80&auto=format&fit=crop')">
     <div class="day-hero-info"><div class="day-hero-label">Florence</div><div class="day-hero-sub">Thu Mar 26 · Travel day · Venice → Florence</div></div>
   </div>
   <div class="tab-inner">
@@ -526,9 +721,26 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
   </div>
 </div>
 
+    <details class="intel">
+      <summary>🔍 Local Intel — Florence Arrival</summary>
+      <div class="intel-body">
+        <div class="intel-section"><div class="intel-section-title">🌅 Best Evening Spots</div>
+          <div class="intel-item"><span class="intel-item-icon">🌄</span><div class="intel-item-body"><strong>Piazzale Michelangelo (sunset)</strong> — <span>take Bus #12 from near Ponte Vecchio (€1.50) to avoid the 20min uphill walk. Arrive 30min before sunset. THE Florence panorama — Duomo, Palazzo Vecchio, Arno river all in one frame.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🌹</span><div class="intel-item-body"><strong>Giardino delle Rose</strong> — <span>free rose garden on the way up to Piazzale. Open in spring. Roses starting to bloom in March. Quiet, local, romantic.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">⛪</span><div class="intel-item-body"><strong>San Miniato al Monte</strong> — <span>just above Piazzale. Free entry. Romanesque church from 1013. If you're there at 17:30 Sunday, Gregorian chant vespers (monks singing). Haunting and beautiful.</span></div></div>
+        </div>
+        <div class="intel-section"><div class="intel-section-title">🏘️ Florence Neighbourhoods</div>
+          <div class="intel-item"><span class="intel-item-icon">✅</span><div class="intel-item-body"><strong>Oltrarno</strong> — <span>south of Arno, most local neighbourhood. Artisan workshops, quiet streets, no tourist traps. Base for evening walks.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">✅</span><div class="intel-item-body"><strong>Piazza Santo Spirito</strong> — <span>Oltrarno square with outdoor bars. Evening aperitivo with students and locals. Cheap wine, relaxed atmosphere.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">⚠️</span><div class="intel-item-body"><strong>Near Duomo</strong> — <span>avoid restaurants within 100m of the Duomo. All tourist traps. Walk 2 streets further.</span></div></div>
+        </div>
+      </div>
+    </details>
+
+
 <!-- MAR 27 -->
 <div id="tab-mar27" class="tab-content">
-  <div class="day-hero" style="background-image:url('https://source.unsplash.com/featured/900x400/?uffizi,florence,renaissance,art')">
+  <div class="day-hero" style="background-image:url('https://images.unsplash.com/photo-1569681157208-c960fd187e44?w=900&q=80&auto=format&fit=crop')">
     <div class="day-hero-info"><div class="day-hero-label">Florence — Full Day</div><div class="day-hero-sub">Fri Mar 27 · Uffizi · David · Bistecca</div></div>
   </div>
   <div class="tab-inner">
@@ -544,9 +756,35 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
   </div>
 </div>
 
+    <details class="intel">
+      <summary>🔍 Local Intel — Florence Full Day</summary>
+      <div class="intel-body">
+        <div class="intel-section"><div class="intel-section-title">🖼️ Uffizi Room Guide</div>
+          <div class="intel-item"><span class="intel-item-icon">⭐</span><div class="intel-item-body"><strong>Rooms 10-14 (Botticelli)</strong> — <span>Primavera + Birth of Venus. These are the rooms. Budget 20min just here. Everything else in the museum is secondary.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">⭐</span><div class="intel-item-body"><strong>Room 35 (Michelangelo)</strong> — <span>Tondo Doni — his only panel painting. Vivid colours, recently restored. 5min.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">⭐</span><div class="intel-item-body"><strong>Room 83 (Leonardo)</strong> — <span>Annunciation + Adoration of the Magi. 15min.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">ℹ️</span><div class="intel-item-body"><strong>Skip</strong> — <span>Rooms 1-9 (Medieval art — slow). Go straight to Botticelli if time is limited.</span></div></div>
+        </div>
+        <div class="intel-section"><div class="intel-section-title">🗿 Accademia (Michelangelo's David)</div>
+          <div class="intel-item"><span class="intel-item-icon">📏</span><div class="intel-item-body"><strong>Scale is shocking</strong> — <span>5.17m tall. Photos don't convey it. Walk all the way around — he looks completely different from every angle. The back is as detailed as the front.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🗿</span><div class="intel-item-body"><strong>The Prisoners</strong> — <span>4 unfinished Michelangelo sculptures on the way in. Figures "emerging" from the stone. Arguable whether they're more powerful than David. 5min stop.</span></div></div>
+        </div>
+        <div class="intel-section"><div class="intel-section-title">🥩 Bistecca alla Fiorentina Rules</div>
+          <div class="intel-item"><span class="intel-item-icon">🐄</span><div class="intel-item-body"><strong>Must be Chianina beef</strong> — <span>specific breed from Val di Chiana. Ask the waiter to confirm. If they say "Angus" or can't tell you, it's not authentic.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🩸</span><div class="intel-item-body"><strong>Order it rare (al sangue)</strong> — <span>they will literally refuse to serve it well-done at a proper restaurant. Trust them. The centre should be warm pink-red. This is the correct way.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">⚖️</span><div class="intel-item-body"><strong>Priced by weight</strong> — <span>€50-60 per kg. Order 1.2-1.5kg for two people. That's €60-90 for the steak alone. Worth every euro.</span></div></div>
+        </div>
+        <div class="intel-section"><div class="intel-section-title">🛍️ Florence Shopping</div>
+          <div class="intel-item"><span class="intel-item-icon">👜</span><div class="intel-item-body"><strong>Genuine leather</strong> — <span>Via della Vigna Nuova + surrounding streets. Family workshops. Don't buy from market stalls near Duomo (Chinese made).</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🍦</span><div class="intel-item-body"><strong>Best gelato</strong> — <span>Gelateria dei Neri (Via dei Neri) — pistachio + stracciatella. Always ask for a taste first. A good gelato shop won't pile it into a mountain shape — if it's piled high in a mound, it has filler in it.</span></div></div>
+        </div>
+      </div>
+    </details>
+
+
 <!-- MAR 28 -->
 <div id="tab-mar28" class="tab-content">
-  <div class="day-hero" style="background-image:url('https://source.unsplash.com/featured/900x400/?val+d+orcia,tuscany,cypress')">
+  <div class="day-hero" style="background-image:url('https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?w=900&q=80&auto=format&fit=crop')">
     <div class="day-hero-info"><div class="day-hero-label">Tuscany → Rome</div><div class="day-hero-sub">Sat Mar 28 · Val d'Orcia · Pienza · Montalcino</div></div>
   </div>
   <div class="tab-inner">
@@ -566,9 +804,33 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
   </div>
 </div>
 
+    <details class="intel">
+      <summary>🔍 Local Intel — Tuscany Drive</summary>
+      <div class="intel-body">
+        <div class="intel-section"><div class="intel-section-title">📸 The Famous Cypress Road Photo</div>
+          <div class="intel-item"><span class="intel-item-icon">🌲</span><div class="intel-item-body"><strong>Vitaleta Chapel (SP146)</strong> — <span>the single most-photographed Tuscany image. Tiny chapel at the end of a cypress-lined dirt road. On SP146 between Pienza and San Quirico d'Orcia. Coordinates: 43.0834°N, 11.6573°E. Pull over — it's off the road. Morning mist makes it magical.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🌅</span><div class="intel-item-body"><strong>Best light</strong> — <span>morning (soft mist) or golden hour (warm orange light on rolling hills). Try to be in Val d'Orcia between 9-11am.</span></div></div>
+        </div>
+        <div class="intel-section"><div class="intel-section-title">🏘️ Pienza</div>
+          <div class="intel-item"><span class="intel-item-icon">🧀</span><div class="intel-item-body"><strong>Buy Pecorino di Pienza</strong> — <span>sheep milk cheese, semi-aged or aged with truffle. Buy from any shop on main street. Small wheel ~€12-18. Best cheese of the trip. Wrap it well for travel.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🏰</span><div class="intel-item-body"><strong>Palazzo Piccolomini</strong> — <span>€7pp. Built for Pope Pius II (who literally built Pienza from scratch as his ideal Renaissance city). Hanging garden with three-level loggia facing the valley. Stunning view from the garden terrace.</span></div></div>
+        </div>
+        <div class="intel-section"><div class="intel-section-title">🍷 Montalcino Wine</div>
+          <div class="intel-item"><span class="intel-item-icon">🍾</span><div class="intel-item-body"><strong>Brunello di Montalcino</strong> — <span>one of the world's great red wines. 100% Sangiovese Grosso. Minimum 5 years aging. Buy 1 bottle at the Fortezza enoteca — Brunello Annata €35-50, Riserva €80+. Cannot get this quality for this price anywhere else.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">💡</span><div class="intel-item-body"><strong>More accessible option</strong> — <span>Rosso di Montalcino = younger version, €15-20, excellent quality. Same grape, younger vine, more approachable. Buy this if budget is a concern.</span></div></div>
+        </div>
+        <div class="intel-section"><div class="intel-section-title">🚗 Driving Tips</div>
+          <div class="intel-item"><span class="intel-item-icon">⚠️</span><div class="intel-item-body"><strong>ZTL zones</strong> — <span>historic centres of Italian towns have ZTL (restricted traffic zones). Cameras fine tourists automatically. Do NOT drive into centro storico. Park outside and walk in.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">⛽</span><div class="intel-item-body"><strong>Fuel</strong> — <span>use highway service stations (Autogrill). Cheaper than village stations. Pay at pump with card.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🅿️</span><div class="intel-item-body"><strong>Parking in Rome</strong> — <span>Hotel Artemide: ask about their parking arrangement. Or use NuovaPark near Termini (~€25/night). Drop car before checking in.</span></div></div>
+        </div>
+      </div>
+    </details>
+
+
 <!-- MAR 29 -->
 <div id="tab-mar29" class="tab-content">
-  <div class="day-hero" style="background-image:url('https://source.unsplash.com/featured/900x400/?colosseum,rome,ancient')">
+  <div class="day-hero" style="background-image:url('https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=900&q=80&auto=format&fit=crop')">
     <div class="day-hero-info"><div class="day-hero-label">Rome — Full Day</div><div class="day-hero-sub">Sun Mar 29 · Colosseum · Vatican · Trevi · Last dinner</div></div>
   </div>
   <div class="tab-inner">
@@ -585,9 +847,35 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
   </div>
 </div>
 
+    <details class="intel">
+      <summary>🔍 Local Intel — Rome</summary>
+      <div class="intel-body">
+        <div class="intel-section"><div class="intel-section-title">🏟️ Colosseum Tips</div>
+          <div class="intel-item"><span class="intel-item-icon">🎫</span><div class="intel-item-body"><strong>Book Arena Floor access</strong> — <span>€5 extra at coopculture.it. Lets you stand on the actual arena floor where gladiators fought. Without it you're only on the outer ring. Worth it.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🌿</span><div class="intel-item-body"><strong>Roman Forum</strong> — <span>included in same ticket. Find the Temple of Julius Caesar (small round temple in the Forum) — people still leave fresh flowers and offerings on it daily, 2,000 years later.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🏔️</span><div class="intel-item-body"><strong>Palatine Hill</strong> — <span>also included. Higher up than Forum, best views looking DOWN at the ruins. Where Rome's emperors actually lived.</span></div></div>
+        </div>
+        <div class="intel-section"><div class="intel-section-title">⛲ Trevi Fountain</div>
+          <div class="intel-item"><span class="intel-item-icon">🪙</span><div class="intel-item-body"><strong>The coin throw</strong> — <span>RIGHT hand, throw OVER your LEFT shoulder (facing away from fountain). One coin = return to Rome. Two coins = find love. Three coins = marriage. The coins (~€1.5 million/year) go to a food charity.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">⏰</span><div class="intel-item-body"><strong>Best time</strong> — <span>mid-afternoon (14:30-15:30) is least crowded. Early morning (8am) is very photogenic but still has people. It's never empty.</span></div></div>
+        </div>
+        <div class="intel-section"><div class="intel-section-title">⛪ Vatican</div>
+          <div class="intel-item"><span class="intel-item-icon">🆓</span><div class="intel-item-body"><strong>St Peter's Basilica is FREE</strong> — <span>just queue. No booking needed. The scale inside is disorienting — everything is larger than it looks. The bronze baldachin (canopy) over the altar is 29m tall.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🏔️</span><div class="intel-item-body"><strong>Climb the dome</strong> — <span>€8 walk / €10 elevator partway. Do the stairs — 551 steps, but the view from the drum (halfway) over the Sistine Chapel roof is unique. From the top: all of Rome.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">💂</span><div class="intel-item-body"><strong>Swiss Guards</strong> — <span>must be Swiss citizens, Catholic, single men aged 19-30. Their striped uniform was designed by Michelangelo (disputed, but the story is good). They are genuinely trained soldiers.</span></div></div>
+        </div>
+        <div class="intel-section"><div class="intel-section-title">🍽️ Last Dinner — Testaccio</div>
+          <div class="intel-item"><span class="intel-item-icon">🍝</span><div class="intel-item-body"><strong>The holy trinity of Roman pasta</strong> — <span>Cacio e pepe (cheese + pepper, no cream), Carbonara (egg + guanciale/pork cheek, no cream), Amatriciana (tomato + guanciale). Order all three and share. These are the three dishes Rome invented.</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🍕</span><div class="intel-item-body"><strong>Roman pizza</strong> — <span>thin and crispy (NOT like Naples). Baked in electric oven. Da Remo in Testaccio = the best Roman pizza. Order the simple ones: Margherita, bianca (white, no tomato).</span></div></div>
+          <div class="intel-item"><span class="intel-item-icon">🍻</span><div class="intel-item-body"><strong>Supplì</strong> — <span>Roman fried rice balls with tomato + mozzarella. €1.50-2 each. Street food eaten standing. Order as starter everywhere.</span></div></div>
+        </div>
+      </div>
+    </details>
+
+
 <!-- MAR 30 -->
 <div id="tab-mar30" class="tab-content">
-  <div class="day-hero" style="background-image:url('https://source.unsplash.com/featured/900x400/?airport,departure,travel')">
+  <div class="day-hero" style="background-image:url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=900&q=80&auto=format&fit=crop')">
     <div class="day-hero-info"><div class="day-hero-label">✈️ Fly Home</div><div class="day-hero-sub">Mon Mar 30 · Rome FCO → Penang · Trip complete</div></div>
   </div>
   <div class="tab-inner">
@@ -668,6 +956,9 @@ function showTab(name, btn) {
   currentIdx = TABS.indexOf(name);
   updateSwipeNav();
   window.scrollTo({top:0,behavior:'smooth'});
+  // Update weather for the city of this tab's date
+  const tabDate = Object.keys(DAY_MAP).find(d => DAY_MAP[d] === name);
+  if(tabDate) updateWeatherForDate(tabDate);
 }
 
 function updateSwipeNav(){
@@ -777,28 +1068,47 @@ const WMO_DESC = {
   95:'Thunderstorm',96:'Thunderstorm+hail',99:'Thunderstorm+hail',
 };
 
-async function initWeather(){
-  const today = getTodayISO();
-  const city = WEATHER_CITIES[today] || 'Rome';
+async function updateWeatherForDate(dateStr){
+  const city = WEATHER_CITIES[dateStr] || 'Rome';
   const coords = CITY_COORDS[city] || [41.9028, 12.4964];
-  document.getElementById('w-city').textContent = city;
+  const today = getTodayISO();
+  const isFuture = dateStr > today;
+  document.getElementById('w-city').textContent = city + (isFuture ? ' (forecast)' : '');
+  document.getElementById('w-temp').textContent = '…';
+  document.getElementById('w-desc').textContent = '';
   try {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${coords[0]}&longitude=${coords[1]}&current=temperature_2m,weather_code,apparent_temperature&timezone=auto`;
-    const r = await fetch(url);
-    if(!r.ok) throw new Error('API error');
-    const d = await r.json();
-    const c = d.current;
-    const icon = WMO_ICONS[c.weather_code] || '🌡️';
-    const desc = WMO_DESC[c.weather_code] || 'Unknown';
-    const temp = Math.round(c.temperature_2m);
-    document.getElementById('w-temp').textContent = icon+' '+temp+'°C';
+    // For future dates use daily forecast; for today use current
+    let url, temp, icon, desc;
+    if(isFuture){
+      url = `https://api.open-meteo.com/v1/forecast?latitude=${coords[0]}&longitude=${coords[1]}&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&start_date=${dateStr}&end_date=${dateStr}`;
+      const r = await fetch(url); if(!r.ok) throw new Error();
+      const d = await r.json();
+      const code = d.daily.weather_code[0];
+      const hi = Math.round(d.daily.temperature_2m_max[0]);
+      const lo = Math.round(d.daily.temperature_2m_min[0]);
+      icon = WMO_ICONS[code] || '🌡️';
+      desc = WMO_DESC[code] || '';
+      temp = `${icon} ${lo}–${hi}°C`;
+    } else {
+      url = `https://api.open-meteo.com/v1/forecast?latitude=${coords[0]}&longitude=${coords[1]}&current=temperature_2m,weather_code&timezone=auto`;
+      const r = await fetch(url); if(!r.ok) throw new Error();
+      const d = await r.json();
+      const c = d.current;
+      icon = WMO_ICONS[c.weather_code] || '🌡️';
+      desc = WMO_DESC[c.weather_code] || '';
+      temp = `${icon} ${Math.round(c.temperature_2m)}°C`;
+    }
+    document.getElementById('w-temp').textContent = temp;
     document.getElementById('w-desc').textContent = desc;
   } catch(e) {
     document.getElementById('w-temp').textContent = '—°C';
-    document.getElementById('w-desc').textContent = 'Tap to retry';
-    document.getElementById('weather-pill').style.cursor='pointer';
-    document.getElementById('weather-pill').onclick=()=>{ document.getElementById('w-desc').textContent='Loading...'; initWeather(); };
+    document.getElementById('w-desc').textContent = 'Unavailable';
   }
+}
+
+async function initWeather(){
+  const today = getTodayISO();
+  await updateWeatherForDate(today);
 }
 
 // ── PWA ──
