@@ -18,7 +18,7 @@
   --red: #e74c3c; --orange: #f39c12;
   --text: #e8eaf6; --muted: #8892b0; --border: #2d3561; --card: #1e2235;
 }
-body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; overflow-x: hidden; }
+body { background: var(--bg); color: var(--text); padding-bottom: 72px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; overflow-x: hidden; }
 
 /* ── HEADER ── */
 .header { background: linear-gradient(135deg,#1a1d27,#22263a); border-bottom: 2px solid var(--accent); padding: 12px 16px 10px; }
@@ -55,15 +55,29 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
 .urgent-book-btn { background: var(--red); color: #fff; border: none; padding: 4px 10px; border-radius: 10px; font-size: 11px; font-weight: 700; cursor: pointer; text-decoration: none; flex-shrink: 0; }
 
 /* ── TAB NAV ── */
-.tab-nav { background: var(--surface); overflow-x: auto; display: flex; border-bottom: 1px solid var(--border); scrollbar-width: none; position: sticky; top: 0; z-index: 107; }
+.tab-nav { background: var(--surface); overflow-x: auto; display: flex; border-top: 1px solid var(--border); scrollbar-width: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 107; padding-bottom: env(safe-area-inset-bottom); }
 .tab-nav::-webkit-scrollbar { display: none; }
-.tab-btn { padding: 8px 13px; background: none; border: none; color: var(--muted); font-size: 12px; cursor: pointer; white-space: nowrap; border-bottom: 2px solid transparent; transition: all .2s; font-family: inherit; }
+.tab-btn { padding: 8px 13px; background: none; border: none; color: var(--muted); font-size: 12px; cursor: pointer; white-space: nowrap; border-top: 2px solid transparent; transition: all .2s; font-family: inherit; }
 .tab-btn:hover { color: var(--text); background: var(--surface2); }
-.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); background: var(--surface2); }
+.tab-btn.active { color: var(--accent); border-top-color: var(--accent); background: var(--surface2); }
 .tab-btn.today-tab { position: relative; }
 .tab-btn.today-tab::after { content: '●'; position: absolute; top: 3px; right: 3px; font-size: 6px; color: var(--orange); }
 .tab-btn .day-num { display: block; font-weight: 700; font-size: 13px; }
 .tab-btn .day-name { display: block; font-size: 9px; }
+/* currency widget */
+.fx-widget { background: var(--surface2); border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; margin-bottom: 14px; }
+.fx-title { font-size: 11px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 10px; }
+.fx-rates { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.fx-rate { background: var(--surface); border-radius: 10px; padding: 10px 12px; }
+.fx-pair { font-size: 10px; color: var(--muted); margin-bottom: 3px; }
+.fx-val { font-size: 17px; font-weight: 800; color: var(--text); }
+.fx-sub { font-size: 10px; color: var(--muted); }
+.fx-updated { font-size: 10px; color: var(--muted); margin-top: 8px; text-align: right; }
+/* visited checkmark */
+.visit-btn { background: none; border: 1.5px solid var(--border); border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; flex-shrink: 0; transition: all .2s; margin-left: auto; }
+.visit-btn.visited { background: var(--green); border-color: var(--green); }
+.route-info { flex: 1; }
+.route-stop.visited-stop .route-info-name { text-decoration: line-through; color: var(--muted); }
 
 /* ── CONTENT WRAPPER (swipe zone) ── */
 #content-wrap { position: relative; touch-action: pan-y; }
@@ -283,12 +297,12 @@ details.intel[open] summary::after { transform: rotate(90deg); }
     <div class="card">
       <div class="card-header"><span class="card-icon">🗺️</span><span class="card-title">Route</span></div>
       <div class="route-visual">
-        <div class="route-stop"><div class="route-line-wrap"><div class="route-dot done"></div><div class="route-connector done"></div></div><div class="route-info"><div class="route-info-name">🇮🇹 Cinque Terre</div><div class="route-info-dates">Mar 18–20 · 2 nights</div><div class="route-info-hotel">✅ Le Giare · RM819</div></div></div>
-        <div class="route-stop"><div class="route-line-wrap"><div class="route-dot current"></div><div class="route-connector"></div></div><div class="route-info"><div class="route-info-name">🇮🇹 Lake Como — Varenna</div><div class="route-info-dates">Mar 20–21 · 1 night</div><div class="route-info-hotel">✅ Hotel Olivedo · RM671</div></div></div>
-        <div class="route-stop"><div class="route-line-wrap"><div class="route-dot future"></div><div class="route-connector"></div></div><div class="route-info"><div class="route-info-name">🇨🇭 Lucerne</div><div class="route-info-dates">Mar 21–24 · 3 nights</div><div class="route-info-hotel">✅ ibis Luzern — BOOKED</div></div></div>
-        <div class="route-stop"><div class="route-line-wrap"><div class="route-dot future"></div><div class="route-connector"></div></div><div class="route-info"><div class="route-info-name">🇮🇹 Venice</div><div class="route-info-dates">Mar 24–26 · 2 nights</div><div class="route-info-hotel">⏳ Hotel Antiche Figure</div></div></div>
-        <div class="route-stop"><div class="route-line-wrap"><div class="route-dot future"></div><div class="route-connector"></div></div><div class="route-info"><div class="route-info-name">🇮🇹 Florence</div><div class="route-info-dates">Mar 26–28 · 2 nights</div><div class="route-info-hotel">⏳ Hotel Davanzati</div></div></div>
-        <div class="route-stop"><div class="route-line-wrap"><div class="route-dot future"></div><div class="route-connector"></div></div><div class="route-info"><div class="route-info-name">🇮🇹 Rome</div><div class="route-info-dates">Mar 28–30 · 2 nights</div><div class="route-info-hotel">⏳ Hotel Artemide</div></div></div>
+        <div class="route-stop"><div class="route-line-wrap"><div class="route-dot done"></div><div class="route-connector done"></div></div><div class="route-info" id="rinfo-cinque-terre"><div class="route-info-name">🇮🇹 Cinque Terre</div><div class="route-info-dates">Mar 18–20 · 2 nights</div><div class="route-info-hotel">✅ Le Giare · RM819</div></div><button class="visit-btn" id="vbtn-cinque-terre" onclick="toggleVisit('cinque-terre')" title="Mark as visited">☐</button></div>
+        <div class="route-stop"><div class="route-line-wrap"><div class="route-dot current"></div><div class="route-connector"></div></div><div class="route-info" id="rinfo-varenna"><div class="route-info-name">🇮🇹 Lake Como — Varenna</div><div class="route-info-dates">Mar 20–21 · 1 night</div><div class="route-info-hotel">✅ Hotel Olivedo · RM671</div></div><button class="visit-btn" id="vbtn-varenna" onclick="toggleVisit('varenna')" title="Mark as visited">☐</button></div>
+        <div class="route-stop"><div class="route-line-wrap"><div class="route-dot future"></div><div class="route-connector"></div></div><div class="route-info" id="rinfo-lucerne"><div class="route-info-name">🇨🇭 Lucerne</div><div class="route-info-dates">Mar 21–24 · 3 nights</div><div class="route-info-hotel">✅ ibis Luzern — BOOKED</div></div><button class="visit-btn" id="vbtn-lucerne" onclick="toggleVisit('lucerne')" title="Mark as visited">☐</button></div>
+        <div class="route-stop"><div class="route-line-wrap"><div class="route-dot future"></div><div class="route-connector"></div></div><div class="route-info" id="rinfo-venice"><div class="route-info-name">🇮🇹 Venice</div><div class="route-info-dates">Mar 24–26 · 2 nights</div><div class="route-info-hotel">⏳ Hotel Antiche Figure</div></div><button class="visit-btn" id="vbtn-venice" onclick="toggleVisit('venice')" title="Mark as visited">☐</button></div>
+        <div class="route-stop"><div class="route-line-wrap"><div class="route-dot future"></div><div class="route-connector"></div></div><div class="route-info" id="rinfo-florence"><div class="route-info-name">🇮🇹 Florence</div><div class="route-info-dates">Mar 26–28 · 2 nights</div><div class="route-info-hotel">⏳ Hotel Davanzati</div></div><button class="visit-btn" id="vbtn-florence" onclick="toggleVisit('florence')" title="Mark as visited">☐</button></div>
+        <div class="route-stop"><div class="route-line-wrap"><div class="route-dot future"></div><div class="route-connector"></div></div><div class="route-info" id="rinfo-rome"><div class="route-info-name">🇮🇹 Rome</div><div class="route-info-dates">Mar 28–30 · 2 nights</div><div class="route-info-hotel">⏳ Hotel Artemide</div></div><button class="visit-btn" id="vbtn-rome" onclick="toggleVisit('rome')" title="Mark as visited">☐</button></div>
         <div class="route-stop"><div class="route-line-wrap"><div class="route-dot future"></div></div><div class="route-info"><div class="route-info-name">✈️ FCO → Penang</div><div class="route-info-dates">Mar 30</div><div class="route-info-hotel">⏳ Turkish Airlines</div></div></div>
       </div>
     </div>
@@ -1089,6 +1103,8 @@ function showTab(name, btn) {
   currentIdx = TABS.indexOf(name);
   updateSwipeNav();
   window.scrollTo({top:0,behavior:'smooth'});
+  const todayKey = DAY_MAP[getTodayISO()];
+  if(name === todayKey) setTimeout(scrollToCurrentTime, 600);
   // Update weather for the city of this tab's date
   const tabDate = Object.keys(DAY_MAP).find(d => DAY_MAP[d] === name);
   if(tabDate) updateWeatherForDate(tabDate);
@@ -1256,13 +1272,91 @@ document.getElementById('pwa-install-btn').addEventListener('click', async()=>{
   else alert('iPhone: tap Share → "Add to Home Screen" → Add');
 });
 
+// ── CURRENCY (frankfurter.app — free, CORS-safe) ──
+async function initFX() {
+  try {
+    const [r1, r2] = await Promise.all([
+      fetch('https://api.frankfurter.app/latest?from=EUR&to=MYR,CHF'),
+      fetch('https://api.frankfurter.app/latest?from=CHF&to=MYR')
+    ]);
+    const d1 = await r1.json();
+    const d2 = await r2.json();
+    const eurMyr = d1.rates.MYR;
+    const eurChf = d1.rates.CHF;
+    const chfMyr = d2.rates.MYR;
+    document.getElementById('fx-eur-myr').textContent = 'RM ' + eurMyr.toFixed(2);
+    document.getElementById('fx-chf-myr').textContent = 'RM ' + chfMyr.toFixed(2);
+    document.getElementById('fx-myr-eur').textContent = '€' + (100/eurMyr).toFixed(2);
+    document.getElementById('fx-myr-chf').textContent = 'Fr' + (100/chfMyr).toFixed(2);
+    document.getElementById('fx-updated').textContent = 'Updated: ' + d1.date;
+  } catch(e) {
+    document.getElementById('fx-updated').textContent = 'Rates unavailable';
+  }
+}
+
+// ── VISITED DESTINATIONS ──
+function toggleVisit(key) {
+  const stored = JSON.parse(localStorage.getItem('visited') || '{}');
+  stored[key] = !stored[key];
+  localStorage.setItem('visited', JSON.stringify(stored));
+  applyVisited();
+}
+function applyVisited() {
+  const stored = JSON.parse(localStorage.getItem('visited') || '{}');
+  const stops = ['cinque-terre','varenna','lucerne','venice','florence','rome'];
+  stops.forEach(key => {
+    const btn = document.getElementById('vbtn-' + key);
+    const info = document.getElementById('rinfo-' + key);
+    const stop = info ? info.closest('.route-stop') : null;
+    if (btn) {
+      if (stored[key]) {
+        btn.textContent = '✅';
+        btn.classList.add('visited');
+        if (stop) stop.classList.add('visited-stop');
+      } else {
+        btn.textContent = '☐';
+        btn.classList.remove('visited');
+        if (stop) stop.classList.remove('visited-stop');
+      }
+    }
+  });
+}
+
+// ── AUTO-SCROLL TO CURRENT TIME IN TIMELINE ──
+function scrollToCurrentTime() {
+  const now = new Date();
+  const hh = now.getHours();
+  const mm = now.getMinutes();
+  const nowMins = hh * 60 + mm;
+  // Find all tl-time elements in the active tab
+  const activeTab = document.querySelector('.tab-content.active');
+  if (!activeTab) return;
+  const timeEls = activeTab.querySelectorAll('.tl-time');
+  let bestEl = null, bestDiff = Infinity;
+  timeEls.forEach(el => {
+    const txt = el.textContent.trim().replace(/[^0-9:]/g,'').split(':');
+    if (txt.length >= 2) {
+      const elMins = parseInt(txt[0]) * 60 + parseInt(txt[1]);
+      const diff = Math.abs(elMins - nowMins);
+      if (diff < bestDiff) { bestDiff = diff; bestEl = el; }
+    }
+  });
+  if (bestEl && bestDiff < 180) {
+    setTimeout(() => bestEl.closest('.tl-item, .timeline').scrollIntoView({behavior:'smooth', block:'center'}), 500);
+  }
+}
+
 // ── INIT ──
 initToday();
 initUrgentBanner();
 initCountdown();
 initWeather();
+initFX();
+applyVisited();
 setInterval(updateCountdown, 1000);
 updateSwipeNav();
+// Auto-scroll to current time after tab jump
+setTimeout(scrollToCurrentTime, 800);
 </script>
 </body>
 </html>
