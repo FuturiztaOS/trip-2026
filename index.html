@@ -746,39 +746,59 @@ function updateCountdown(){
     h>0 ? `${h}h ${pad(m)}m` : m>0 ? `${m}m ${pad(s)}s` : `${s}s`;
 }
 
-// ── WEATHER ──
+// ── WEATHER (Open-Meteo — free, CORS-safe, no key needed) ──
+const CITY_COORDS = {
+  'Riomaggiore': [44.0993, 9.7369],
+  'Varenna':     [46.0120, 9.2853],
+  'Lucerne':     [47.0502, 8.3093],
+  'Venice':      [45.4408, 12.3155],
+  'Florence':    [43.7696, 11.2558],
+  'Rome':        [41.9028, 12.4964],
+};
+
+const WMO_ICONS = {
+  0:'☀️',1:'🌤️',2:'⛅',3:'☁️',
+  45:'🌫️',48:'🌫️',
+  51:'🌦️',53:'🌦️',55:'🌧️',
+  61:'🌧️',63:'🌧️',65:'🌧️',
+  71:'🌨️',73:'🌨️',75:'❄️',77:'❄️',
+  80:'🌦️',81:'🌧️',82:'⛈️',
+  85:'🌨️',86:'❄️',
+  95:'⛈️',96:'⛈️',99:'⛈️',
+};
+const WMO_DESC = {
+  0:'Clear sky',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',
+  45:'Foggy',48:'Icy fog',
+  51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',
+  61:'Light rain',63:'Rain',65:'Heavy rain',
+  71:'Light snow',73:'Snow',75:'Heavy snow',77:'Snow grains',
+  80:'Rain showers',81:'Heavy showers',82:'Violent showers',
+  85:'Snow showers',86:'Heavy snow showers',
+  95:'Thunderstorm',96:'Thunderstorm+hail',99:'Thunderstorm+hail',
+};
+
 async function initWeather(){
   const today = getTodayISO();
   const city = WEATHER_CITIES[today] || 'Rome';
+  const coords = CITY_COORDS[city] || [41.9028, 12.4964];
   document.getElementById('w-city').textContent = city;
   try {
-    const r = await fetch(`https://wttr.in/${encodeURIComponent(city)}?format=j1`,{signal:AbortSignal.timeout(5000)});
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${coords[0]}&longitude=${coords[1]}&current=temperature_2m,weather_code,apparent_temperature&timezone=auto`;
+    const r = await fetch(url);
+    if(!r.ok) throw new Error('API error');
     const d = await r.json();
-    const cc = d.current_condition[0];
-    const temp = cc.temp_C;
-    const desc = cc.weatherDesc[0].value;
-    const icon = getWeatherIcon(cc.weatherCode);
+    const c = d.current;
+    const icon = WMO_ICONS[c.weather_code] || '🌡️';
+    const desc = WMO_DESC[c.weather_code] || 'Unknown';
+    const temp = Math.round(c.temperature_2m);
     document.getElementById('w-temp').textContent = icon+' '+temp+'°C';
     document.getElementById('w-desc').textContent = desc;
   } catch(e) {
-    document.getElementById('w-temp').textContent = '—';
-    document.getElementById('w-desc').textContent = 'Weather unavailable';
+    document.getElementById('w-temp').textContent = '—°C';
+    document.getElementById('w-desc').textContent = 'Tap to retry';
+    document.getElementById('weather-pill').style.cursor='pointer';
+    document.getElementById('weather-pill').onclick=()=>{ document.getElementById('w-desc').textContent='Loading...'; initWeather(); };
   }
-}
-
-function getWeatherIcon(code){
-  code = parseInt(code);
-  if(code===113) return '☀️';
-  if(code<=116) return '⛅';
-  if(code<=122) return '☁️';
-  if(code<=143) return '🌫️';
-  if(code<=185) return '🌦️';
-  if(code<=200) return '⛈️';
-  if(code<=230) return '🌨️';
-  if(code<=284) return '🌧️';
-  if(code<=314) return '🌧️';
-  if(code<=350) return '❄️';
-  return '🌡️';
 }
 
 // ── PWA ──
