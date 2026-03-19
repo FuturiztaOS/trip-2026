@@ -4,192 +4,236 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🧳 Alex's Italy + Switzerland 2026</title>
-
-<!-- PWA -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#4f8ef7">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Alex's Trip">
 <meta name="mobile-web-app-capable" content="yes">
-
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --bg: #0f1117; --surface: #1a1d27; --surface2: #22263a;
-    --accent: #4f8ef7; --accent2: #7c5cbf; --green: #2ecc71;
-    --red: #e74c3c; --orange: #f39c12; --yellow: #f1c40f;
-    --text: #e8eaf6; --muted: #8892b0; --border: #2d3561; --card: #1e2235;
-  }
-  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0f1117; --surface: #1a1d27; --surface2: #22263a;
+  --accent: #4f8ef7; --accent2: #7c5cbf; --green: #2ecc71;
+  --red: #e74c3c; --orange: #f39c12;
+  --text: #e8eaf6; --muted: #8892b0; --border: #2d3561; --card: #1e2235;
+}
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; overflow-x: hidden; }
 
-  /* HEADER */
-  .header { background: linear-gradient(135deg,#1a1d27,#22263a); border-bottom: 2px solid var(--accent); padding: 14px 20px 10px; position: sticky; top: 0; z-index: 100; }
-  .header h1 { font-size: 17px; font-weight: 700; color: var(--accent); }
-  .header p { font-size: 11px; color: var(--muted); margin-top: 1px; }
-  .header-meta { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
-  .badge { background: var(--surface2); border: 1px solid var(--border); padding: 2px 8px; border-radius: 20px; font-size: 10px; color: var(--muted); }
-  .badge.green { border-color: var(--green); color: var(--green); }
-  .badge.orange { border-color: var(--orange); color: var(--orange); }
+/* ── HEADER ── */
+.header { background: linear-gradient(135deg,#1a1d27,#22263a); border-bottom: 2px solid var(--accent); padding: 12px 16px 10px; position: sticky; top: 0; z-index: 110; }
+.header-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.header-title h1 { font-size: 17px; font-weight: 700; color: var(--accent); }
+.header-title p { font-size: 11px; color: var(--muted); margin-top: 1px; }
+.weather-pill { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; flex-shrink: 0; }
+.weather-temp { font-size: 22px; font-weight: 800; color: var(--text); line-height: 1; }
+.weather-city { font-size: 10px; color: var(--muted); }
+.weather-desc { font-size: 10px; color: var(--muted); text-align: right; }
+.header-meta { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; align-items: center; }
+.badge { background: var(--surface2); border: 1px solid var(--border); padding: 2px 8px; border-radius: 20px; font-size: 10px; color: var(--muted); }
+.badge.green { border-color: var(--green); color: var(--green); }
+.badge.orange { border-color: var(--orange); color: var(--orange); }
+.badge.red { border-color: var(--red); color: var(--red); cursor: pointer; }
 
-  /* URGENT BANNER */
-  .urgent-banner { background: linear-gradient(135deg, rgba(231,76,60,.15), rgba(243,156,18,.1)); border-bottom: 1px solid rgba(231,76,60,.4); padding: 10px 16px; position: sticky; top: 70px; z-index: 99; display: none; }
-  .urgent-banner.visible { display: block; }
-  .urgent-title { font-size: 11px; font-weight: 700; color: var(--orange); margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
-  .urgent-dismiss { background: none; border: none; color: var(--muted); font-size: 16px; cursor: pointer; padding: 0 4px; line-height: 1; }
-  .urgent-items { display: flex; flex-direction: column; gap: 5px; }
-  .urgent-item { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-  .urgent-item-text { font-size: 12px; color: var(--text); flex: 1; }
-  .urgent-book-btn { background: var(--red); color: #fff; border: none; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; cursor: pointer; text-decoration: none; white-space: nowrap; flex-shrink: 0; }
-  .urgent-book-btn:hover { background: #c0392b; }
+/* ── COUNTDOWN BAR ── */
+.countdown-bar { background: rgba(79,142,247,.1); border-bottom: 1px solid rgba(79,142,247,.25); padding: 8px 16px; display: none; align-items: center; gap: 8px; position: sticky; top: 70px; z-index: 109; }
+.countdown-bar.visible { display: flex; }
+.countdown-icon { font-size: 16px; flex-shrink: 0; }
+.countdown-text { font-size: 12px; color: var(--muted); flex: 1; }
+.countdown-text strong { color: var(--text); }
+.countdown-timer { font-size: 15px; font-weight: 800; color: var(--accent); font-variant-numeric: tabular-nums; flex-shrink: 0; }
+.countdown-link { background: var(--accent); color: #fff; border: none; padding: 4px 12px; border-radius: 10px; font-size: 11px; font-weight: 700; text-decoration: none; flex-shrink: 0; }
 
-  /* TABS */
-  .tab-nav { background: var(--surface); overflow-x: auto; display: flex; border-bottom: 1px solid var(--border); scrollbar-width: none; }
-  .tab-nav::-webkit-scrollbar { display: none; }
-  .tab-btn { padding: 10px 14px; background: none; border: none; color: var(--muted); font-size: 12px; cursor: pointer; white-space: nowrap; border-bottom: 2px solid transparent; transition: all .2s; font-family: inherit; }
-  .tab-btn:hover { color: var(--text); background: var(--surface2); }
-  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); background: var(--surface2); }
-  .tab-btn.today-tab { position: relative; }
-  .tab-btn.today-tab::after { content: '●'; position: absolute; top: 4px; right: 4px; font-size: 7px; color: var(--orange); }
-  .tab-btn .day-num { display: block; font-weight: 700; font-size: 14px; }
-  .tab-btn .day-name { display: block; font-size: 10px; }
+/* ── URGENT BANNER ── */
+.urgent-banner { background: linear-gradient(135deg,rgba(231,76,60,.12),rgba(243,156,18,.08)); border-bottom: 1px solid rgba(231,76,60,.35); padding: 10px 16px; position: sticky; top: 106px; z-index: 108; display: none; }
+.urgent-banner.visible { display: block; }
+.urgent-title { font-size: 11px; font-weight: 700; color: var(--orange); margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+.urgent-dismiss { background: none; border: none; color: var(--muted); font-size: 18px; cursor: pointer; padding: 0; line-height: 1; }
+.urgent-items { display: flex; flex-direction: column; gap: 5px; }
+.urgent-item { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.urgent-item-text { font-size: 12px; color: var(--text); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.urgent-book-btn { background: var(--red); color: #fff; border: none; padding: 4px 10px; border-radius: 10px; font-size: 11px; font-weight: 700; cursor: pointer; text-decoration: none; flex-shrink: 0; }
 
-  /* CONTENT */
-  .tab-content { display: none; padding: 16px; max-width: 800px; margin: 0 auto; }
-  .tab-content.active { display: block; }
+/* ── TAB NAV ── */
+.tab-nav { background: var(--surface); overflow-x: auto; display: flex; border-bottom: 1px solid var(--border); scrollbar-width: none; position: sticky; top: 70px; z-index: 107; }
+.tab-nav::-webkit-scrollbar { display: none; }
+.tab-btn { padding: 8px 13px; background: none; border: none; color: var(--muted); font-size: 12px; cursor: pointer; white-space: nowrap; border-bottom: 2px solid transparent; transition: all .2s; font-family: inherit; }
+.tab-btn:hover { color: var(--text); background: var(--surface2); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); background: var(--surface2); }
+.tab-btn.today-tab { position: relative; }
+.tab-btn.today-tab::after { content: '●'; position: absolute; top: 3px; right: 3px; font-size: 6px; color: var(--orange); }
+.tab-btn .day-num { display: block; font-weight: 700; font-size: 13px; }
+.tab-btn .day-name { display: block; font-size: 9px; }
 
-  /* CARDS */
-  .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 14px; }
-  .card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
-  .card-icon { font-size: 18px; }
-  .card-title { font-size: 14px; font-weight: 700; color: var(--text); }
-  .card-sub { font-size: 11px; color: var(--muted); margin-left: auto; }
+/* ── CONTENT WRAPPER (swipe zone) ── */
+#content-wrap { position: relative; touch-action: pan-y; }
+.tab-content { display: none; padding: 0 0 80px 0; max-width: 800px; margin: 0 auto; }
+.tab-content.active { display: block; }
 
-  .tag { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; margin-left: 6px; }
-  .tag.booked { background: rgba(46,204,113,.15); color: var(--green); border: 1px solid var(--green); }
-  .tag.book-now { background: rgba(231,76,60,.15); color: var(--red); border: 1px solid var(--red); }
-  .tag.optional { background: rgba(243,156,18,.15); color: var(--orange); border: 1px solid var(--orange); }
-  .tag.done { background: rgba(127,140,141,.15); color: var(--muted); border: 1px solid var(--border); }
+/* ── HERO PHOTO ── */
+.day-hero { width: 100%; height: 180px; background-size: cover; background-position: center; position: relative; overflow: hidden; }
+.day-hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, rgba(15,17,23,0.9) 100%); }
+.day-hero-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 12px 16px; z-index: 2; }
+.day-hero-label { font-size: 18px; font-weight: 800; color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,.5); }
+.day-hero-sub { font-size: 11px; color: rgba(255,255,255,.75); margin-top: 2px; }
+.swipe-hint { position: absolute; top: 50%; right: 12px; transform: translateY(-50%); z-index: 3; opacity: 0; transition: opacity .3s; font-size: 20px; }
+.day-hero:hover .swipe-hint { opacity: 0.6; }
 
-  /* MAPS + BOOK BUTTONS */
-  .map-btn { display: inline-flex; align-items: center; gap: 4px; background: rgba(79,142,247,.12); border: 1px solid rgba(79,142,247,.3); color: var(--accent); padding: 3px 9px; border-radius: 12px; font-size: 11px; text-decoration: none; white-space: nowrap; }
-  .map-btn:hover { background: rgba(79,142,247,.25); }
-  .book-link { display: inline-flex; align-items: center; gap: 4px; background: rgba(231,76,60,.12); border: 1px solid rgba(231,76,60,.4); color: #ff8080; padding: 3px 10px; border-radius: 12px; font-size: 11px; text-decoration: none; font-weight: 600; white-space: nowrap; }
-  .book-link:hover { background: rgba(231,76,60,.25); }
-  .book-link.green { background: rgba(46,204,113,.12); border-color: rgba(46,204,113,.4); color: var(--green); }
-  .map-links { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+/* ── CONTENT PADDING ── */
+.tab-inner { padding: 14px 16px; }
 
-  /* TIMELINE */
-  .timeline { position: relative; padding-left: 20px; }
-  .timeline::before { content: ''; position: absolute; left: 6px; top: 4px; bottom: 4px; width: 2px; background: var(--border); border-radius: 2px; }
-  .tl-item { position: relative; padding-bottom: 18px; }
-  .tl-item:last-child { padding-bottom: 0; }
-  .tl-item::before { content: ''; position: absolute; left: -16px; top: 5px; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
-  .tl-item.highlight::before { background: var(--orange); }
-  .tl-item.done::before { background: var(--green); }
-  .tl-time { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 2px; }
-  .tl-text { font-size: 13px; color: var(--text); line-height: 1.5; }
-  .tl-sub { font-size: 11px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
+/* ── CARDS ── */
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+.card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.card-icon { font-size: 17px; }
+.card-title { font-size: 13px; font-weight: 700; }
+.card-sub { font-size: 10px; color: var(--muted); margin-left: auto; }
+.tag { display: inline-block; padding: 2px 7px; border-radius: 10px; font-size: 10px; font-weight: 600; margin-left: 5px; }
+.tag.booked { background: rgba(46,204,113,.15); color: var(--green); border: 1px solid var(--green); }
+.tag.book-now { background: rgba(231,76,60,.15); color: var(--red); border: 1px solid var(--red); }
+.tag.done { background: rgba(127,140,141,.15); color: var(--muted); border: 1px solid var(--border); }
 
-  /* TRAIN BOX */
-  .train-box { background: var(--surface2); border: 1px solid var(--accent); border-radius: 8px; padding: 12px; margin-bottom: 10px; }
-  .train-route { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
-  .train-from, .train-to { font-weight: 700; font-size: 13px; }
-  .train-arrow { color: var(--accent); font-size: 16px; }
-  .train-details { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
-  .train-detail { text-align: center; }
-  .train-detail-label { font-size: 10px; color: var(--muted); }
-  .train-detail-value { font-size: 13px; font-weight: 700; }
-  .train-note { font-size: 11px; color: var(--orange); margin-top: 6px; }
-  .train-actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+/* ── BUTTONS ── */
+.map-btn { display: inline-flex; align-items: center; gap: 3px; background: rgba(79,142,247,.12); border: 1px solid rgba(79,142,247,.3); color: var(--accent); padding: 3px 8px; border-radius: 10px; font-size: 10px; text-decoration: none; white-space: nowrap; }
+.book-link { display: inline-flex; align-items: center; gap: 3px; background: rgba(231,76,60,.12); border: 1px solid rgba(231,76,60,.4); color: #ff8080; padding: 3px 9px; border-radius: 10px; font-size: 10px; text-decoration: none; font-weight: 600; white-space: nowrap; }
+.book-link.green { background: rgba(46,204,113,.12); border-color: rgba(46,204,113,.4); color: var(--green); }
+.map-links { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px; }
 
-  /* HOTEL BOX */
-  .hotel-box { background: var(--surface2); border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 6px; }
-  .hotel-name { font-size: 14px; font-weight: 700; }
-  .hotel-meta { display: flex; gap: 8px; flex-wrap: wrap; }
-  .hotel-meta-item { font-size: 11px; color: var(--muted); }
-  .hotel-meta-item span { color: var(--text); font-weight: 600; }
+/* ── TIMELINE ── */
+.timeline { position: relative; padding-left: 18px; }
+.timeline::before { content: ''; position: absolute; left: 5px; top: 4px; bottom: 4px; width: 2px; background: var(--border); border-radius: 2px; }
+.tl-item { position: relative; padding-bottom: 16px; }
+.tl-item:last-child { padding-bottom: 0; }
+.tl-item::before { content: ''; position: absolute; left: -14px; top: 5px; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.tl-item.highlight::before { background: var(--orange); }
+.tl-item.done::before { background: var(--green); }
+.tl-time { font-size: 10px; color: var(--accent); font-weight: 700; margin-bottom: 2px; }
+.tl-text { font-size: 13px; line-height: 1.45; }
+.tl-sub { font-size: 11px; color: var(--muted); margin-top: 3px; line-height: 1.4; }
 
-  /* CHECKLIST */
-  .checklist { list-style: none; }
-  .checklist li { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
-  .checklist li:last-child { border-bottom: none; }
-  .check-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
-  .check-body { flex: 1; min-width: 0; }
-  .check-label { line-height: 1.4; }
-  .check-platform { font-size: 10px; color: var(--muted); margin-top: 2px; }
-  .check-actions { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; align-items: center; }
-  .check-urgency { font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 700; flex-shrink: 0; }
-  .urgency-urgent { background: rgba(231,76,60,.2); color: var(--red); }
-  .urgency-soon { background: rgba(243,156,18,.2); color: var(--orange); }
-  .urgency-week { background: rgba(79,142,247,.2); color: var(--accent); }
-  .urgency-done { background: rgba(46,204,113,.15); color: var(--green); }
+/* ── TRAIN BOX ── */
+.train-box { background: var(--surface2); border: 1px solid var(--accent); border-radius: 8px; padding: 11px; margin-bottom: 10px; }
+.train-route { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+.train-from, .train-to { font-weight: 700; font-size: 13px; }
+.train-arrow { color: var(--accent); font-size: 15px; }
+.train-details { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; }
+.train-detail { text-align: center; }
+.train-detail-label { font-size: 9px; color: var(--muted); }
+.train-detail-value { font-size: 13px; font-weight: 700; }
+.train-note { font-size: 11px; color: var(--orange); margin-top: 6px; }
+.train-actions { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
 
-  /* MISC */
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .info-box { background: var(--surface2); border-radius: 8px; padding: 10px; }
-  .info-box-label { font-size: 10px; color: var(--muted); margin-bottom: 4px; }
-  .info-box-value { font-size: 13px; font-weight: 600; }
-  .food-item { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
-  .food-item:last-child { border-bottom: none; }
-  .tip { background: rgba(79,142,247,.08); border-left: 3px solid var(--accent); padding: 8px 12px; border-radius: 0 8px 8px 0; font-size: 12px; color: var(--muted); margin-top: 10px; line-height: 1.5; }
-  .tip strong { color: var(--text); }
-  .warning { background: rgba(231,76,60,.08); border-left: 3px solid var(--red); padding: 8px 12px; border-radius: 0 8px 8px 0; font-size: 12px; color: #ff9999; margin-bottom: 10px; line-height: 1.5; }
-  .luggage-note { background: rgba(124,92,191,.1); border: 1px solid var(--accent2); border-radius: 8px; padding: 10px 12px; font-size: 12px; color: #c3aaf0; margin-bottom: 10px; }
-  .stats-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin-bottom: 14px; }
-  .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px; text-align: center; }
-  .stat-value { font-size: 24px; font-weight: 800; color: var(--accent); }
-  .stat-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
-  .route-visual { display: flex; flex-direction: column; }
-  .route-stop { display: flex; align-items: stretch; gap: 12px; }
-  .route-line-wrap { display: flex; flex-direction: column; align-items: center; width: 20px; flex-shrink: 0; }
-  .route-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg); flex-shrink: 0; }
-  .route-dot.done { background: var(--green); }
-  .route-dot.current { background: var(--orange); box-shadow: 0 0 8px var(--orange); }
-  .route-dot.future { background: var(--surface2); border-color: var(--border); }
-  .route-connector { width: 2px; flex: 1; min-height: 20px; background: var(--border); }
-  .route-connector.done { background: var(--green); }
-  .route-info { padding: 4px 0 20px 0; flex: 1; }
-  .route-info-name { font-size: 14px; font-weight: 700; }
-  .route-info-dates { font-size: 11px; color: var(--muted); }
-  .route-info-hotel { font-size: 11px; color: var(--accent); margin-top: 2px; }
+/* ── HOTEL BOX ── */
+.hotel-box { background: var(--surface2); border-radius: 8px; padding: 11px; display: flex; flex-direction: column; gap: 5px; }
+.hotel-name { font-size: 13px; font-weight: 700; }
+.hotel-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+.hotel-meta-item { font-size: 10px; color: var(--muted); }
+.hotel-meta-item span { color: var(--text); font-weight: 600; }
 
-  /* PWA INSTALL PROMPT */
-  #pwa-prompt { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--surface2); border: 1px solid var(--accent); border-radius: 16px; padding: 14px 18px; display: none; z-index: 200; box-shadow: 0 8px 32px rgba(0,0,0,.5); max-width: 340px; width: 90%; }
-  #pwa-prompt.show { display: flex; align-items: center; gap: 12px; }
-  #pwa-prompt .pwa-text { flex: 1; font-size: 13px; }
-  #pwa-prompt .pwa-text strong { display: block; margin-bottom: 2px; }
-  #pwa-prompt .pwa-text span { font-size: 11px; color: var(--muted); }
-  #pwa-install-btn { background: var(--accent); color: #fff; border: none; padding: 8px 16px; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap; }
-  #pwa-dismiss { background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; padding: 0; line-height: 1; }
+/* ── CHECKLIST ── */
+.checklist { list-style: none; }
+.checklist li { display: flex; align-items: flex-start; gap: 8px; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+.checklist li:last-child { border-bottom: none; }
+.check-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+.check-body { flex: 1; min-width: 0; }
+.check-label { line-height: 1.4; font-size: 12px; }
+.check-platform { font-size: 10px; color: var(--muted); margin-top: 1px; }
+.check-actions { display: flex; gap: 5px; margin-top: 5px; flex-wrap: wrap; }
+.check-urgency { font-size: 9px; padding: 2px 6px; border-radius: 4px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+.urgency-urgent { background: rgba(231,76,60,.2); color: var(--red); }
+.urgency-soon { background: rgba(243,156,18,.2); color: var(--orange); }
+.urgency-week { background: rgba(79,142,247,.2); color: var(--accent); }
+.urgency-done { background: rgba(46,204,113,.15); color: var(--green); }
 
-  @media (max-width: 480px) { .grid-2 { grid-template-columns: 1fr; } }
+/* ── ROUTE ── */
+.stats-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin-bottom: 12px; }
+.stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px; text-align: center; }
+.stat-value { font-size: 24px; font-weight: 800; color: var(--accent); }
+.stat-label { font-size: 10px; color: var(--muted); margin-top: 2px; }
+.route-visual { display: flex; flex-direction: column; }
+.route-stop { display: flex; align-items: stretch; gap: 10px; }
+.route-line-wrap { display: flex; flex-direction: column; align-items: center; width: 18px; flex-shrink: 0; }
+.route-dot { width: 11px; height: 11px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg); flex-shrink: 0; }
+.route-dot.done { background: var(--green); }
+.route-dot.current { background: var(--orange); box-shadow: 0 0 8px var(--orange); }
+.route-dot.future { background: var(--surface2); border-color: var(--border); }
+.route-connector { width: 2px; flex: 1; min-height: 18px; background: var(--border); }
+.route-connector.done { background: var(--green); }
+.route-info { padding: 3px 0 18px 0; flex: 1; }
+.route-info-name { font-size: 13px; font-weight: 700; }
+.route-info-dates { font-size: 10px; color: var(--muted); }
+.route-info-hotel { font-size: 10px; color: var(--accent); margin-top: 1px; }
+
+/* ── MISC ── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.info-box { background: var(--surface2); border-radius: 8px; padding: 9px; }
+.info-box-label { font-size: 9px; color: var(--muted); margin-bottom: 3px; }
+.info-box-value { font-size: 12px; font-weight: 600; }
+.food-item { display: flex; align-items: center; gap: 8px; padding: 5px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+.food-item:last-child { border-bottom: none; }
+.tip { background: rgba(79,142,247,.08); border-left: 3px solid var(--accent); padding: 7px 10px; border-radius: 0 8px 8px 0; font-size: 11px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+.tip strong { color: var(--text); }
+.warning { background: rgba(231,76,60,.08); border-left: 3px solid var(--red); padding: 7px 10px; border-radius: 0 8px 8px 0; font-size: 11px; color: #ff9999; margin-bottom: 8px; line-height: 1.5; }
+.luggage-note { background: rgba(124,92,191,.1); border: 1px solid var(--accent2); border-radius: 8px; padding: 9px 11px; font-size: 11px; color: #c3aaf0; margin-bottom: 10px; }
+
+/* ── SWIPE INDICATOR ── */
+.swipe-nav { display: flex; justify-content: space-between; padding: 10px 16px; opacity: 0.35; font-size: 12px; color: var(--muted); }
+
+/* ── PWA PROMPT ── */
+#pwa-prompt { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--surface2); border: 1px solid var(--accent); border-radius: 16px; padding: 13px 16px; display: none; z-index: 200; box-shadow: 0 8px 32px rgba(0,0,0,.5); max-width: 340px; width: 90%; }
+#pwa-prompt.show { display: flex; align-items: center; gap: 12px; }
+#pwa-prompt .pwa-text { flex: 1; font-size: 12px; }
+#pwa-prompt .pwa-text strong { display: block; margin-bottom: 2px; }
+#pwa-prompt .pwa-text span { font-size: 10px; color: var(--muted); }
+#pwa-install-btn { background: var(--accent); color: #fff; border: none; padding: 7px 14px; border-radius: 10px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+#pwa-dismiss { background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; padding: 0; line-height: 1; }
+
+@media (max-width: 480px) { .grid-2 { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
 
+<!-- HEADER -->
 <div class="header">
-  <h1>🧳 Italy + Switzerland 2026</h1>
-  <p>Alex & Partner · Mar 18–30 · 2 adults · 2 large bags</p>
-  <div class="header-meta">
-    <span class="badge green">✅ 2 hotels booked</span>
-    <span class="badge orange">⏳ 4 hotels pending</span>
-    <span class="badge" id="today-badge">📅 Loading...</span>
+  <div class="header-top">
+    <div class="header-title">
+      <h1>🧳 Italy + Switzerland 2026</h1>
+      <p>Alex & Partner · Mar 18–30 · 2 adults</p>
+    </div>
+    <div class="weather-pill" id="weather-pill">
+      <div class="weather-temp" id="w-temp">—</div>
+      <div class="weather-desc" id="w-desc">Loading...</div>
+      <div class="weather-city" id="w-city">—</div>
+    </div>
   </div>
+  <div class="header-meta">
+    <span class="badge green">✅ 2 booked</span>
+    <span class="badge orange">⏳ 4 pending</span>
+    <span class="badge" id="today-badge">📅 …</span>
+  </div>
+</div>
+
+<!-- COUNTDOWN BAR -->
+<div class="countdown-bar" id="countdown-bar">
+  <span class="countdown-icon">🚂</span>
+  <span class="countdown-text">Next: <strong id="countdown-label">—</strong></span>
+  <span class="countdown-timer" id="countdown-timer">—</span>
+  <a id="countdown-link" href="#" target="_blank" class="countdown-link">Book →</a>
 </div>
 
 <!-- URGENT BANNER -->
 <div class="urgent-banner" id="urgent-banner">
   <div class="urgent-title">
     <span>⚠️ Book these now</span>
-    <button class="urgent-dismiss" onclick="document.getElementById('urgent-banner').classList.remove('visible')">×</button>
+    <button class="urgent-dismiss" onclick="document.getElementById('urgent-banner').classList.remove('visible');localStorage.setItem('ub-dismissed','1')">×</button>
   </div>
   <div class="urgent-items" id="urgent-items"></div>
 </div>
 
+<!-- TAB NAV -->
 <div class="tab-nav" id="tab-nav">
   <button class="tab-btn active" id="btn-overview" onclick="showTab('overview',this)"><span class="day-num">📋</span><span class="day-name">Overview</span></button>
-  <button class="tab-btn" id="btn-mar18" onclick="showTab('mar18',this)"><span class="day-num">Mar 18</span><span class="day-name">Arrive CT</span></button>
+  <button class="tab-btn" id="btn-mar18" onclick="showTab('mar18',this)"><span class="day-num">Mar 18</span><span class="day-name">Arrive</span></button>
   <button class="tab-btn" id="btn-mar19" onclick="showTab('mar19',this)"><span class="day-num">Mar 19</span><span class="day-name">Cinque Terre</span></button>
   <button class="tab-btn" id="btn-mar20" onclick="showTab('mar20',this)"><span class="day-num">Mar 20</span><span class="day-name">→ Como</span></button>
   <button class="tab-btn" id="btn-mar21" onclick="showTab('mar21',this)"><span class="day-num">Mar 21</span><span class="day-name">→ Lucerne</span></button>
@@ -204,546 +248,558 @@
   <button class="tab-btn" id="btn-mar30" onclick="showTab('mar30',this)"><span class="day-num">Mar 30</span><span class="day-name">✈️ Fly</span></button>
 </div>
 
+<!-- CONTENT WRAP (swipe zone) -->
+<div id="content-wrap">
+
 <!-- OVERVIEW -->
 <div id="tab-overview" class="tab-content active">
-  <div class="stats-grid">
-    <div class="stat-card"><div class="stat-value">12</div><div class="stat-label">Days of Travel</div></div>
-    <div class="stat-card"><div class="stat-value">6</div><div class="stat-label">Cities</div></div>
-    <div class="stat-card"><div class="stat-value">2/6</div><div class="stat-label">Hotels Booked</div></div>
-    <div class="stat-card"><div class="stat-value">RM1,490</div><div class="stat-label">Paid So Far</div></div>
+  <div class="day-hero" style="background-image:url('https://source.unsplash.com/featured/900x400/?italy,travel,map')">
+    <div class="day-hero-info"><div class="day-hero-label">🗺️ Trip Overview</div><div class="day-hero-sub">Italy + Switzerland · Mar 18–30 · 6 cities</div></div>
   </div>
-  <div class="card">
-    <div class="card-header"><span class="card-icon">🗺️</span><span class="card-title">Trip Route</span></div>
-    <div class="route-visual">
-      <div class="route-stop"><div class="route-line-wrap"><div class="route-dot done"></div><div class="route-connector done"></div></div><div class="route-info"><div class="route-info-name">🇮🇹 Cinque Terre — Riomaggiore</div><div class="route-info-dates">Mar 18–20 · 2 nights</div><div class="route-info-hotel">✅ Le Giare — BOOKED · RM819</div></div></div>
-      <div class="route-stop"><div class="route-line-wrap"><div class="route-dot current"></div><div class="route-connector"></div></div><div class="route-info"><div class="route-info-name">🇮🇹 Lake Como — Varenna</div><div class="route-info-dates">Mar 20–21 · 1 night</div><div class="route-info-hotel">✅ Hotel Olivedo — BOOKED · RM671</div></div></div>
-      <div class="route-stop"><div class="route-line-wrap"><div class="route-dot future"></div><div class="route-connector"></div></div><div class="route-info"><div class="route-info-name">🇨🇭 Lucerne, Switzerland</div><div class="route-info-dates">Mar 21–24 · 3 nights</div><div class="route-info-hotel">⏳ Barabas Luzern — BOOK NOW</div></div></div>
-      <div class="route-stop"><div class="route-line-wrap"><div class="route-dot future"></div><div class="route-connector"></div></div><div class="route-info"><div class="route-info-name">🇮🇹 Venice</div><div class="route-info-dates">Mar 24–26 · 2 nights</div><div class="route-info-hotel">⏳ Hotel Antiche Figure — BOOK THIS WEEK</div></div></div>
-      <div class="route-stop"><div class="route-line-wrap"><div class="route-dot future"></div><div class="route-connector"></div></div><div class="route-info"><div class="route-info-name">🇮🇹 Florence</div><div class="route-info-dates">Mar 26–28 · 2 nights</div><div class="route-info-hotel">⏳ Hotel Davanzati — BOOK THIS WEEK</div></div></div>
-      <div class="route-stop"><div class="route-line-wrap"><div class="route-dot future"></div><div class="route-connector"></div></div><div class="route-info"><div class="route-info-name">🇮🇹 Rome</div><div class="route-info-dates">Mar 28–30 · 2 nights</div><div class="route-info-hotel">⏳ Hotel Artemide — BOOK THIS WEEK</div></div></div>
-      <div class="route-stop"><div class="route-line-wrap"><div class="route-dot future"></div></div><div class="route-info"><div class="route-info-name">✈️ Fly Rome FCO → Penang</div><div class="route-info-dates">Mar 30</div><div class="route-info-hotel">⏳ Turkish Airlines — BOOK THIS WEEK</div></div></div>
+  <div class="tab-inner">
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-value">12</div><div class="stat-label">Days</div></div>
+      <div class="stat-card"><div class="stat-value">6</div><div class="stat-label">Cities</div></div>
+      <div class="stat-card"><div class="stat-value">2/6</div><div class="stat-label">Hotels Booked</div></div>
+      <div class="stat-card"><div class="stat-value">RM1,490</div><div class="stat-label">Paid So Far</div></div>
     </div>
-  </div>
-
-  <div class="card">
-    <div class="card-header"><span class="card-icon">✅</span><span class="card-title">Master Booking Checklist</span></div>
-    <ul class="checklist">
-      <li><span class="check-icon">✅</span><div class="check-body"><div class="check-label">Le Giare, Riomaggiore (Mar 18–20)</div><div class="check-platform">Booked & paid · RM819</div></div><span class="check-urgency urgency-done">DONE</span></li>
-      <li><span class="check-icon">✅</span><div class="check-body"><div class="check-label">Hotel Olivedo, Varenna (Mar 20–21)</div><div class="check-platform">Booked & paid · RM671</div></div><span class="check-urgency urgency-done">DONE</span></li>
-
-      <li><span class="check-icon">🔴</span><div class="check-body"><div class="check-label">La Spezia → Milan train (Mar 20, 10:10)</div><div class="check-platform">InterCity direct · No reservation needed · 2 adults</div><div class="check-actions"><a href="https://www.trenitalia.com/en.html" target="_blank" class="book-link">🚂 Book Trenitalia →</a></div></div><span class="check-urgency urgency-urgent">TODAY</span></li>
-
-      <li><span class="check-icon">🔴</span><div class="check-body"><div class="check-label">Villa del Balbianello entry (Mar 21, Sat)</div><div class="check-platform">fondoambiente.it · ~€10–15pp · Open Thu/Sat/Sun only</div><div class="check-actions"><a href="https://www.fondoambiente.it/luoghi/villa-del-balbianello/?lm=ticketing" target="_blank" class="book-link">🏰 Book Balbianello →</a></div></div><span class="check-urgency urgency-urgent">TODAY</span></li>
-
-      <li><span class="check-icon">🔴</span><div class="check-body"><div class="check-label">Varenna → Lucerne train (Mar 21, 13:35)</div><div class="check-platform">sbb.ch · 2 changes · ~4hrs · Reservation required</div><div class="check-actions"><a href="https://www.sbb.ch/en/buying/pages/fahrplan/fahrplan.xhtml?von=Varenna-Esino&nach=Luzern&datum=21.03.2026&zeit=13:00&an=0" target="_blank" class="book-link">🚂 Book on SBB →</a></div></div><span class="check-urgency urgency-urgent">TODAY</span></li>
-
-      <li><span class="check-icon">🔴</span><div class="check-body"><div class="check-label">Barabas Luzern hotel (Mar 21–24, 3 nights)</div><div class="check-platform">booking.com · ~RM1,499 · 8.0 rated · 9min to station</div><div class="check-actions"><a href="https://www.booking.com/hotel/ch/barabas.html?checkin=2026-03-21&checkout=2026-03-24&group_adults=2&no_rooms=1" target="_blank" class="book-link">🏨 Book Barabas →</a></div></div><span class="check-urgency urgency-urgent">TODAY</span></li>
-
-      <li><span class="check-icon">🔴</span><div class="check-body"><div class="check-label">Lucerne → Venice train (Mar 24, 08:18)</div><div class="check-platform">sbb.ch · 5h54min · 2 changes · Reservation obligatoire</div><div class="check-actions"><a href="https://www.sbb.ch/en/buying/pages/fahrplan/fahrplan.xhtml?von=Luzern&nach=Venezia+Santa+Lucia&datum=24.03.2026&zeit=08:00&an=0" target="_blank" class="book-link">🚂 Book on SBB →</a></div></div><span class="check-urgency urgency-urgent">TODAY</span></li>
-
-      <li><span class="check-icon">🟡</span><div class="check-body"><div class="check-label">Hotel Antiche Figure, Venice (Mar 24–26)</div><div class="check-platform">booking.com · Near Santa Lucia station · 2 nights</div><div class="check-actions"><a href="https://www.booking.com/hotel/it/antiche-figure.html?checkin=2026-03-24&checkout=2026-03-26&group_adults=2&no_rooms=1" target="_blank" class="book-link">🏨 Book Venice Hotel →</a></div></div><span class="check-urgency urgency-soon">THIS WEEK</span></li>
-
-      <li><span class="check-icon">🟡</span><div class="check-body"><div class="check-label">Venice → Florence train (Mar 26, 10:26 Frecciarossa)</div><div class="check-platform">trenitalia.com · ~2h34min · Reservation required</div><div class="check-actions"><a href="https://www.trenitalia.com/en.html" target="_blank" class="book-link">🚂 Book Trenitalia →</a></div></div><span class="check-urgency urgency-soon">THIS WEEK</span></li>
-
-      <li><span class="check-icon">🟡</span><div class="check-body"><div class="check-label">Uffizi Gallery tickets (Mar 27 morning)</div><div class="check-platform">uffizi.it · Pre-book mandatory · ~€20pp</div><div class="check-actions"><a href="https://www.uffizi.it/en/tickets" target="_blank" class="book-link">🖼️ Book Uffizi →</a></div></div><span class="check-urgency urgency-soon">THIS WEEK</span></li>
-
-      <li><span class="check-icon">🟡</span><div class="check-body"><div class="check-label">Hotel Davanzati, Florence (Mar 26–28)</div><div class="check-platform">booking.com · ~AUD 135/nt · 2 nights</div><div class="check-actions"><a href="https://www.booking.com/hotel/it/davanzati.html?checkin=2026-03-26&checkout=2026-03-28&group_adults=2&no_rooms=1" target="_blank" class="book-link">🏨 Book Florence Hotel →</a></div></div><span class="check-urgency urgency-soon">THIS WEEK</span></li>
-
-      <li><span class="check-icon">🟡</span><div class="check-body"><div class="check-label">Car rental Florence (Mar 28 morning)</div><div class="check-platform">rentalcars.com · Pickup Florence, drop Rome/FCO</div><div class="check-actions"><a href="https://www.rentalcars.com/en/?pick_up=Florence%2C+Italy&drop_off=Rome%2C+Italy&pu_date=2026-03-28&do_date=2026-03-30" target="_blank" class="book-link">🚗 Book Car →</a></div></div><span class="check-urgency urgency-soon">THIS WEEK</span></li>
-
-      <li><span class="check-icon">🟡</span><div class="check-body"><div class="check-label">Hotel Artemide, Rome (Mar 28–30)</div><div class="check-platform">booking.com · ~AUD 145/nt · Near Repubblica</div><div class="check-actions"><a href="https://www.booking.com/hotel/it/artemide.html?checkin=2026-03-28&checkout=2026-03-30&group_adults=2&no_rooms=1" target="_blank" class="book-link">🏨 Book Rome Hotel →</a></div></div><span class="check-urgency urgency-soon">THIS WEEK</span></li>
-
-      <li><span class="check-icon">🟡</span><div class="check-body"><div class="check-label">Flight FCO → Penang (Mar 30)</div><div class="check-platform">turkishairlines.com · est. RM1,600–2,200 · via Istanbul</div><div class="check-actions"><a href="https://www.turkishairlines.com/en-int/flights/fly-to-penang/" target="_blank" class="book-link">✈️ Turkish Airlines →</a><a href="https://www.singaporeair.com/en_UK/us/home" target="_blank" class="book-link">✈️ SQ Alt →</a></div></div><span class="check-urgency urgency-soon">THIS WEEK</span></li>
-
-      <li><span class="check-icon">🔵</span><div class="check-body"><div class="check-label">Colosseum + Forum tickets (Mar 29)</div><div class="check-platform">coopculture.it · ~€18pp · Pre-book recommended</div><div class="check-actions"><a href="https://ecm.coopculture.it/index.cfm?lang=en" target="_blank" class="book-link">🏟️ Book Colosseum →</a></div></div><span class="check-urgency urgency-week">LATER</span></li>
-    </ul>
+    <div class="card">
+      <div class="card-header"><span class="card-icon">🗺️</span><span class="card-title">Route</span></div>
+      <div class="route-visual">
+        <div class="route-stop"><div class="route-line-wrap"><div class="route-dot done"></div><div class="route-connector done"></div></div><div class="route-info"><div class="route-info-name">🇮🇹 Cinque Terre</div><div class="route-info-dates">Mar 18–20 · 2 nights</div><div class="route-info-hotel">✅ Le Giare · RM819</div></div></div>
+        <div class="route-stop"><div class="route-line-wrap"><div class="route-dot current"></div><div class="route-connector"></div></div><div class="route-info"><div class="route-info-name">🇮🇹 Lake Como — Varenna</div><div class="route-info-dates">Mar 20–21 · 1 night</div><div class="route-info-hotel">✅ Hotel Olivedo · RM671</div></div></div>
+        <div class="route-stop"><div class="route-line-wrap"><div class="route-dot future"></div><div class="route-connector"></div></div><div class="route-info"><div class="route-info-name">🇨🇭 Lucerne</div><div class="route-info-dates">Mar 21–24 · 3 nights</div><div class="route-info-hotel">⏳ Barabas Luzern — BOOK NOW</div></div></div>
+        <div class="route-stop"><div class="route-line-wrap"><div class="route-dot future"></div><div class="route-connector"></div></div><div class="route-info"><div class="route-info-name">🇮🇹 Venice</div><div class="route-info-dates">Mar 24–26 · 2 nights</div><div class="route-info-hotel">⏳ Hotel Antiche Figure</div></div></div>
+        <div class="route-stop"><div class="route-line-wrap"><div class="route-dot future"></div><div class="route-connector"></div></div><div class="route-info"><div class="route-info-name">🇮🇹 Florence</div><div class="route-info-dates">Mar 26–28 · 2 nights</div><div class="route-info-hotel">⏳ Hotel Davanzati</div></div></div>
+        <div class="route-stop"><div class="route-line-wrap"><div class="route-dot future"></div><div class="route-connector"></div></div><div class="route-info"><div class="route-info-name">🇮🇹 Rome</div><div class="route-info-dates">Mar 28–30 · 2 nights</div><div class="route-info-hotel">⏳ Hotel Artemide</div></div></div>
+        <div class="route-stop"><div class="route-line-wrap"><div class="route-dot future"></div></div><div class="route-info"><div class="route-info-name">✈️ FCO → Penang</div><div class="route-info-dates">Mar 30</div><div class="route-info-hotel">⏳ Turkish Airlines</div></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-icon">✅</span><span class="card-title">Booking Checklist</span></div>
+      <ul class="checklist">
+        <li><span class="check-icon">✅</span><div class="check-body"><div class="check-label">Le Giare, Riomaggiore (Mar 18–20)</div><div class="check-platform">Paid · RM819</div></div><span class="check-urgency urgency-done">DONE</span></li>
+        <li><span class="check-icon">✅</span><div class="check-body"><div class="check-label">Hotel Olivedo, Varenna (Mar 20–21)</div><div class="check-platform">Paid · RM671</div></div><span class="check-urgency urgency-done">DONE</span></li>
+        <li><span class="check-icon">🔴</span><div class="check-body"><div class="check-label">La Spezia → Milan train (Mar 20, 10:10)</div><div class="check-platform">InterCity direct · 2 adults</div><div class="check-actions"><a href="https://www.trenitalia.com/en.html" target="_blank" class="book-link">🚂 Trenitalia →</a></div></div><span class="check-urgency urgency-urgent">TODAY</span></li>
+        <li><span class="check-icon">🔴</span><div class="check-body"><div class="check-label">Villa Balbianello entry (Sat Mar 21)</div><div class="check-platform">fondoambiente.it · ~€10–15pp</div><div class="check-actions"><a href="https://www.fondoambiente.it/luoghi/villa-del-balbianello/?lm=ticketing" target="_blank" class="book-link">🏰 Book →</a></div></div><span class="check-urgency urgency-urgent">TODAY</span></li>
+        <li><span class="check-icon">🔴</span><div class="check-body"><div class="check-label">Varenna → Lucerne train (Mar 21, 13:35)</div><div class="check-platform">sbb.ch · 2 changes · Reservation required</div><div class="check-actions"><a href="https://www.sbb.ch/en/buying/pages/fahrplan/fahrplan.xhtml?von=Varenna-Esino&nach=Luzern&datum=21.03.2026&zeit=13:00&an=0" target="_blank" class="book-link">🚂 SBB →</a></div></div><span class="check-urgency urgency-urgent">TODAY</span></li>
+        <li><span class="check-icon">🔴</span><div class="check-body"><div class="check-label">Barabas Luzern (Mar 21–24, 3 nights)</div><div class="check-platform">~RM1,499 · 8.0 rated</div><div class="check-actions"><a href="https://www.booking.com/hotel/ch/barabas.html?checkin=2026-03-21&checkout=2026-03-24&group_adults=2&no_rooms=1" target="_blank" class="book-link">🏨 Booking.com →</a></div></div><span class="check-urgency urgency-urgent">TODAY</span></li>
+        <li><span class="check-icon">🔴</span><div class="check-body"><div class="check-label">Lucerne → Venice train (Mar 24, 08:18)</div><div class="check-platform">sbb.ch · Reservation obligatoire</div><div class="check-actions"><a href="https://www.sbb.ch/en/buying/pages/fahrplan/fahrplan.xhtml?von=Luzern&nach=Venezia+Santa+Lucia&datum=24.03.2026&zeit=08:00&an=0" target="_blank" class="book-link">🚂 SBB →</a></div></div><span class="check-urgency urgency-urgent">TODAY</span></li>
+        <li><span class="check-icon">🟡</span><div class="check-body"><div class="check-label">Hotel Antiche Figure, Venice (Mar 24–26)</div><div class="check-platform">booking.com · Near Santa Lucia station</div><div class="check-actions"><a href="https://www.booking.com/hotel/it/antiche-figure.html?checkin=2026-03-24&checkout=2026-03-26&group_adults=2&no_rooms=1" target="_blank" class="book-link">🏨 Book →</a></div></div><span class="check-urgency urgency-soon">THIS WEEK</span></li>
+        <li><span class="check-icon">🟡</span><div class="check-body"><div class="check-label">Venice → Florence train (Mar 26, 10:26)</div><div class="check-platform">trenitalia.com · Frecciarossa</div><div class="check-actions"><a href="https://www.trenitalia.com/en.html" target="_blank" class="book-link">🚂 Trenitalia →</a></div></div><span class="check-urgency urgency-soon">THIS WEEK</span></li>
+        <li><span class="check-icon">🟡</span><div class="check-body"><div class="check-label">Uffizi Gallery tickets (Mar 27)</div><div class="check-platform">uffizi.it · ~€20pp</div><div class="check-actions"><a href="https://www.uffizi.it/en/tickets" target="_blank" class="book-link">🖼️ Book →</a></div></div><span class="check-urgency urgency-soon">THIS WEEK</span></li>
+        <li><span class="check-icon">🟡</span><div class="check-body"><div class="check-label">Hotel Davanzati, Florence (Mar 26–28)</div><div class="check-platform">~AUD 135/nt</div><div class="check-actions"><a href="https://www.booking.com/hotel/it/davanzati.html?checkin=2026-03-26&checkout=2026-03-28&group_adults=2&no_rooms=1" target="_blank" class="book-link">🏨 Book →</a></div></div><span class="check-urgency urgency-soon">THIS WEEK</span></li>
+        <li><span class="check-icon">🟡</span><div class="check-body"><div class="check-label">Car rental Florence (Mar 28 pickup)</div><div class="check-platform">rentalcars.com · Drop Rome</div><div class="check-actions"><a href="https://www.rentalcars.com/en/?pick_up=Florence%2C+Italy&drop_off=Rome%2C+Italy&pu_date=2026-03-28&do_date=2026-03-30" target="_blank" class="book-link">🚗 Book →</a></div></div><span class="check-urgency urgency-soon">THIS WEEK</span></li>
+        <li><span class="check-icon">🟡</span><div class="check-body"><div class="check-label">Hotel Artemide, Rome (Mar 28–30)</div><div class="check-platform">~AUD 145/nt · Near Repubblica</div><div class="check-actions"><a href="https://www.booking.com/hotel/it/artemide.html?checkin=2026-03-28&checkout=2026-03-30&group_adults=2&no_rooms=1" target="_blank" class="book-link">🏨 Book →</a></div></div><span class="check-urgency urgency-soon">THIS WEEK</span></li>
+        <li><span class="check-icon">🟡</span><div class="check-body"><div class="check-label">Flight FCO → Penang (Mar 30)</div><div class="check-platform">Turkish Airlines · est. RM1,600–2,200</div><div class="check-actions"><a href="https://www.turkishairlines.com/en-int/" target="_blank" class="book-link">✈️ Book →</a></div></div><span class="check-urgency urgency-soon">THIS WEEK</span></li>
+        <li><span class="check-icon">🔵</span><div class="check-body"><div class="check-label">Colosseum + Forum (Mar 29)</div><div class="check-platform">coopculture.it · ~€18pp</div><div class="check-actions"><a href="https://ecm.coopculture.it/index.cfm?lang=en" target="_blank" class="book-link">🏟️ Book →</a></div></div><span class="check-urgency urgency-week">LATER</span></li>
+      </ul>
+    </div>
   </div>
 </div>
 
 <!-- MAR 18 -->
 <div id="tab-mar18" class="tab-content">
-  <div class="card">
-    <div class="card-header"><span class="card-icon">📍</span><span class="card-title">Wed Mar 18 — Arrive Cinque Terre</span></div>
-    <div class="hotel-box">
-      <div class="hotel-name">Le Giare, Riomaggiore <span class="tag booked">✅ BOOKED · RM819</span></div>
-      <div class="hotel-meta"><div class="hotel-meta-item">📍 <span>Via Colombo 71, Riomaggiore</span></div><div class="hotel-meta-item">🗓️ <span>2 nights (Mar 18–20)</span></div></div>
-      <div class="map-links"><a href="https://maps.google.com/?q=Le+Giare+Riomaggiore" target="_blank" class="map-btn">📍 Le Giare</a><a href="https://maps.google.com/?q=Riomaggiore+train+station" target="_blank" class="map-btn">📍 Station</a></div>
-    </div>
+  <div class="day-hero" style="background-image:url('https://source.unsplash.com/featured/900x400/?riomaggiore,cinque+terre,harbour')">
+    <div class="day-hero-info"><div class="day-hero-label">Riomaggiore · Cinque Terre</div><div class="day-hero-sub">Wed Mar 18 · Arrive · Night 1 of 2</div></div>
   </div>
-  <div class="card">
-    <div class="card-header"><span class="card-icon">🕐</span><span class="card-title">Day Plan</span></div>
-    <div class="timeline">
-      <div class="tl-item done"><div class="tl-time">Arriving from Nice</div><div class="tl-text">Train Nice → La Spezia → Riomaggiore</div><div class="tl-sub">La Spezia → Riomaggiore: ~5min, €2, buy at kiosk</div><div class="map-links"><a href="https://maps.google.com/?q=La+Spezia+Centrale+train+station" target="_blank" class="map-btn">📍 La Spezia Centrale</a></div></div>
-      <div class="tl-item"><div class="tl-time">Evening</div><div class="tl-text">Check in Le Giare · Walk to harbour (5min)</div><div class="map-links"><a href="https://maps.google.com/?q=Riomaggiore+harbour+Cinque+Terre" target="_blank" class="map-btn">📍 Harbour</a></div></div>
-      <div class="tl-item highlight"><div class="tl-time">Dinner</div><div class="tl-text">🍽️ Dau Cila — best seafood in Riomaggiore</div><div class="tl-sub">Trofie al pesto + grilled branzino · ~€35pp · Harbour views</div><div class="map-links"><a href="https://maps.google.com/?q=Dau+Cila+Riomaggiore" target="_blank" class="map-btn">📍 Dau Cila</a></div></div>
+  <div class="tab-inner">
+    <div class="hotel-box" style="margin-bottom:12px"><div class="hotel-name">Le Giare <span class="tag booked">✅ BOOKED · RM819</span></div><div class="hotel-meta"><div class="hotel-meta-item">📍 <span>Via Colombo 71, Riomaggiore</span></div></div><div class="map-links"><a href="https://maps.google.com/?q=Le+Giare+Riomaggiore" target="_blank" class="map-btn">📍 Hotel</a><a href="https://maps.google.com/?q=Riomaggiore+harbour" target="_blank" class="map-btn">📍 Harbour</a></div></div>
+    <div class="card"><div class="card-header"><span class="card-icon">🕐</span><span class="card-title">Day Plan</span></div>
+      <div class="timeline">
+        <div class="tl-item done"><div class="tl-time">Arriving from Nice</div><div class="tl-text">Train → La Spezia → Riomaggiore (~5min, €2)</div><div class="map-links"><a href="https://maps.google.com/?q=La+Spezia+Centrale+train+station" target="_blank" class="map-btn">📍 La Spezia</a></div></div>
+        <div class="tl-item"><div class="tl-time">Evening</div><div class="tl-text">Check in · Walk to harbour</div><div class="map-links"><a href="https://maps.google.com/?q=Riomaggiore+harbour+Cinque+Terre" target="_blank" class="map-btn">📍 Harbour</a></div></div>
+        <div class="tl-item highlight"><div class="tl-time">Dinner</div><div class="tl-text">🍽️ Dau Cila — best seafood in Riomaggiore</div><div class="tl-sub">Trofie al pesto + branzino · ~€35pp · Harbour views</div><div class="map-links"><a href="https://maps.google.com/?q=Dau+Cila+Riomaggiore" target="_blank" class="map-btn">📍 Dau Cila</a></div></div>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- MAR 19 -->
 <div id="tab-mar19" class="tab-content">
-  <div class="card">
-    <div class="card-header"><span class="card-icon">🌊</span><span class="card-title">Thu Mar 19 — Full Cinque Terre Day</span><span class="card-sub tag" style="color:var(--orange);border-color:var(--orange)">TODAY</span></div>
-    <div class="hotel-box">
-      <div class="hotel-name">Le Giare, Riomaggiore <span class="tag booked">✅ BOOKED</span></div>
-      <div class="hotel-meta"><div class="hotel-meta-item">🎫 <span>Cinque Terre Treno MS Card</span> — €16pp · Buy at Riomaggiore station</div></div>
-    </div>
+  <div class="day-hero" style="background-image:url('https://source.unsplash.com/featured/900x400/?vernazza,cinque+terre,village')">
+    <div class="day-hero-info"><div class="day-hero-label">Cinque Terre — Full Day</div><div class="day-hero-sub">Thu Mar 19 · Vernazza · Nessun Dorma sunset</div></div>
   </div>
-  <div class="card">
-    <div class="card-header"><span class="card-icon">🕐</span><span class="card-title">Schedule</span></div>
-    <div class="timeline">
-      <div class="tl-item done"><div class="tl-time">07:00</div><div class="tl-text">✅ Riomaggiore sunrise + breakfast at Bar Centrale</div><div class="map-links"><a href="https://maps.google.com/?q=Bar+Centrale+Riomaggiore" target="_blank" class="map-btn">📍 Bar Centrale</a></div></div>
-      <div class="tl-item done"><div class="tl-time">08:15</div><div class="tl-text">✅ Via dell'Amore walk → Manarola</div><div class="map-links"><a href="https://maps.google.com/?q=Via+dell'Amore+Riomaggiore" target="_blank" class="map-btn">📍 Via dell'Amore</a></div></div>
-      <div class="tl-item done"><div class="tl-time">08:45</div><div class="tl-text">✅ Manarola viewpoint — iconic photo 📸</div><div class="map-links"><a href="https://maps.google.com/?q=Manarola+viewpoint+Cinque+Terre" target="_blank" class="map-btn">📍 Manarola Viewpoint</a></div></div>
-      <div class="tl-item highlight"><div class="tl-time">~13:15</div><div class="tl-text">🚂 Train: Manarola → Vernazza (~10min)</div><div class="map-links"><a href="https://maps.google.com/?q=Manarola+train+station" target="_blank" class="map-btn">📍 Manarola Station</a><a href="https://maps.google.com/?q=Vernazza+harbour+Cinque+Terre" target="_blank" class="map-btn">📍 Vernazza Harbour</a></div></div>
-      <div class="tl-item highlight"><div class="tl-time">13:30 LUNCH</div><div class="tl-text">🍝 Gambero Rosso — harbour piazza ✅</div><div class="tl-sub">Trofie al pesto · Acciughe · Fritto misto · ~€20pp</div><div class="map-links"><a href="https://maps.google.com/?q=Gambero+Rosso+Vernazza+Cinque+Terre" target="_blank" class="map-btn">📍 Gambero Rosso</a></div></div>
-      <div class="tl-item"><div class="tl-time">14:30</div><div class="tl-text">🏰 Torre Doria Castle — rooftop views (€2)</div><div class="map-links"><a href="https://maps.google.com/?q=Torre+Doria+Vernazza" target="_blank" class="map-btn">📍 Torre Doria</a></div></div>
-      <div class="tl-item"><div class="tl-time">16:00</div><div class="tl-text">🚂 Vernazza → Monterosso (5min) · Beach + anchovies</div><div class="map-links"><a href="https://maps.google.com/?q=Monterosso+al+Mare+train+station" target="_blank" class="map-btn">📍 Monterosso</a></div></div>
-      <div class="tl-item highlight"><div class="tl-time">18:00 ⚡ MUST HIT</div><div class="tl-text">⭐ Nessun Dorma aperitivo — sunset over sea</div><div class="tl-sub">Arrive before 18:15 · Sciacchetrà wine · Sunset ~18:25</div><div class="map-links"><a href="https://maps.google.com/?q=Nessun+Dorma+Manarola+Cinque+Terre" target="_blank" class="map-btn">📍 Nessun Dorma</a></div></div>
-      <div class="tl-item"><div class="tl-time">20:00</div><div class="tl-text">🍽️ Il Pescato Cucinato — fried seafood to go at harbour</div><div class="map-links"><a href="https://maps.google.com/?q=Il+Pescato+Cucinato+Riomaggiore" target="_blank" class="map-btn">📍 Il Pescato Cucinato</a></div></div>
+  <div class="tab-inner">
+    <div class="luggage-note">🧳 All bags at Le Giare. Day pack only. Tonight: pack for Mar 20 checkout.</div>
+    <div class="card"><div class="card-header"><span class="card-icon">🕐</span><span class="card-title">Schedule</span></div>
+      <div class="timeline">
+        <div class="tl-item done"><div class="tl-time">07:00</div><div class="tl-text">✅ Riomaggiore sunrise + Bar Centrale breakfast</div><div class="map-links"><a href="https://maps.google.com/?q=Bar+Centrale+Riomaggiore" target="_blank" class="map-btn">📍 Bar Centrale</a></div></div>
+        <div class="tl-item done"><div class="tl-time">08:15</div><div class="tl-text">✅ Via dell'Amore → Manarola</div><div class="map-links"><a href="https://maps.google.com/?q=Via+dell'Amore+Riomaggiore" target="_blank" class="map-btn">📍 Via dell'Amore</a></div></div>
+        <div class="tl-item done"><div class="tl-time">08:45</div><div class="tl-text">✅ Manarola viewpoint — iconic photo 📸</div><div class="map-links"><a href="https://maps.google.com/?q=Manarola+viewpoint+Cinque+Terre" target="_blank" class="map-btn">📍 Viewpoint</a></div></div>
+        <div class="tl-item highlight"><div class="tl-time">~13:10</div><div class="tl-text">🚂 Train: Manarola → Vernazza</div><div class="map-links"><a href="https://maps.google.com/?q=Manarola+train+station" target="_blank" class="map-btn">📍 Manarola Station</a></div></div>
+        <div class="tl-item highlight"><div class="tl-time">13:30 LUNCH</div><div class="tl-text">🍝 Gambero Rosso — harbour piazza ✅</div><div class="tl-sub">Trofie al pesto · Acciughe · Fritto misto · ~€20pp</div><div class="map-links"><a href="https://maps.google.com/?q=Gambero+Rosso+Vernazza+Cinque+Terre" target="_blank" class="map-btn">📍 Gambero Rosso</a></div></div>
+        <div class="tl-item"><div class="tl-time">14:30</div><div class="tl-text">🏰 Torre Doria Castle — rooftop views (€2)</div><div class="map-links"><a href="https://maps.google.com/?q=Torre+Doria+Vernazza" target="_blank" class="map-btn">📍 Torre Doria</a></div></div>
+        <div class="tl-item"><div class="tl-time">16:00</div><div class="tl-text">🚂 Vernazza → Monterosso · Beach + anchovies</div><div class="map-links"><a href="https://maps.google.com/?q=Monterosso+al+Mare" target="_blank" class="map-btn">📍 Monterosso</a></div></div>
+        <div class="tl-item highlight"><div class="tl-time">18:00 ⚡ MUST HIT</div><div class="tl-text">⭐ Nessun Dorma — sunset aperitivo over the sea</div><div class="tl-sub">Arrive before 18:15 · Sciacchetrà wine · Sunset ~18:25</div><div class="map-links"><a href="https://maps.google.com/?q=Nessun+Dorma+Manarola+Cinque+Terre" target="_blank" class="map-btn">📍 Nessun Dorma</a></div></div>
+        <div class="tl-item"><div class="tl-time">20:00</div><div class="tl-text">🍽️ Il Pescato Cucinato — fried seafood to go</div><div class="map-links"><a href="https://maps.google.com/?q=Il+Pescato+Cucinato+Riomaggiore" target="_blank" class="map-btn">📍 Il Pescato</a></div></div>
+      </div>
+    </div>
+    <div class="card"><div class="card-header"><span class="card-icon">🍋</span><span class="card-title">Must Eat Today</span></div>
+      <div class="food-item">🌿 Trofie al pesto — Ligurian fresh basil pesto pasta</div>
+      <div class="food-item">🐟 Acciughe — Monterosso marinated anchovies</div>
+      <div class="food-item">🍤 Fritto misto di mare — mixed fried seafood</div>
+      <div class="food-item">🍷 Sciacchetrà — local sweet wine at Nessun Dorma</div>
+      <div class="food-item">🍋 Limoncino — local lemon liqueur after dinner</div>
     </div>
   </div>
 </div>
 
 <!-- MAR 20 -->
 <div id="tab-mar20" class="tab-content">
-  <div class="card">
-    <div class="card-header"><span class="card-icon">🚂</span><span class="card-title">Fri Mar 20 — Cinque Terre → Lake Como</span></div>
-    <div class="warning">⚠️ Balbianello CLOSED Fridays — visiting Saturday Mar 21 morning ✅</div>
-    <div class="luggage-note">🧳 Full checkout Le Giare. All bags on trains today.</div>
+  <div class="day-hero" style="background-image:url('https://source.unsplash.com/featured/900x400/?lake+como,varenna,italy')">
+    <div class="day-hero-info"><div class="day-hero-label">Lake Como — Varenna</div><div class="day-hero-sub">Fri Mar 20 · Travel day · Cinque Terre → Como</div></div>
   </div>
-  <div class="card">
-    <div class="card-header"><span class="card-icon">🚂</span><span class="card-title">Train: La Spezia → Milan <span class="tag book-now">URGENT</span></span></div>
-    <div class="train-box">
-      <div class="train-route"><span class="train-from">La Spezia Centrale</span><span class="train-arrow">→</span><span class="train-to">Milano Centrale</span></div>
-      <div class="train-details">
-        <div class="train-detail"><div class="train-detail-label">Depart</div><div class="train-detail-value">10:10</div></div>
-        <div class="train-detail"><div class="train-detail-label">Arrive</div><div class="train-detail-value">13:59</div></div>
-        <div class="train-detail"><div class="train-detail-label">Type</div><div class="train-detail-value">IC Direct</div></div>
+  <div class="tab-inner">
+    <div class="luggage-note">🧳 Full checkout Le Giare. All bags on trains all day.</div>
+    <div class="warning">⚠️ Balbianello CLOSED Fridays — visiting Sat Mar 21 ✅</div>
+    <div class="card"><div class="card-header"><span class="card-icon">🚂</span><span class="card-title">Train: La Spezia → Milan <span class="tag book-now">URGENT</span></span></div>
+      <div class="train-box">
+        <div class="train-route"><span class="train-from">La Spezia Centrale</span><span class="train-arrow">→</span><span class="train-to">Milano Centrale</span></div>
+        <div class="train-details"><div class="train-detail"><div class="train-detail-label">Depart</div><div class="train-detail-value">10:10</div></div><div class="train-detail"><div class="train-detail-label">Arrive</div><div class="train-detail-value">13:59</div></div><div class="train-detail"><div class="train-detail-label">Type</div><div class="train-detail-value">IC Direct</div></div></div>
+        <div class="train-note">No reservation needed · 2 adults</div>
+        <div class="train-actions"><a href="https://www.trenitalia.com/en.html" target="_blank" class="book-link">🚂 Book Trenitalia →</a><a href="https://maps.google.com/?q=La+Spezia+Centrale+train+station" target="_blank" class="map-btn">📍 La Spezia</a></div>
       </div>
-      <div class="train-note">No reservation needed · 2 adults · Book trenitalia.com</div>
-      <div class="train-actions"><a href="https://www.trenitalia.com/en.html" target="_blank" class="book-link">🚂 Book on Trenitalia →</a><a href="https://maps.google.com/?q=La+Spezia+Centrale+train+station" target="_blank" class="map-btn">📍 La Spezia Station</a></div>
-    </div>
-    <div class="train-box">
-      <div class="train-route"><span class="train-from">Milano Centrale</span><span class="train-arrow">→</span><span class="train-to">Varenna-Esino</span></div>
-      <div class="train-details">
-        <div class="train-detail"><div class="train-detail-label">Depart</div><div class="train-detail-value">~14:10</div></div>
-        <div class="train-detail"><div class="train-detail-label">Arrive</div><div class="train-detail-value">~15:40</div></div>
-        <div class="train-detail"><div class="train-detail-label">Cost</div><div class="train-detail-value">~€5</div></div>
+      <div class="train-box">
+        <div class="train-route"><span class="train-from">Milano Centrale</span><span class="train-arrow">→</span><span class="train-to">Varenna-Esino</span></div>
+        <div class="train-details"><div class="train-detail"><div class="train-detail-label">Depart</div><div class="train-detail-value">~14:10</div></div><div class="train-detail"><div class="train-detail-label">Arrive</div><div class="train-detail-value">~15:40</div></div><div class="train-detail"><div class="train-detail-label">Cost</div><div class="train-detail-value">~€5</div></div></div>
+        <div class="train-note">Trenord regional · Buy kiosk on day</div>
+        <div class="train-actions"><a href="https://maps.google.com/?q=Milano+Centrale+train+station" target="_blank" class="map-btn">📍 Milano Centrale</a><a href="https://maps.google.com/?q=Varenna+Esino+train+station" target="_blank" class="map-btn">📍 Varenna Station</a></div>
       </div>
-      <div class="train-note">Trenord regional · Buy at Milano Centrale kiosk</div>
-      <div class="train-actions"><a href="https://maps.google.com/?q=Milano+Centrale+train+station" target="_blank" class="map-btn">📍 Milano Centrale</a><a href="https://maps.google.com/?q=Varenna+Esino+train+station" target="_blank" class="map-btn">📍 Varenna Station</a></div>
     </div>
-  </div>
-  <div class="card">
-    <div class="card-header"><span class="card-icon">🏨</span><span class="card-title">Tonight</span></div>
-    <div class="hotel-box">
-      <div class="hotel-name">Hotel Olivedo, Varenna <span class="tag booked">✅ BOOKED · RM671</span></div>
-      <div class="hotel-meta"><div class="hotel-meta-item">📍 <span>Varenna waterfront · 2min to ferry · 3min to station</span></div></div>
-      <div class="map-links"><a href="https://maps.google.com/?q=Hotel+Olivedo+Varenna+Lake+Como" target="_blank" class="map-btn">📍 Hotel Olivedo</a><a href="https://maps.google.com/?q=Varenna+ferry+dock+Lake+Como" target="_blank" class="map-btn">📍 Ferry Dock</a></div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-header"><span class="card-icon">🕐</span><span class="card-title">Evening Plan</span></div>
-    <div class="timeline">
-      <div class="tl-item"><div class="tl-time">~15:40</div><div class="tl-text">Check in Hotel Olivedo · Drop bags</div></div>
-      <div class="tl-item"><div class="tl-time">16:00</div><div class="tl-text">🚤 Boat rental at Varenna dock — golden hour</div><div class="tl-sub">€50-65/hr · CASH · Walk-up at dock</div><div class="map-links"><a href="https://maps.google.com/?q=Varenna+ferry+dock+Lake+Como" target="_blank" class="map-btn">📍 Varenna Dock</a></div></div>
-      <div class="tl-item highlight"><div class="tl-time">20:00</div><div class="tl-text">🍽️ Dinner: Ristorante Il Molo</div><div class="tl-sub">Lake fish · Risotto al lago · ~€35pp</div><div class="map-links"><a href="https://maps.google.com/?q=Ristorante+Il+Molo+Varenna" target="_blank" class="map-btn">📍 Il Molo</a></div></div>
+    <div class="hotel-box"><div class="hotel-name">Hotel Olivedo <span class="tag booked">✅ BOOKED · RM671</span></div><div class="hotel-meta"><div class="hotel-meta-item">📍 <span>Varenna waterfront · 2min ferry · 3min station</span></div></div><div class="map-links"><a href="https://maps.google.com/?q=Hotel+Olivedo+Varenna+Lake+Como" target="_blank" class="map-btn">📍 Hotel</a><a href="https://maps.google.com/?q=Varenna+ferry+dock+Lake+Como" target="_blank" class="map-btn">📍 Ferry Dock</a></div></div>
+    <div class="card"><div class="card-header"><span class="card-icon">🕐</span><span class="card-title">Evening</span></div>
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-time">~15:40</div><div class="tl-text">Check in Hotel Olivedo</div></div>
+        <div class="tl-item"><div class="tl-time">16:00</div><div class="tl-text">🚤 Boat rental — golden hour on the lake</div><div class="tl-sub">€50-65/hr · CASH · Walk-up at dock</div><div class="map-links"><a href="https://maps.google.com/?q=Varenna+ferry+dock+Lake+Como" target="_blank" class="map-btn">📍 Dock</a></div></div>
+        <div class="tl-item highlight"><div class="tl-time">20:00</div><div class="tl-text">🍽️ Ristorante Il Molo — lake fish + Risotto al lago</div><div class="map-links"><a href="https://maps.google.com/?q=Ristorante+Il+Molo+Varenna" target="_blank" class="map-btn">📍 Il Molo</a></div></div>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- MAR 21 -->
 <div id="tab-mar21" class="tab-content">
-  <div class="card">
-    <div class="card-header"><span class="card-icon">🏰</span><span class="card-title">Sat Mar 21 — Balbianello → Lucerne</span></div>
-    <div class="luggage-note">🧳 Store bags at Olivedo reception after checkout. Collect before 13:35 train.</div>
+  <div class="day-hero" style="background-image:url('https://source.unsplash.com/featured/900x400/?lucerne,switzerland,chapel+bridge')">
+    <div class="day-hero-info"><div class="day-hero-label">Balbianello → Lucerne</div><div class="day-hero-sub">Sat Mar 21 · Ferry morning · Swiss Alps evening</div></div>
   </div>
-  <div class="card">
-    <div class="card-header"><span class="card-icon">🚂</span><span class="card-title">Train: Varenna → Lucerne <span class="tag book-now">BOOK NOW</span></span></div>
-    <div class="train-box">
-      <div class="train-route"><span class="train-from">Varenna-Esino</span><span class="train-arrow">→</span><span class="train-to">Luzern Hbf</span></div>
-      <div class="train-details">
-        <div class="train-detail"><div class="train-detail-label">Depart</div><div class="train-detail-value">13:35</div></div>
-        <div class="train-detail"><div class="train-detail-label">Arrive</div><div class="train-detail-value">~17:41</div></div>
-        <div class="train-detail"><div class="train-detail-label">Changes</div><div class="train-detail-value">2</div></div>
+  <div class="tab-inner">
+    <div class="luggage-note">🧳 Store bags at Olivedo after checkout. Collect before 13:35 train.</div>
+    <div class="card"><div class="card-header"><span class="card-icon">🚂</span><span class="card-title">Train: Varenna → Lucerne <span class="tag book-now">BOOK NOW</span></span></div>
+      <div class="train-box">
+        <div class="train-route"><span class="train-from">Varenna-Esino</span><span class="train-arrow">→</span><span class="train-to">Luzern Hbf</span></div>
+        <div class="train-details"><div class="train-detail"><div class="train-detail-label">Depart</div><div class="train-detail-value">13:35</div></div><div class="train-detail"><div class="train-detail-label">Arrive</div><div class="train-detail-value">~17:41</div></div><div class="train-detail"><div class="train-detail-label">Changes</div><div class="train-detail-value">2</div></div></div>
+        <div class="train-note">Via Como San Giovanni → Lugano · Reservation required</div>
+        <div class="train-actions"><a href="https://www.sbb.ch/en/buying/pages/fahrplan/fahrplan.xhtml?von=Varenna-Esino&nach=Luzern&datum=21.03.2026&zeit=13:00&an=0" target="_blank" class="book-link">🚂 Book SBB →</a></div>
       </div>
-      <div class="train-note">Via Como San Giovanni → Lugano · Reservation required</div>
-      <div class="train-actions"><a href="https://www.sbb.ch/en/buying/pages/fahrplan/fahrplan.xhtml?von=Varenna-Esino&nach=Luzern&datum=21.03.2026&zeit=13:00&an=0" target="_blank" class="book-link">🚂 Book on SBB →</a><a href="https://maps.google.com/?q=Varenna+Esino+train+station" target="_blank" class="map-btn">📍 Varenna Station</a></div>
     </div>
-  </div>
-  <div class="card">
-    <div class="card-header"><span class="card-icon">🕐</span><span class="card-title">Day Plan</span></div>
-    <div class="timeline">
-      <div class="tl-item"><div class="tl-time">08:00</div><div class="tl-text">Breakfast, checkout · Store bags at reception</div></div>
-      <div class="tl-item"><div class="tl-time">09:15</div><div class="tl-text">⛵ Ferry: Varenna → Lenno (~30min · ~€5)</div><div class="map-links"><a href="https://maps.google.com/?q=Varenna+ferry+dock+Lake+Como" target="_blank" class="map-btn">📍 Varenna Dock</a></div></div>
-      <div class="tl-item highlight"><div class="tl-time">10:00–12:00</div><div class="tl-text">🌿 Villa del Balbianello <span class="tag book-now">PRE-BOOK</span></div><div class="tl-sub">~€10-15pp · Bond + Star Wars filming location · Best gardens on Como</div><div class="map-links"><a href="https://maps.google.com/?q=Villa+del+Balbianello+Lenno+Lake+Como" target="_blank" class="map-btn">📍 Villa Balbianello</a><a href="https://www.fondoambiente.it/luoghi/villa-del-balbianello/?lm=ticketing" target="_blank" class="book-link">🏰 Book Entry →</a></div></div>
-      <div class="tl-item"><div class="tl-time">12:50</div><div class="tl-text">Collect bags · Walk to Varenna station</div></div>
-      <div class="tl-item"><div class="tl-time">13:35</div><div class="tl-text">🚂 Depart → Lucerne via Alps</div></div>
-      <div class="tl-item highlight"><div class="tl-time">~17:41</div><div class="tl-text">🏨 Arrive Luzern · Check in Barabas Luzern</div><div class="map-links"><a href="https://maps.google.com/?q=Luzern+Hauptbahnhof" target="_blank" class="map-btn">📍 Luzern Station</a><a href="https://maps.google.com/?q=Barabas+Luzern+hotel" target="_blank" class="map-btn">📍 Barabas Luzern</a></div></div>
-      <div class="tl-item"><div class="tl-time">18:30</div><div class="tl-text">🌉 Chapel Bridge (Kapellbrücke) evening walk</div><div class="map-links"><a href="https://maps.google.com/?q=Kapellbrücke+Lucerne" target="_blank" class="map-btn">📍 Chapel Bridge</a></div></div>
-      <div class="tl-item highlight"><div class="tl-time">20:00</div><div class="tl-text">🍽️ Käsefondue dinner — Wirtshaus Galliker</div><div class="map-links"><a href="https://maps.google.com/?q=Wirtshaus+Galliker+Luzern" target="_blank" class="map-btn">📍 Galliker</a></div></div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-header"><span class="card-icon">🏨</span><span class="card-title">Lucerne Hotel <span class="tag book-now">BOOK NOW</span></span></div>
-    <div class="hotel-box">
-      <div class="hotel-name">Barabas Luzern ⭐⭐⭐⭐</div>
-      <div class="hotel-meta">
-        <div class="hotel-meta-item">💰 <span>~RM1,499</span> / 3 nights</div>
-        <div class="hotel-meta-item">📊 <span>8.0 Very Good</span> · 3,607 reviews</div>
-        <div class="hotel-meta-item">📍 <span>350m Old Town · 9min to station</span></div>
+    <div class="card"><div class="card-header"><span class="card-icon">🕐</span><span class="card-title">Day Plan</span></div>
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-time">09:15</div><div class="tl-text">⛵ Ferry: Varenna → Lenno (~30min)</div><div class="map-links"><a href="https://maps.google.com/?q=Varenna+ferry+dock+Lake+Como" target="_blank" class="map-btn">📍 Varenna Dock</a></div></div>
+        <div class="tl-item highlight"><div class="tl-time">10:00–12:00</div><div class="tl-text">🌿 Villa del Balbianello <span class="tag book-now">PRE-BOOK</span></div><div class="tl-sub">~€10-15pp · Bond + Star Wars filmed here · Open Sat ✅</div><div class="map-links"><a href="https://maps.google.com/?q=Villa+del+Balbianello+Lenno+Lake+Como" target="_blank" class="map-btn">📍 Villa</a><a href="https://www.fondoambiente.it/luoghi/villa-del-balbianello/?lm=ticketing" target="_blank" class="book-link">🏰 Book →</a></div></div>
+        <div class="tl-item"><div class="tl-time">13:35</div><div class="tl-text">🚂 Depart Varenna → Lucerne via Alps</div></div>
+        <div class="tl-item highlight"><div class="tl-time">~17:41</div><div class="tl-text">🏨 Arrive Luzern · Check in Barabas</div><div class="map-links"><a href="https://maps.google.com/?q=Luzern+Hauptbahnhof" target="_blank" class="map-btn">📍 Luzern HBF</a><a href="https://maps.google.com/?q=Barabas+Luzern+hotel" target="_blank" class="map-btn">📍 Barabas</a></div></div>
+        <div class="tl-item"><div class="tl-time">18:30</div><div class="tl-text">🌉 Chapel Bridge evening walk</div><div class="map-links"><a href="https://maps.google.com/?q=Kapellbrücke+Lucerne" target="_blank" class="map-btn">📍 Chapel Bridge</a></div></div>
+        <div class="tl-item highlight"><div class="tl-time">20:00</div><div class="tl-text">🍽️ Käsefondue dinner — Wirtshaus Galliker</div><div class="map-links"><a href="https://maps.google.com/?q=Wirtshaus+Galliker+Luzern" target="_blank" class="map-btn">📍 Galliker</a></div></div>
       </div>
-      <div class="map-links"><a href="https://www.booking.com/hotel/ch/barabas.html?checkin=2026-03-21&checkout=2026-03-24&group_adults=2&no_rooms=1" target="_blank" class="book-link">🏨 Book Barabas →</a><a href="https://maps.google.com/?q=Barabas+Luzern+hotel" target="_blank" class="map-btn">📍 Maps</a></div>
     </div>
+    <div class="hotel-box"><div class="hotel-name">Barabas Luzern ⭐⭐⭐⭐ <span class="tag book-now">BOOK NOW</span></div><div class="hotel-meta"><div class="hotel-meta-item">💰 <span>~RM1,499/3 nights</span></div><div class="hotel-meta-item">📊 <span>8.0 Very Good</span></div><div class="hotel-meta-item">📍 <span>350m Old Town · 9min station</span></div></div><div class="map-links"><a href="https://www.booking.com/hotel/ch/barabas.html?checkin=2026-03-21&checkout=2026-03-24&group_adults=2&no_rooms=1" target="_blank" class="book-link">🏨 Book →</a><a href="https://maps.google.com/?q=Barabas+Luzern+hotel" target="_blank" class="map-btn">📍 Maps</a></div></div>
   </div>
 </div>
 
 <!-- MAR 22 -->
 <div id="tab-mar22" class="tab-content">
-  <div class="card"><div class="card-header"><span class="card-icon">🏔️</span><span class="card-title">Sun Mar 22 — Mount Titlis / Engelberg</span></div><div class="luggage-note">🧳 All bags stay at Barabas Luzern. Day pack only.</div></div>
-  <div class="card">
-    <div class="card-header"><span class="card-icon">🚂</span><span class="card-title">Train: Lucerne → Engelberg (DIRECT, 43min)</span></div>
-    <div class="train-box">
-      <div class="train-route"><span class="train-from">Luzern Hbf</span><span class="train-arrow">→</span><span class="train-to">Engelberg</span></div>
-      <div class="train-details">
-        <div class="train-detail"><div class="train-detail-label">Depart</div><div class="train-detail-value">08:10</div></div>
-        <div class="train-detail"><div class="train-detail-label">Arrive</div><div class="train-detail-value">08:53</div></div>
-        <div class="train-detail"><div class="train-detail-label">Return</div><div class="train-detail-value">16:10</div></div>
-      </div>
-      <div class="train-note">InterRegio DIRECT · No changes · Return 16:10 → arrive 16:53</div>
-      <div class="train-actions"><a href="https://www.sbb.ch/en/buying/pages/fahrplan/fahrplan.xhtml?von=Luzern&nach=Engelberg&datum=22.03.2026&zeit=08:00&an=0" target="_blank" class="book-link">🚂 Book SBB →</a><a href="https://maps.google.com/?q=Engelberg+train+station+Switzerland" target="_blank" class="map-btn">📍 Engelberg Station</a></div>
-    </div>
+  <div class="day-hero" style="background-image:url('https://source.unsplash.com/featured/900x400/?mount+titlis,engelberg,snow,alps')">
+    <div class="day-hero-info"><div class="day-hero-label">Mount Titlis — 3,238m</div><div class="day-hero-sub">Sun Mar 22 · Engelberg day trip · Europe's highest suspension bridge</div></div>
   </div>
-  <div class="card">
-    <div class="card-header"><span class="card-icon">🕐</span><span class="card-title">Day Plan</span></div>
-    <div class="timeline">
-      <div class="tl-item"><div class="tl-time">07:15</div><div class="tl-text">Early breakfast · Wear warm layers (summit −5°C)</div></div>
-      <div class="tl-item"><div class="tl-time">08:10</div><div class="tl-text">🚂 Train departs Lucerne Platform 12</div></div>
-      <div class="tl-item highlight"><div class="tl-time">09:15</div><div class="tl-text">🚡 Rotair Cable Car → Mount Titlis 3,238m</div><div class="tl-sub">~CHF 92pp return · World's first rotating gondola · 360° views</div><div class="map-links"><a href="https://maps.google.com/?q=Titlis+Rotair+cable+car+Engelberg" target="_blank" class="map-btn">📍 Titlis Rotair</a></div></div>
-      <div class="tl-item highlight"><div class="tl-time">10:00–13:00</div><div class="tl-text">🏔️ Summit 3,238m — Cliff Walk + Glacier Cave + Ice Flyer</div><div class="tl-sub">Titlis Cliff Walk = Europe's highest suspension bridge 😱 · Snow guaranteed</div><div class="map-links"><a href="https://maps.google.com/?q=Mount+Titlis+summit+Switzerland" target="_blank" class="map-btn">📍 Titlis Summit</a></div></div>
-      <div class="tl-item"><div class="tl-time">13:00</div><div class="tl-text">🍽️ Lunch at summit restaurant · CHF 25-35</div></div>
-      <div class="tl-item"><div class="tl-time">15:00</div><div class="tl-text">Engelberg monastery village</div><div class="map-links"><a href="https://maps.google.com/?q=Kloster+Engelberg+monastery" target="_blank" class="map-btn">📍 Monastery</a></div></div>
-      <div class="tl-item"><div class="tl-time">16:10</div><div class="tl-text">🚂 Return → Lucerne (43min direct)</div></div>
+  <div class="tab-inner">
+    <div class="luggage-note">🧳 All bags stay at Barabas Luzern. Day pack only.</div>
+    <div class="train-box">
+      <div class="train-route"><span class="train-from">Luzern Hbf</span><span class="train-arrow">→</span><span class="train-to">Engelberg (DIRECT)</span></div>
+      <div class="train-details"><div class="train-detail"><div class="train-detail-label">Depart</div><div class="train-detail-value">08:10</div></div><div class="train-detail"><div class="train-detail-label">Arrive</div><div class="train-detail-value">08:53</div></div><div class="train-detail"><div class="train-detail-label">Return</div><div class="train-detail-value">16:10</div></div></div>
+      <div class="train-note">InterRegio · DIRECT 43min · Platform 12</div>
+      <div class="train-actions"><a href="https://www.sbb.ch/en/buying/pages/fahrplan/fahrplan.xhtml?von=Luzern&nach=Engelberg&datum=22.03.2026&zeit=08:00&an=0" target="_blank" class="book-link">🚂 Book SBB →</a><a href="https://maps.google.com/?q=Engelberg+train+station+Switzerland" target="_blank" class="map-btn">📍 Engelberg</a></div>
+    </div>
+    <div class="card"><div class="card-header"><span class="card-icon">🕐</span><span class="card-title">Day Plan</span></div>
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-time">07:15</div><div class="tl-text">Early breakfast · Wear warm layers (summit −5°C)</div></div>
+        <div class="tl-item highlight"><div class="tl-time">09:15</div><div class="tl-text">🚡 Rotair Cable Car → 3,238m · World's first rotating gondola</div><div class="map-links"><a href="https://maps.google.com/?q=Titlis+Rotair+cable+car+Engelberg" target="_blank" class="map-btn">📍 Rotair</a></div></div>
+        <div class="tl-item highlight"><div class="tl-time">10:00–13:00</div><div class="tl-text">🏔️ Summit: Cliff Walk + Glacier Cave + Ice Flyer</div><div class="tl-sub">Cliff Walk = Europe's highest suspension bridge 😱 · Snow guaranteed ❄️</div><div class="map-links"><a href="https://maps.google.com/?q=Mount+Titlis+summit+Switzerland" target="_blank" class="map-btn">📍 Summit</a></div></div>
+        <div class="tl-item"><div class="tl-time">13:00</div><div class="tl-text">🍽️ Summit restaurant · Rösti + soup · CHF 25-35</div></div>
+        <div class="tl-item"><div class="tl-time">15:00</div><div class="tl-text">Engelberg monastery village</div><div class="map-links"><a href="https://maps.google.com/?q=Kloster+Engelberg+monastery" target="_blank" class="map-btn">📍 Monastery</a></div></div>
+        <div class="tl-item"><div class="tl-time">16:10</div><div class="tl-text">🚂 Return → Lucerne (43min direct)</div></div>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- MAR 23 -->
 <div id="tab-mar23" class="tab-content">
-  <div class="card"><div class="card-header"><span class="card-icon">⛰️</span><span class="card-title">Mon Mar 23 — Interlaken / Grindelwald</span></div><div class="luggage-note">🧳 All bags stay at Barabas Luzern. Pack tonight for Venice tomorrow.</div></div>
-  <div class="card">
-    <div class="card-header"><span class="card-icon">🚂</span><span class="card-title">Train: Lucerne → Interlaken (PanoramaExpress)</span></div>
+  <div class="day-hero" style="background-image:url('https://source.unsplash.com/featured/900x400/?grindelwald,eiger,bernese+alps')">
+    <div class="day-hero-info"><div class="day-hero-label">Grindelwald + Interlaken</div><div class="day-hero-sub">Mon Mar 23 · PanoramaExpress · Eiger north face</div></div>
+  </div>
+  <div class="tab-inner">
+    <div class="luggage-note">🧳 All bags stay at Barabas Luzern. Pack tonight for Venice tomorrow.</div>
     <div class="train-box">
       <div class="train-route"><span class="train-from">Luzern Hbf</span><span class="train-arrow">→</span><span class="train-to">Interlaken Ost</span></div>
-      <div class="train-details">
-        <div class="train-detail"><div class="train-detail-label">Depart</div><div class="train-detail-value">08:06</div></div>
-        <div class="train-detail"><div class="train-detail-label">Arrive</div><div class="train-detail-value">09:54</div></div>
-        <div class="train-detail"><div class="train-detail-label">Return</div><div class="train-detail-value">17:06</div></div>
-      </div>
-      <div class="train-note">⭐ PanoramaExpress DIRECT · Sit RIGHT side for Eiger views</div>
+      <div class="train-details"><div class="train-detail"><div class="train-detail-label">Depart</div><div class="train-detail-value">08:06</div></div><div class="train-detail"><div class="train-detail-label">Arrive</div><div class="train-detail-value">09:54</div></div><div class="train-detail"><div class="train-detail-label">Return</div><div class="train-detail-value">17:06</div></div></div>
+      <div class="train-note">⭐ PanoramaExpress DIRECT · Sit RIGHT side · Brünig Pass</div>
       <div class="train-actions"><a href="https://www.sbb.ch/en/buying/pages/fahrplan/fahrplan.xhtml?von=Luzern&nach=Interlaken+Ost&datum=23.03.2026&zeit=08:00&an=0" target="_blank" class="book-link">🚂 Book SBB →</a><a href="https://maps.google.com/?q=Interlaken+Ost+train+station" target="_blank" class="map-btn">📍 Interlaken Ost</a></div>
     </div>
-  </div>
-  <div class="card">
-    <div class="card-header"><span class="card-icon">🕐</span><span class="card-title">Day Plan</span></div>
-    <div class="timeline">
-      <div class="tl-item"><div class="tl-time">08:06</div><div class="tl-text">🚂 PanoramaExpress · Sit on RIGHT side</div></div>
-      <div class="tl-item"><div class="tl-time">10:05</div><div class="tl-text">BOB Railway: Interlaken Ost → Grindelwald (~35min)</div><div class="map-links"><a href="https://maps.google.com/?q=Grindelwald+village+Switzerland" target="_blank" class="map-btn">📍 Grindelwald</a></div></div>
-      <div class="tl-item highlight"><div class="tl-time">11:00–13:00</div><div class="tl-text">🏔️ Grindelwald First Gondola → 2,168m</div><div class="tl-sub">CHF 65pp return · Eiger, Mönch, Jungfrau views · First Cliff Walk</div><div class="map-links"><a href="https://maps.google.com/?q=Grindelwald+First+gondola+station" target="_blank" class="map-btn">📍 First Gondola</a></div></div>
-      <div class="tl-item"><div class="tl-time">13:30</div><div class="tl-text">🍽️ Lunch in Grindelwald village · ~CHF 25-30</div><div class="map-links"><a href="https://maps.google.com/?q=restaurants+Grindelwald+Switzerland" target="_blank" class="map-btn">📍 Grindelwald Restaurants</a></div></div>
-      <div class="tl-item"><div class="tl-time">15:15</div><div class="tl-text">Interlaken Höheweg promenade · Both lakes visible</div><div class="map-links"><a href="https://maps.google.com/?q=Höheweg+Interlaken+Switzerland" target="_blank" class="map-btn">📍 Höheweg</a></div></div>
-      <div class="tl-item"><div class="tl-time">17:06</div><div class="tl-text">🚂 PanoramaExpress return → Lucerne (1h48)</div></div>
+    <div class="card"><div class="card-header"><span class="card-icon">🕐</span><span class="card-title">Day Plan</span></div>
+      <div class="timeline">
+        <div class="tl-item highlight"><div class="tl-time">10:05</div><div class="tl-text">BOB Railway → Grindelwald (~35min) · Eiger comes into view</div><div class="map-links"><a href="https://maps.google.com/?q=Grindelwald+village+Switzerland" target="_blank" class="map-btn">📍 Grindelwald</a></div></div>
+        <div class="tl-item highlight"><div class="tl-time">11:00</div><div class="tl-text">🏔️ Grindelwald First Gondola → 2,168m</div><div class="tl-sub">CHF 65pp · Eiger + Mönch + Jungfrau visible · First Cliff Walk</div><div class="map-links"><a href="https://maps.google.com/?q=Grindelwald+First+gondola+station" target="_blank" class="map-btn">📍 First Gondola</a></div></div>
+        <div class="tl-item"><div class="tl-time">13:30</div><div class="tl-text">🍽️ Lunch in Grindelwald village · CHF 25-30</div><div class="map-links"><a href="https://maps.google.com/?q=restaurants+Grindelwald+Switzerland" target="_blank" class="map-btn">📍 Restaurants</a></div></div>
+        <div class="tl-item"><div class="tl-time">15:15</div><div class="tl-text">Interlaken Höheweg promenade · Both lakes visible</div><div class="map-links"><a href="https://maps.google.com/?q=Höheweg+Interlaken+Switzerland" target="_blank" class="map-btn">📍 Höheweg</a></div></div>
+        <div class="tl-item"><div class="tl-time">17:06</div><div class="tl-text">🚂 PanoramaExpress return → Lucerne</div></div>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- MAR 24 -->
 <div id="tab-mar24" class="tab-content">
-  <div class="card"><div class="card-header"><span class="card-icon">🚂</span><span class="card-title">Tue Mar 24 — Lucerne → Venice</span></div><div class="luggage-note">🧳 Full checkout Barabas. All bags on train. Store at Santa Lucia left luggage if needed.</div></div>
-  <div class="card">
-    <div class="card-header"><span class="card-icon">🚂</span><span class="card-title">Train: Lucerne → Venice <span class="tag book-now">BOOK NOW</span></span></div>
-    <div class="train-box">
-      <div class="train-route"><span class="train-from">Luzern Hbf</span><span class="train-arrow">→</span><span class="train-to">Venezia S.Lucia</span></div>
-      <div class="train-details">
-        <div class="train-detail"><div class="train-detail-label">Depart</div><div class="train-detail-value">08:18</div></div>
-        <div class="train-detail"><div class="train-detail-label">Arrive</div><div class="train-detail-value">14:12</div></div>
-        <div class="train-detail"><div class="train-detail-label">Duration</div><div class="train-detail-value">5h54</div></div>
+  <div class="day-hero" style="background-image:url('https://source.unsplash.com/featured/900x400/?venice,grand+canal,gondola')">
+    <div class="day-hero-info"><div class="day-hero-label">Venice</div><div class="day-hero-sub">Tue Mar 24 · Travel day · Lucerne → Venice</div></div>
+  </div>
+  <div class="tab-inner">
+    <div class="luggage-note">🧳 Full checkout Barabas. All bags on train. Store at Santa Lucia if needed.</div>
+    <div class="card"><div class="card-header"><span class="card-icon">🚂</span><span class="card-title">Train: Lucerne → Venice <span class="tag book-now">BOOK NOW</span></span></div>
+      <div class="train-box">
+        <div class="train-route"><span class="train-from">Luzern Hbf</span><span class="train-arrow">→</span><span class="train-to">Venezia S.Lucia</span></div>
+        <div class="train-details"><div class="train-detail"><div class="train-detail-label">Depart</div><div class="train-detail-value">08:18</div></div><div class="train-detail"><div class="train-detail-label">Arrive</div><div class="train-detail-value">14:12</div></div><div class="train-detail"><div class="train-detail-label">Duration</div><div class="train-detail-value">5h54</div></div></div>
+        <div class="train-note">⚠️ RESERVATION OBLIGATOIRE · 2 changes · Via Lugano + Milan</div>
+        <div class="train-actions"><a href="https://www.sbb.ch/en/buying/pages/fahrplan/fahrplan.xhtml?von=Luzern&nach=Venezia+Santa+Lucia&datum=24.03.2026&zeit=08:00&an=0" target="_blank" class="book-link">🚂 Book SBB →</a><a href="https://maps.google.com/?q=Venezia+Santa+Lucia+train+station" target="_blank" class="map-btn">📍 Santa Lucia</a></div>
       </div>
-      <div class="train-note">⚠️ RESERVATION OBLIGATOIRE · 2 changes · Must book sbb.ch</div>
-      <div class="train-actions"><a href="https://www.sbb.ch/en/buying/pages/fahrplan/fahrplan.xhtml?von=Luzern&nach=Venezia+Santa+Lucia&datum=24.03.2026&zeit=08:00&an=0" target="_blank" class="book-link">🚂 Book on SBB →</a><a href="https://maps.google.com/?q=Venezia+Santa+Lucia+train+station" target="_blank" class="map-btn">📍 Santa Lucia Station</a></div>
     </div>
-  </div>
-  <div class="card">
-    <div class="card-header"><span class="card-icon">🏨</span><span class="card-title">Venice Hotel <span class="tag book-now">BOOK THIS WEEK</span></span></div>
-    <div class="hotel-box">
-      <div class="hotel-name">Hotel Antiche Figure</div>
-      <div class="hotel-meta"><div class="hotel-meta-item">📍 <span>Near Venezia Santa Lucia station</span></div><div class="hotel-meta-item">🗓️ <span>Mar 24–26 · 2 nights</span></div></div>
-      <div class="map-links"><a href="https://www.booking.com/hotel/it/antiche-figure.html?checkin=2026-03-24&checkout=2026-03-26&group_adults=2&no_rooms=1" target="_blank" class="book-link">🏨 Book Hotel →</a><a href="https://maps.google.com/?q=Hotel+Antiche+Figure+Venice" target="_blank" class="map-btn">📍 Maps</a></div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-header"><span class="card-icon">🕐</span><span class="card-title">Evening Plan</span></div>
-    <div class="timeline">
-      <div class="tl-item highlight"><div class="tl-time">14:12</div><div class="tl-text">🚢 Arrive Venice — you're on an island!</div></div>
-      <div class="tl-item"><div class="tl-time">17:00</div><div class="tl-text">🌉 Rialto Bridge + surroundings</div><div class="map-links"><a href="https://maps.google.com/?q=Rialto+Bridge+Venice" target="_blank" class="map-btn">📍 Rialto Bridge</a></div></div>
-      <div class="tl-item highlight"><div class="tl-time">19:00</div><div class="tl-text">🚣 Evening gondola ride · €80-100/gondola (30min)</div><div class="map-links"><a href="https://maps.google.com/?q=gondola+ride+Venice+Rialto" target="_blank" class="map-btn">📍 Gondola Stations</a></div></div>
-      <div class="tl-item"><div class="tl-time">20:30</div><div class="tl-text">🍽️ Dinner + Spritz in Dorsoduro</div><div class="map-links"><a href="https://maps.google.com/?q=Dorsoduro+Venice+restaurants" target="_blank" class="map-btn">📍 Dorsoduro</a></div></div>
+    <div class="hotel-box" style="margin-bottom:12px"><div class="hotel-name">Hotel Antiche Figure <span class="tag book-now">BOOK THIS WEEK</span></div><div class="hotel-meta"><div class="hotel-meta-item">📍 <span>Near Santa Lucia station · Mar 24–26</span></div></div><div class="map-links"><a href="https://www.booking.com/hotel/it/antiche-figure.html?checkin=2026-03-24&checkout=2026-03-26&group_adults=2&no_rooms=1" target="_blank" class="book-link">🏨 Book →</a><a href="https://maps.google.com/?q=Hotel+Antiche+Figure+Venice" target="_blank" class="map-btn">📍 Maps</a></div></div>
+    <div class="card"><div class="card-header"><span class="card-icon">🕐</span><span class="card-title">Evening Plan</span></div>
+      <div class="timeline">
+        <div class="tl-item highlight"><div class="tl-time">14:12</div><div class="tl-text">🚢 Arrive Venice — you're on an island!</div></div>
+        <div class="tl-item"><div class="tl-time">17:00</div><div class="tl-text">🌉 Rialto Bridge wander</div><div class="map-links"><a href="https://maps.google.com/?q=Rialto+Bridge+Venice" target="_blank" class="map-btn">📍 Rialto Bridge</a></div></div>
+        <div class="tl-item highlight"><div class="tl-time">19:00</div><div class="tl-text">🚣 Evening gondola ride · €80-100/gondola</div><div class="map-links"><a href="https://maps.google.com/?q=gondola+ride+Venice+Rialto" target="_blank" class="map-btn">📍 Gondola</a></div></div>
+        <div class="tl-item"><div class="tl-time">20:30</div><div class="tl-text">🍽️ Cicchetti + Spritz in Dorsoduro</div><div class="map-links"><a href="https://maps.google.com/?q=Dorsoduro+Venice+restaurants" target="_blank" class="map-btn">📍 Dorsoduro</a></div></div>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- MAR 25 -->
 <div id="tab-mar25" class="tab-content">
-  <div class="card"><div class="card-header"><span class="card-icon">🛶</span><span class="card-title">Wed Mar 25 — Full Venice Day</span></div><div class="luggage-note">🧳 All bags at hotel. Day pack only. Venice is car-free.</div></div>
-  <div class="card">
-    <div class="card-header"><span class="card-icon">🕐</span><span class="card-title">Day Plan</span></div>
-    <div class="timeline">
-      <div class="tl-item highlight"><div class="tl-time">08:30</div><div class="tl-text">⛪ St Mark's Basilica — arrive early (free + pre-book)</div><div class="map-links"><a href="https://maps.google.com/?q=Basilica+di+San+Marco+Venice" target="_blank" class="map-btn">📍 St Mark's</a><a href="https://maps.google.com/?q=Piazza+San+Marco+Venice" target="_blank" class="map-btn">📍 Piazza San Marco</a></div></div>
-      <div class="tl-item"><div class="tl-time">10:00</div><div class="tl-text">🏛️ Doge's Palace — €25pp pre-book</div><div class="map-links"><a href="https://maps.google.com/?q=Palazzo+Ducale+Venice" target="_blank" class="map-btn">📍 Doge's Palace</a></div></div>
-      <div class="tl-item"><div class="tl-time">12:30</div><div class="tl-text">🍽️ Lunch: Campo Santa Margherita area</div><div class="tl-sub">Sarde in saor · Risotto al nero di seppia · ~€15-20pp</div><div class="map-links"><a href="https://maps.google.com/?q=Campo+Santa+Margherita+Venice" target="_blank" class="map-btn">📍 Campo S. Margherita</a></div></div>
-      <div class="tl-item"><div class="tl-time">17:00</div><div class="tl-text">🍹 Aperol Spritz at Cantina Do Mori — oldest bar in Venice (1462)</div><div class="map-links"><a href="https://maps.google.com/?q=Cantina+Do+Mori+Venice" target="_blank" class="map-btn">📍 Cantina Do Mori</a></div></div>
-      <div class="tl-item highlight"><div class="tl-time">20:00</div><div class="tl-text">🍽️ Dinner: Osteria alle Testiere — reservation needed</div><div class="map-links"><a href="https://maps.google.com/?q=Osteria+alle+Testiere+Venice" target="_blank" class="map-btn">📍 Osteria alle Testiere</a></div></div>
+  <div class="day-hero" style="background-image:url('https://source.unsplash.com/featured/900x400/?venice,piazza+san+marco,basilica')">
+    <div class="day-hero-info"><div class="day-hero-label">Venice — Full Day</div><div class="day-hero-sub">Wed Mar 25 · St Mark's · Doge's Palace · Bacari</div></div>
+  </div>
+  <div class="tab-inner">
+    <div class="card"><div class="card-header"><span class="card-icon">🕐</span><span class="card-title">Day Plan</span></div>
+      <div class="timeline">
+        <div class="tl-item highlight"><div class="tl-time">08:30</div><div class="tl-text">⛪ St Mark's Basilica — arrive early (free, pre-book slot)</div><div class="map-links"><a href="https://maps.google.com/?q=Basilica+di+San+Marco+Venice" target="_blank" class="map-btn">📍 St Mark's</a><a href="https://maps.google.com/?q=Piazza+San+Marco+Venice" target="_blank" class="map-btn">📍 Piazza</a></div></div>
+        <div class="tl-item"><div class="tl-time">10:00</div><div class="tl-text">🏛️ Doge's Palace — Bridge of Sighs inside (€25pp)</div><div class="map-links"><a href="https://maps.google.com/?q=Palazzo+Ducale+Venice" target="_blank" class="map-btn">📍 Doge's Palace</a></div></div>
+        <div class="tl-item"><div class="tl-time">12:30</div><div class="tl-text">🍽️ Lunch: Campo Santa Margherita</div><div class="tl-sub">Sarde in saor · Risotto al nero di seppia · ~€15-20pp</div><div class="map-links"><a href="https://maps.google.com/?q=Campo+Santa+Margherita+Venice" target="_blank" class="map-btn">📍 Campo S. Margherita</a></div></div>
+        <div class="tl-item"><div class="tl-time">17:00</div><div class="tl-text">🍹 Aperol Spritz at Cantina Do Mori — oldest bar in Venice (1462)</div><div class="map-links"><a href="https://maps.google.com/?q=Cantina+Do+Mori+Venice" target="_blank" class="map-btn">📍 Cantina Do Mori</a></div></div>
+        <div class="tl-item highlight"><div class="tl-time">20:00</div><div class="tl-text">🍽️ Osteria alle Testiere — reservation needed</div><div class="map-links"><a href="https://maps.google.com/?q=Osteria+alle+Testiere+Venice" target="_blank" class="map-btn">📍 Osteria</a></div></div>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- MAR 26 -->
 <div id="tab-mar26" class="tab-content">
-  <div class="card"><div class="card-header"><span class="card-icon">🚂</span><span class="card-title">Thu Mar 26 — Venice → Florence</span></div><div class="luggage-note">🧳 Full checkout Venice. Bags on Frecciarossa.</div></div>
-  <div class="card">
-    <div class="card-header"><span class="card-icon">🚂</span><span class="card-title">Train: Venice → Florence <span class="tag book-now">BOOK THIS WEEK</span></span></div>
+  <div class="day-hero" style="background-image:url('https://source.unsplash.com/featured/900x400/?florence,ponte+vecchio,arno')">
+    <div class="day-hero-info"><div class="day-hero-label">Florence</div><div class="day-hero-sub">Thu Mar 26 · Travel day · Venice → Florence</div></div>
+  </div>
+  <div class="tab-inner">
     <div class="train-box">
       <div class="train-route"><span class="train-from">Venezia S.Lucia</span><span class="train-arrow">→</span><span class="train-to">Firenze S.M.N.</span></div>
-      <div class="train-details">
-        <div class="train-detail"><div class="train-detail-label">Depart</div><div class="train-detail-value">10:26</div></div>
-        <div class="train-detail"><div class="train-detail-label">Arrive</div><div class="train-detail-value">~13:00</div></div>
-        <div class="train-detail"><div class="train-detail-label">Type</div><div class="train-detail-value">Frecciarossa</div></div>
-      </div>
-      <div class="train-note">1 change · Reservation required · Book trenitalia.com</div>
+      <div class="train-details"><div class="train-detail"><div class="train-detail-label">Depart</div><div class="train-detail-value">10:26</div></div><div class="train-detail"><div class="train-detail-label">Arrive</div><div class="train-detail-value">~13:00</div></div><div class="train-detail"><div class="train-detail-label">Type</div><div class="train-detail-value">Frecciarossa</div></div></div>
+      <div class="train-note">1 change · Reservation required</div>
       <div class="train-actions"><a href="https://www.trenitalia.com/en.html" target="_blank" class="book-link">🚂 Book Trenitalia →</a><a href="https://maps.google.com/?q=Firenze+Santa+Maria+Novella+station" target="_blank" class="map-btn">📍 Firenze SMN</a></div>
     </div>
-  </div>
-  <div class="card">
-    <div class="card-header"><span class="card-icon">🏨</span><span class="card-title">Florence Hotel <span class="tag book-now">BOOK THIS WEEK</span></span></div>
-    <div class="hotel-box">
-      <div class="hotel-name">Hotel Davanzati</div>
-      <div class="hotel-meta"><div class="hotel-meta-item">💰 <span>~AUD 135/night</span> · 2 nights</div><div class="hotel-meta-item">📍 <span>Central Florence, near Piazza della Repubblica</span></div></div>
-      <div class="map-links"><a href="https://www.booking.com/hotel/it/davanzati.html?checkin=2026-03-26&checkout=2026-03-28&group_adults=2&no_rooms=1" target="_blank" class="book-link">🏨 Book Hotel →</a><a href="https://maps.google.com/?q=Hotel+Davanzati+Florence" target="_blank" class="map-btn">📍 Maps</a></div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-header"><span class="card-icon">🕐</span><span class="card-title">Afternoon/Evening Plan</span></div>
-    <div class="timeline">
-      <div class="tl-item"><div class="tl-time">14:00</div><div class="tl-text">🕌 Duomo exterior + Baptistery</div><div class="map-links"><a href="https://maps.google.com/?q=Florence+Cathedral+Duomo" target="_blank" class="map-btn">📍 Duomo</a></div></div>
-      <div class="tl-item"><div class="tl-time">15:30</div><div class="tl-text">🌉 Ponte Vecchio · Oltrarno walk</div><div class="map-links"><a href="https://maps.google.com/?q=Ponte+Vecchio+Florence" target="_blank" class="map-btn">📍 Ponte Vecchio</a></div></div>
-      <div class="tl-item highlight"><div class="tl-time">~19:00</div><div class="tl-text">🌅 Piazzale Michelangelo — best Florence sunset</div><div class="map-links"><a href="https://maps.google.com/?q=Piazzale+Michelangelo+Florence" target="_blank" class="map-btn">📍 Piazzale Michelangelo</a></div></div>
+    <div class="hotel-box" style="margin-bottom:12px"><div class="hotel-name">Hotel Davanzati <span class="tag book-now">BOOK THIS WEEK</span></div><div class="hotel-meta"><div class="hotel-meta-item">💰 <span>~AUD 135/nt · 2 nights</span></div><div class="hotel-meta-item">📍 <span>Central Florence</span></div></div><div class="map-links"><a href="https://www.booking.com/hotel/it/davanzati.html?checkin=2026-03-26&checkout=2026-03-28&group_adults=2&no_rooms=1" target="_blank" class="book-link">🏨 Book →</a><a href="https://maps.google.com/?q=Hotel+Davanzati+Florence" target="_blank" class="map-btn">📍 Maps</a></div></div>
+    <div class="card"><div class="card-header"><span class="card-icon">🕐</span><span class="card-title">Afternoon/Evening</span></div>
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-time">14:00</div><div class="tl-text">Duomo exterior + Baptistery</div><div class="map-links"><a href="https://maps.google.com/?q=Florence+Cathedral+Duomo" target="_blank" class="map-btn">📍 Duomo</a></div></div>
+        <div class="tl-item"><div class="tl-time">15:30</div><div class="tl-text">Ponte Vecchio · Oltrarno</div><div class="map-links"><a href="https://maps.google.com/?q=Ponte+Vecchio+Florence" target="_blank" class="map-btn">📍 Ponte Vecchio</a></div></div>
+        <div class="tl-item highlight"><div class="tl-time">~19:00</div><div class="tl-text">🌅 Piazzale Michelangelo — BEST Florence sunset</div><div class="map-links"><a href="https://maps.google.com/?q=Piazzale+Michelangelo+Florence" target="_blank" class="map-btn">📍 Piazzale</a></div></div>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- MAR 27 -->
 <div id="tab-mar27" class="tab-content">
-  <div class="card"><div class="card-header"><span class="card-icon">🎨</span><span class="card-title">Fri Mar 27 — Full Florence Day</span></div><div class="luggage-note">🧳 All bags at Hotel Davanzati. Pack tonight for Tuscany drive tomorrow.</div></div>
-  <div class="card">
-    <div class="card-header"><span class="card-icon">🕐</span><span class="card-title">Day Plan</span></div>
-    <div class="timeline">
-      <div class="tl-item highlight"><div class="tl-time">08:00</div><div class="tl-text">🖼️ Uffizi Gallery — arrive at opening <span class="tag book-now">PRE-BOOK</span></div><div class="tl-sub">~€20pp · Botticelli's Venus · da Vinci · Plan 2.5hrs</div><div class="map-links"><a href="https://www.uffizi.it/en/tickets" target="_blank" class="book-link">🖼️ Book Uffizi →</a><a href="https://maps.google.com/?q=Uffizi+Gallery+Florence" target="_blank" class="map-btn">📍 Uffizi</a></div></div>
-      <div class="tl-item"><div class="tl-time">10:30</div><div class="tl-text">🗿 Accademia — Michelangelo's David (~€16pp)</div><div class="map-links"><a href="https://maps.google.com/?q=Galleria+dell+Accademia+Florence" target="_blank" class="map-btn">📍 Accademia</a></div></div>
-      <div class="tl-item highlight"><div class="tl-time">12:30</div><div class="tl-text">🥪 Nerbone at Mercato Centrale — lampredotto sandwich</div><div class="tl-sub">Must try · €6-8 · Authentic market lunch</div><div class="map-links"><a href="https://maps.google.com/?q=Nerbone+Mercato+Centrale+Florence" target="_blank" class="map-btn">📍 Nerbone</a></div></div>
-      <div class="tl-item"><div class="tl-time">15:30</div><div class="tl-text">San Lorenzo leather market · Gelato</div><div class="map-links"><a href="https://maps.google.com/?q=Gelateria+dei+Neri+Florence" target="_blank" class="map-btn">📍 Gelateria dei Neri</a></div></div>
-      <div class="tl-item highlight"><div class="tl-time">19:00</div><div class="tl-text">🥩 Bistecca alla Fiorentina — Buca Mario</div><div class="tl-sub">1.2kg T-bone Chianina beef · Always rare · ~€50pp · Best in world</div><div class="map-links"><a href="https://maps.google.com/?q=Buca+Mario+Florence" target="_blank" class="map-btn">📍 Buca Mario</a></div></div>
+  <div class="day-hero" style="background-image:url('https://source.unsplash.com/featured/900x400/?uffizi,florence,renaissance,art')">
+    <div class="day-hero-info"><div class="day-hero-label">Florence — Full Day</div><div class="day-hero-sub">Fri Mar 27 · Uffizi · David · Bistecca</div></div>
+  </div>
+  <div class="tab-inner">
+    <div class="card"><div class="card-header"><span class="card-icon">🕐</span><span class="card-title">Day Plan</span></div>
+      <div class="timeline">
+        <div class="tl-item highlight"><div class="tl-time">08:00</div><div class="tl-text">🖼️ Uffizi Gallery — arrive at opening <span class="tag book-now">PRE-BOOK</span></div><div class="tl-sub">~€20pp · Botticelli's Venus · 2.5hrs</div><div class="map-links"><a href="https://www.uffizi.it/en/tickets" target="_blank" class="book-link">🖼️ Book Uffizi →</a><a href="https://maps.google.com/?q=Uffizi+Gallery+Florence" target="_blank" class="map-btn">📍 Uffizi</a></div></div>
+        <div class="tl-item"><div class="tl-time">10:30</div><div class="tl-text">🗿 Accademia — Michelangelo's David (~€16pp)</div><div class="map-links"><a href="https://maps.google.com/?q=Galleria+dell+Accademia+Florence" target="_blank" class="map-btn">📍 Accademia</a></div></div>
+        <div class="tl-item highlight"><div class="tl-time">12:30</div><div class="tl-text">🥪 Nerbone — lampredotto sandwich at Mercato Centrale</div><div class="tl-sub">€6-8 · Authentic market lunch · Must try</div><div class="map-links"><a href="https://maps.google.com/?q=Nerbone+Mercato+Centrale+Florence" target="_blank" class="map-btn">📍 Nerbone</a></div></div>
+        <div class="tl-item"><div class="tl-time">15:30</div><div class="tl-text">San Lorenzo market · Best gelato: Gelateria dei Neri</div><div class="map-links"><a href="https://maps.google.com/?q=Gelateria+dei+Neri+Florence" target="_blank" class="map-btn">📍 Gelateria</a></div></div>
+        <div class="tl-item highlight"><div class="tl-time">19:00</div><div class="tl-text">🥩 Bistecca alla Fiorentina — Buca Mario</div><div class="tl-sub">1.2kg Chianina T-bone · Always rare · ~€50pp · Best in world</div><div class="map-links"><a href="https://maps.google.com/?q=Buca+Mario+Florence" target="_blank" class="map-btn">📍 Buca Mario</a></div></div>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- MAR 28 -->
 <div id="tab-mar28" class="tab-content">
-  <div class="card"><div class="card-header"><span class="card-icon">🚗</span><span class="card-title">Sat Mar 28 — Tuscany Drive → Rome</span></div><div class="luggage-note">🧳 Full checkout Florence. All bags in car. Drop car at Rome hotel garage.</div></div>
-  <div class="card">
-    <div class="card-header"><span class="card-icon">🚗</span><span class="card-title">Car Rental <span class="tag book-now">BOOK THIS WEEK</span></span></div>
-    <div class="hotel-box">
-      <div class="hotel-name">Pickup Florence · Drop Rome/FCO</div>
-      <div class="hotel-meta"><div class="hotel-meta-item">⏰ <span>Pickup 09:00</span></div><div class="hotel-meta-item">📍 <span>Florence city centre or Firenze SMN</span></div></div>
-      <div class="map-links"><a href="https://www.rentalcars.com/en/?pick_up=Florence%2C+Italy&drop_off=Rome%2C+Italy&pu_date=2026-03-28&do_date=2026-03-30" target="_blank" class="book-link">🚗 Book Car Rental →</a></div>
-    </div>
+  <div class="day-hero" style="background-image:url('https://source.unsplash.com/featured/900x400/?val+d+orcia,tuscany,cypress')">
+    <div class="day-hero-info"><div class="day-hero-label">Tuscany → Rome</div><div class="day-hero-sub">Sat Mar 28 · Val d'Orcia · Pienza · Montalcino</div></div>
   </div>
-  <div class="card">
-    <div class="card-header"><span class="card-icon">🗺️</span><span class="card-title">Tuscany Route</span></div>
-    <div class="timeline">
-      <div class="tl-item"><div class="tl-time">09:00</div><div class="tl-text">🚗 Pick up car · Head south on SR2 Via Cassia</div></div>
-      <div class="tl-item highlight"><div class="tl-time">~10:30</div><div class="tl-text">🌿 Val d'Orcia — UNESCO rolling hills landscape 📸</div><div class="map-links"><a href="https://maps.google.com/?q=Val+d'Orcia+Tuscany" target="_blank" class="map-btn">📍 Val d'Orcia</a><a href="https://maps.google.com/?q=Gladiator+road+Val+d'Orcia+cypresses" target="_blank" class="map-btn">📍 Cypress Road</a></div></div>
-      <div class="tl-item highlight"><div class="tl-time">~11:30</div><div class="tl-text">🏘️ Pienza — UNESCO hilltop Renaissance town</div><div class="tl-sub">Pecorino cheese tasting · Incredible valley views from walls</div><div class="map-links"><a href="https://maps.google.com/?q=Pienza+Tuscany" target="_blank" class="map-btn">📍 Pienza</a></div></div>
-      <div class="tl-item highlight"><div class="tl-time">~13:00</div><div class="tl-text">🍷 Montalcino — Brunello wine + lunch</div><div class="map-links"><a href="https://maps.google.com/?q=Montalcino+Tuscany" target="_blank" class="map-btn">📍 Montalcino</a></div></div>
-      <div class="tl-item"><div class="tl-time">15:00</div><div class="tl-text">Join A1 Autostrada → Rome (~2.5hrs, toll ~€8)</div></div>
-      <div class="tl-item highlight"><div class="tl-time">~18:30</div><div class="tl-text">🏨 Arrive Rome · Check in Hotel Artemide</div><div class="map-links"><a href="https://maps.google.com/?q=Hotel+Artemide+Via+Nazionale+Rome" target="_blank" class="map-btn">📍 Hotel Artemide</a></div></div>
-      <div class="tl-item"><div class="tl-time">20:00</div><div class="tl-text">🍽️ Trastevere dinner — Da Enzo al 29</div><div class="map-links"><a href="https://maps.google.com/?q=Da+Enzo+al+29+Trastevere+Rome" target="_blank" class="map-btn">📍 Da Enzo al 29</a><a href="https://maps.google.com/?q=Trastevere+Rome" target="_blank" class="map-btn">📍 Trastevere</a></div></div>
+  <div class="tab-inner">
+    <div class="luggage-note">🧳 Full checkout Florence. All bags in car. Drop at Rome hotel garage.</div>
+    <div class="hotel-box" style="margin-bottom:12px"><div class="hotel-name">Car Rental <span class="tag book-now">BOOK THIS WEEK</span></div><div class="hotel-meta"><div class="hotel-meta-item">⏰ <span>Pickup 09:00 Florence</span></div><div class="hotel-meta-item">📍 <span>Drop Rome/FCO</span></div></div><div class="map-links"><a href="https://www.rentalcars.com/en/?pick_up=Florence%2C+Italy&drop_off=Rome%2C+Italy&pu_date=2026-03-28&do_date=2026-03-30" target="_blank" class="book-link">🚗 Book Car →</a></div></div>
+    <div class="card"><div class="card-header"><span class="card-icon">🗺️</span><span class="card-title">Tuscany Route</span></div>
+      <div class="timeline">
+        <div class="tl-item highlight"><div class="tl-time">~10:30</div><div class="tl-text">🌿 Val d'Orcia — UNESCO landscape · Pull over anywhere 📸</div><div class="map-links"><a href="https://maps.google.com/?q=Val+d'Orcia+Tuscany" target="_blank" class="map-btn">📍 Val d'Orcia</a><a href="https://maps.google.com/?q=Gladiator+road+Val+d'Orcia+cypresses" target="_blank" class="map-btn">📍 Cypress Road</a></div></div>
+        <div class="tl-item highlight"><div class="tl-time">~11:30</div><div class="tl-text">🏘️ Pienza — Renaissance hilltop town · Pecorino tasting</div><div class="map-links"><a href="https://maps.google.com/?q=Pienza+Tuscany" target="_blank" class="map-btn">📍 Pienza</a></div></div>
+        <div class="tl-item highlight"><div class="tl-time">~13:00</div><div class="tl-text">🍷 Montalcino — Brunello wine + lunch</div><div class="map-links"><a href="https://maps.google.com/?q=Montalcino+Tuscany" target="_blank" class="map-btn">📍 Montalcino</a></div></div>
+        <div class="tl-item"><div class="tl-time">15:00</div><div class="tl-text">A1 Autostrada → Rome (~2.5hrs · toll ~€8)</div></div>
+        <div class="tl-item highlight"><div class="tl-time">~18:30</div><div class="tl-text">🏨 Arrive Rome · Hotel Artemide</div><div class="map-links"><a href="https://maps.google.com/?q=Hotel+Artemide+Via+Nazionale+Rome" target="_blank" class="map-btn">📍 Hotel Artemide</a></div></div>
+        <div class="tl-item"><div class="tl-time">20:00</div><div class="tl-text">🍽️ Trastevere — Da Enzo al 29</div><div class="map-links"><a href="https://maps.google.com/?q=Da+Enzo+al+29+Trastevere+Rome" target="_blank" class="map-btn">📍 Da Enzo</a><a href="https://maps.google.com/?q=Trastevere+Rome" target="_blank" class="map-btn">📍 Trastevere</a></div></div>
+      </div>
     </div>
-  </div>
-  <div class="card">
-    <div class="card-header"><span class="card-icon">🏨</span><span class="card-title">Rome Hotel <span class="tag book-now">BOOK THIS WEEK</span></span></div>
-    <div class="hotel-box">
-      <div class="hotel-name">Hotel Artemide ⭐⭐⭐⭐</div>
-      <div class="hotel-meta"><div class="hotel-meta-item">💰 <span>~AUD 145/night</span> · 2 nights</div><div class="hotel-meta-item">📍 <span>Via Nazionale, near Repubblica</span></div></div>
-      <div class="map-links"><a href="https://www.booking.com/hotel/it/artemide.html?checkin=2026-03-28&checkout=2026-03-30&group_adults=2&no_rooms=1" target="_blank" class="book-link">🏨 Book Hotel →</a><a href="https://maps.google.com/?q=Hotel+Artemide+Via+Nazionale+Rome" target="_blank" class="map-btn">📍 Maps</a></div>
-    </div>
+    <div class="hotel-box"><div class="hotel-name">Hotel Artemide ⭐⭐⭐⭐ <span class="tag book-now">BOOK THIS WEEK</span></div><div class="hotel-meta"><div class="hotel-meta-item">💰 <span>~AUD 145/nt · 2 nights</span></div><div class="hotel-meta-item">📍 <span>Via Nazionale, near Repubblica</span></div></div><div class="map-links"><a href="https://www.booking.com/hotel/it/artemide.html?checkin=2026-03-28&checkout=2026-03-30&group_adults=2&no_rooms=1" target="_blank" class="book-link">🏨 Book →</a><a href="https://maps.google.com/?q=Hotel+Artemide+Via+Nazionale+Rome" target="_blank" class="map-btn">📍 Maps</a></div></div>
   </div>
 </div>
 
 <!-- MAR 29 -->
 <div id="tab-mar29" class="tab-content">
-  <div class="card"><div class="card-header"><span class="card-icon">🏛️</span><span class="card-title">Sun Mar 29 — Full Rome Day</span></div><div class="luggage-note">🧳 All bags at Hotel Artemide. Tonight: pack for flight tomorrow.</div></div>
-  <div class="card">
-    <div class="card-header"><span class="card-icon">🕐</span><span class="card-title">Day Plan</span></div>
-    <div class="timeline">
-      <div class="tl-item highlight"><div class="tl-time">08:00</div><div class="tl-text">🏟️ Colosseum + Roman Forum — arrive at opening <span class="tag book-now">PRE-BOOK</span></div><div class="tl-sub">~€18pp combined · Also includes Palatine Hill</div><div class="map-links"><a href="https://ecm.coopculture.it/index.cfm?lang=en" target="_blank" class="book-link">🏟️ Book Colosseum →</a><a href="https://maps.google.com/?q=Colosseum+Rome" target="_blank" class="map-btn">📍 Colosseum</a><a href="https://maps.google.com/?q=Roman+Forum+Foro+Romano+Rome" target="_blank" class="map-btn">📍 Roman Forum</a></div></div>
-      <div class="tl-item"><div class="tl-time">11:00</div><div class="tl-text">Circus Maximus (free) · Aventine Orange Garden</div><div class="map-links"><a href="https://maps.google.com/?q=Giardino+degli+Aranci+Rome" target="_blank" class="map-btn">📍 Orange Garden</a></div></div>
-      <div class="tl-item"><div class="tl-time">13:00</div><div class="tl-text">🍽️ Lunch: Campo de' Fiori · supplì + pizza al taglio</div><div class="map-links"><a href="https://maps.google.com/?q=Campo+de+Fiori+Rome" target="_blank" class="map-btn">📍 Campo de' Fiori</a></div></div>
-      <div class="tl-item"><div class="tl-time">14:30</div><div class="tl-text">🕍 Pantheon (free · reservation needed)</div><div class="map-links"><a href="https://maps.google.com/?q=Pantheon+Rome" target="_blank" class="map-btn">📍 Pantheon</a></div></div>
-      <div class="tl-item highlight"><div class="tl-time">15:30</div><div class="tl-text">⛲ Trevi Fountain — mid-afternoon less crowded</div><div class="map-links"><a href="https://maps.google.com/?q=Trevi+Fountain+Rome" target="_blank" class="map-btn">📍 Trevi Fountain</a></div></div>
-      <div class="tl-item"><div class="tl-time">16:30</div><div class="tl-text">Spanish Steps · Via Condotti</div><div class="map-links"><a href="https://maps.google.com/?q=Spanish+Steps+Rome" target="_blank" class="map-btn">📍 Spanish Steps</a></div></div>
-      <div class="tl-item highlight"><div class="tl-time">17:30</div><div class="tl-text">⛪ Vatican — St Peter's Basilica (free entry)</div><div class="map-links"><a href="https://maps.google.com/?q=Piazza+San+Pietro+Vatican" target="_blank" class="map-btn">📍 St Peter's Square</a><a href="https://maps.google.com/?q=St+Peter's+Basilica+Vatican" target="_blank" class="map-btn">📍 Basilica</a></div></div>
-      <div class="tl-item highlight"><div class="tl-time">20:30</div><div class="tl-text">🍽️ Final dinner — Testaccio · Cacio e pepe + Carbonara + Amatriciana</div><div class="map-links"><a href="https://maps.google.com/?q=Da+Remo+pizza+Testaccio+Rome" target="_blank" class="map-btn">📍 Da Remo</a><a href="https://maps.google.com/?q=Flavio+al+Velavevodetto+Rome" target="_blank" class="map-btn">📍 Flavio al Velavevodetto</a></div></div>
+  <div class="day-hero" style="background-image:url('https://source.unsplash.com/featured/900x400/?colosseum,rome,ancient')">
+    <div class="day-hero-info"><div class="day-hero-label">Rome — Full Day</div><div class="day-hero-sub">Sun Mar 29 · Colosseum · Vatican · Trevi · Last dinner</div></div>
+  </div>
+  <div class="tab-inner">
+    <div class="card"><div class="card-header"><span class="card-icon">🕐</span><span class="card-title">Day Plan</span></div>
+      <div class="timeline">
+        <div class="tl-item highlight"><div class="tl-time">08:00</div><div class="tl-text">🏟️ Colosseum + Roman Forum — arrive at opening <span class="tag book-now">PRE-BOOK</span></div><div class="map-links"><a href="https://ecm.coopculture.it/index.cfm?lang=en" target="_blank" class="book-link">🏟️ Book →</a><a href="https://maps.google.com/?q=Colosseum+Rome" target="_blank" class="map-btn">📍 Colosseum</a><a href="https://maps.google.com/?q=Roman+Forum+Rome" target="_blank" class="map-btn">📍 Roman Forum</a></div></div>
+        <div class="tl-item"><div class="tl-time">13:00</div><div class="tl-text">🍽️ Lunch: Campo de' Fiori · Supplì + pizza al taglio</div><div class="map-links"><a href="https://maps.google.com/?q=Campo+de+Fiori+Rome" target="_blank" class="map-btn">📍 Campo de' Fiori</a></div></div>
+        <div class="tl-item"><div class="tl-time">14:30</div><div class="tl-text">🕍 Pantheon (free · reserve online)</div><div class="map-links"><a href="https://maps.google.com/?q=Pantheon+Rome" target="_blank" class="map-btn">📍 Pantheon</a></div></div>
+        <div class="tl-item highlight"><div class="tl-time">15:30</div><div class="tl-text">⛲ Trevi Fountain — mid-afternoon less crowded</div><div class="map-links"><a href="https://maps.google.com/?q=Trevi+Fountain+Rome" target="_blank" class="map-btn">📍 Trevi Fountain</a></div></div>
+        <div class="tl-item highlight"><div class="tl-time">17:30</div><div class="tl-text">⛪ Vatican — St Peter's Basilica (free entry)</div><div class="map-links"><a href="https://maps.google.com/?q=Piazza+San+Pietro+Vatican" target="_blank" class="map-btn">📍 St Peter's</a><a href="https://maps.google.com/?q=Castel+Sant'Angelo+Rome" target="_blank" class="map-btn">📍 Castel Sant'Angelo</a></div></div>
+        <div class="tl-item highlight"><div class="tl-time">20:30</div><div class="tl-text">🍽️ Last dinner — Testaccio · Cacio e pepe + Carbonara + Amatriciana</div><div class="map-links"><a href="https://maps.google.com/?q=Da+Remo+pizza+Testaccio+Rome" target="_blank" class="map-btn">📍 Da Remo</a><a href="https://maps.google.com/?q=Flavio+al+Velavevodetto+Rome" target="_blank" class="map-btn">📍 Flavio</a></div></div>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- MAR 30 -->
 <div id="tab-mar30" class="tab-content">
-  <div class="card"><div class="card-header"><span class="card-icon">✈️</span><span class="card-title">Mon Mar 30 — Fly Rome FCO → Penang</span></div><div class="luggage-note">🧳 Full checkout Hotel Artemide. All bags to FCO. Trip complete! 🇲🇾</div></div>
-  <div class="card">
-    <div class="card-header"><span class="card-icon">✈️</span><span class="card-title">Flight FCO → Penang <span class="tag book-now">BOOK THIS WEEK</span></span></div>
-    <div class="hotel-box">
-      <div class="hotel-name">Turkish Airlines — via Istanbul IST (Recommended)</div>
-      <div class="hotel-meta"><div class="hotel-meta-item">💰 <span>Est. RM1,600–2,200</span></div><div class="hotel-meta-item">✅ <span>European hub · No Gulf routing</span></div></div>
-      <div class="map-links"><a href="https://www.turkishairlines.com/en-int/" target="_blank" class="book-link">✈️ Turkish Airlines →</a><a href="https://www.singaporeair.com" target="_blank" class="book-link">✈️ SQ Alternative →</a></div>
-    </div>
-    <div class="tip"><strong>To FCO from Rome centre:</strong> 🚂 Leonardo Express: Termini→FCO ~€14 · 32min · Runs every 30min</div>
+  <div class="day-hero" style="background-image:url('https://source.unsplash.com/featured/900x400/?airport,departure,travel')">
+    <div class="day-hero-info"><div class="day-hero-label">✈️ Fly Home</div><div class="day-hero-sub">Mon Mar 30 · Rome FCO → Penang · Trip complete</div></div>
   </div>
-  <div class="card">
-    <div class="card-header"><span class="card-icon">🕐</span><span class="card-title">Airport Transfer</span></div>
-    <div class="timeline">
-      <div class="tl-item"><div class="tl-time">Morning</div><div class="tl-text">Checkout Hotel Artemide</div></div>
-      <div class="tl-item highlight"><div class="tl-time">Transfer</div><div class="tl-text">🚂 Leonardo Express: Termini → FCO (32min · €14)</div><div class="map-links"><a href="https://maps.google.com/?q=Roma+Termini+train+station" target="_blank" class="map-btn">📍 Roma Termini</a><a href="https://maps.google.com/?q=Rome+Fiumicino+Airport+FCO" target="_blank" class="map-btn">📍 FCO Airport</a></div></div>
-      <div class="tl-item highlight"><div class="tl-time">FCO</div><div class="tl-text">✈️ Check in · Depart for Penang 🇲🇾</div><div class="tl-sub">12 days complete. What a trip. 🧳</div></div>
+  <div class="tab-inner">
+    <div class="hotel-box" style="margin-bottom:12px"><div class="hotel-name">Turkish Airlines — FCO → PEN via Istanbul <span class="tag book-now">BOOK THIS WEEK</span></div><div class="hotel-meta"><div class="hotel-meta-item">💰 <span>Est. RM1,600–2,200</span></div><div class="hotel-meta-item">✅ <span>European hub · No Gulf routing</span></div></div><div class="map-links"><a href="https://www.turkishairlines.com/en-int/" target="_blank" class="book-link">✈️ Turkish Airlines →</a><a href="https://www.singaporeair.com" target="_blank" class="book-link">✈️ SQ Alternative →</a></div></div>
+    <div class="card"><div class="card-header"><span class="card-icon">🚂</span><span class="card-title">Airport Transfer</span></div>
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-time">Morning</div><div class="tl-text">Checkout Hotel Artemide</div></div>
+        <div class="tl-item highlight"><div class="tl-time">Transfer</div><div class="tl-text">🚂 Leonardo Express: Termini → FCO · €14 · 32min</div><div class="map-links"><a href="https://maps.google.com/?q=Roma+Termini+train+station" target="_blank" class="map-btn">📍 Termini</a><a href="https://maps.google.com/?q=Rome+Fiumicino+Airport+FCO" target="_blank" class="map-btn">📍 FCO Airport</a></div></div>
+        <div class="tl-item highlight"><div class="tl-time">FCO</div><div class="tl-text">✈️ Check in · Security · Depart for Penang 🇲🇾</div><div class="tl-sub">12 days complete. What a trip. 🧳</div></div>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- PWA Install Prompt -->
+</div><!-- /content-wrap -->
+
+<div class="swipe-nav" id="swipe-nav">
+  <span id="swipe-prev">‹ prev</span>
+  <span id="swipe-day-label" style="color:var(--muted)"></span>
+  <span id="swipe-next">next ›</span>
+</div>
+
+<!-- PWA PROMPT -->
 <div id="pwa-prompt">
-  <div class="pwa-text"><strong>📲 Add to Home Screen</strong><span>One-tap access — works offline</span></div>
+  <div class="pwa-text"><strong>📲 Add to Home Screen</strong><span>One-tap access, works offline</span></div>
   <button id="pwa-install-btn">Install</button>
-  <button id="pwa-dismiss" onclick="document.getElementById('pwa-prompt').classList.remove('show');localStorage.setItem('pwa-dismissed','1')">×</button>
+  <button id="pwa-dismiss" onclick="document.getElementById('pwa-prompt').classList.remove('show');localStorage.setItem('pwa-d','1')">×</button>
 </div>
 
 <script>
+// ── TAB DATA ──
+const TABS = ['overview','mar18','mar19','mar20','mar21','mar22','mar23','mar24','mar25','mar26','mar27','mar28','mar29','mar30'];
+const TAB_LABELS = ['Overview','Mar 18','Mar 19','Mar 20','Mar 21','Mar 22','Mar 23','Mar 24','Mar 25','Mar 26','Mar 27','Mar 28','Mar 29','Mar 30'];
+let currentIdx = 0;
+
+const DAY_MAP = {'2026-03-18':'mar18','2026-03-19':'mar19','2026-03-20':'mar20','2026-03-21':'mar21','2026-03-22':'mar22','2026-03-23':'mar23','2026-03-24':'mar24','2026-03-25':'mar25','2026-03-26':'mar26','2026-03-27':'mar27','2026-03-28':'mar28','2026-03-29':'mar29','2026-03-30':'mar30'};
+
+const WEATHER_CITIES = {'2026-03-18':'Riomaggiore','2026-03-19':'Riomaggiore','2026-03-20':'Varenna','2026-03-21':'Lucerne','2026-03-22':'Lucerne','2026-03-23':'Lucerne','2026-03-24':'Venice','2026-03-25':'Venice','2026-03-26':'Florence','2026-03-27':'Florence','2026-03-28':'Rome','2026-03-29':'Rome','2026-03-30':'Rome'};
+
+// CET (UTC+1) train times as UTC
+const TRAINS = [
+  { label:'La Spezia → Milan', utc:'2026-03-20T09:10:00Z', url:'https://www.trenitalia.com/en.html' },
+  { label:'Varenna → Lucerne', utc:'2026-03-21T12:35:00Z', url:'https://www.sbb.ch/en/buying/pages/fahrplan/fahrplan.xhtml?von=Varenna-Esino&nach=Luzern&datum=21.03.2026&zeit=13:00&an=0' },
+  { label:'Lucerne → Engelberg', utc:'2026-03-22T07:10:00Z', url:'https://www.sbb.ch/en/buying/pages/fahrplan/fahrplan.xhtml?von=Luzern&nach=Engelberg&datum=22.03.2026&zeit=08:00&an=0' },
+  { label:'Lucerne → Interlaken', utc:'2026-03-23T07:06:00Z', url:'https://www.sbb.ch/en/buying/pages/fahrplan/fahrplan.xhtml?von=Luzern&nach=Interlaken+Ost&datum=23.03.2026&zeit=08:00&an=0' },
+  { label:'Lucerne → Venice', utc:'2026-03-24T07:18:00Z', url:'https://www.sbb.ch/en/buying/pages/fahrplan/fahrplan.xhtml?von=Luzern&nach=Venezia+Santa+Lucia&datum=24.03.2026&zeit=08:00&an=0' },
+  { label:'Venice → Florence', utc:'2026-03-26T09:26:00Z', url:'https://www.trenitalia.com/en.html' },
+];
+
+const URGENT_ITEMS = [
+  { deadline:'2026-03-19', travel:'2026-03-20', label:'🚂 La Spezia→Milan (Mar 20 10:10)', url:'https://www.trenitalia.com/en.html' },
+  { deadline:'2026-03-20', travel:'2026-03-21', label:'🏰 Balbianello entry (Sat Mar 21)', url:'https://www.fondoambiente.it/luoghi/villa-del-balbianello/?lm=ticketing' },
+  { deadline:'2026-03-20', travel:'2026-03-21', label:'🚂 Varenna→Lucerne (Mar 21 13:35)', url:'https://www.sbb.ch/en/buying/pages/fahrplan/fahrplan.xhtml?von=Varenna-Esino&nach=Luzern&datum=21.03.2026&zeit=13:00&an=0' },
+  { deadline:'2026-03-20', travel:'2026-03-21', label:'🏨 Barabas Luzern (Mar 21–24)', url:'https://www.booking.com/hotel/ch/barabas.html?checkin=2026-03-21&checkout=2026-03-24&group_adults=2&no_rooms=1' },
+  { deadline:'2026-03-22', travel:'2026-03-24', label:'🚂 Lucerne→Venice (Mar 24 08:18)', url:'https://www.sbb.ch/en/buying/pages/fahrplan/fahrplan.xhtml?von=Luzern&nach=Venezia+Santa+Lucia&datum=24.03.2026&zeit=08:00&an=0' },
+  { deadline:'2026-03-23', travel:'2026-03-24', label:'🏨 Hotel Antiche Figure Venice', url:'https://www.booking.com/hotel/it/antiche-figure.html?checkin=2026-03-24&checkout=2026-03-26&group_adults=2&no_rooms=1' },
+  { deadline:'2026-03-24', travel:'2026-03-26', label:'🚂 Venice→Florence (Mar 26 10:26)', url:'https://www.trenitalia.com/en.html' },
+  { deadline:'2026-03-25', travel:'2026-03-27', label:'🖼️ Uffizi tickets (Mar 27)', url:'https://www.uffizi.it/en/tickets' },
+  { deadline:'2026-03-25', travel:'2026-03-28', label:'🏨 Hotel Davanzati Florence', url:'https://www.booking.com/hotel/it/davanzati.html?checkin=2026-03-26&checkout=2026-03-28&group_adults=2&no_rooms=1' },
+  { deadline:'2026-03-26', travel:'2026-03-28', label:'🚗 Car rental Florence', url:'https://www.rentalcars.com/en/?pick_up=Florence%2C+Italy&drop_off=Rome%2C+Italy&pu_date=2026-03-28&do_date=2026-03-30' },
+  { deadline:'2026-03-26', travel:'2026-03-28', label:'🏨 Hotel Artemide Rome', url:'https://www.booking.com/hotel/it/artemide.html?checkin=2026-03-28&checkout=2026-03-30&group_adults=2&no_rooms=1' },
+  { deadline:'2026-03-27', travel:'2026-03-30', label:'✈️ Flight FCO→Penang (Mar 30)', url:'https://www.turkishairlines.com/en-int/' },
+];
+
+// ── HELPERS ──
+function getTodayISO() {
+  return new Date().toISOString().slice(0,10);
+}
+function pad(n){ return String(n).padStart(2,'0'); }
+
 // ── TAB SWITCHING ──
 function showTab(name, btn) {
-  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-' + name).classList.add('active');
-  btn.classList.add('active');
-  btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  if(btn){ btn.classList.add('active'); btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'}); }
+  else { const b=document.getElementById('btn-'+name); if(b){b.classList.add('active');b.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});} }
+  currentIdx = TABS.indexOf(name);
+  updateSwipeNav();
+  window.scrollTo({top:0,behavior:'smooth'});
 }
+
+function updateSwipeNav(){
+  const prev = document.getElementById('swipe-prev');
+  const next = document.getElementById('swipe-next');
+  const lbl = document.getElementById('swipe-day-label');
+  prev.style.opacity = currentIdx > 0 ? '0.6' : '0.15';
+  next.style.opacity = currentIdx < TABS.length-1 ? '0.6' : '0.15';
+  lbl.textContent = TAB_LABELS[currentIdx];
+}
+
+function goNext(){ if(currentIdx < TABS.length-1) showTab(TABS[currentIdx+1], null); }
+function goPrev(){ if(currentIdx > 0) showTab(TABS[currentIdx-1], null); }
+
+document.getElementById('swipe-prev').addEventListener('click', goPrev);
+document.getElementById('swipe-next').addEventListener('click', goNext);
+
+// ── SWIPE GESTURES ──
+let touchX0=0, touchY0=0;
+const wrap = document.getElementById('content-wrap');
+wrap.addEventListener('touchstart', e=>{ touchX0=e.touches[0].clientX; touchY0=e.touches[0].clientY; }, {passive:true});
+wrap.addEventListener('touchend', e=>{
+  const dx = e.changedTouches[0].clientX - touchX0;
+  const dy = e.changedTouches[0].clientY - touchY0;
+  if(Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 60){
+    if(dx < 0) goNext(); else goPrev();
+  }
+}, {passive:true});
 
 // ── AUTO-JUMP TO TODAY ──
-const DAY_MAP = {
-  '2026-03-18': 'mar18', '2026-03-19': 'mar19', '2026-03-20': 'mar20',
-  '2026-03-21': 'mar21', '2026-03-22': 'mar22', '2026-03-23': 'mar23',
-  '2026-03-24': 'mar24', '2026-03-25': 'mar25', '2026-03-26': 'mar26',
-  '2026-03-27': 'mar27', '2026-03-28': 'mar28', '2026-03-29': 'mar29',
-  '2026-03-30': 'mar30'
-};
-
-function getLocalDate() {
-  // Use Italian time (UTC+1 in March = CET)
-  const now = new Date();
-  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  const d = new Date(now.toLocaleString('en-CA', { timeZone: tz || 'Europe/Rome' }));
-  return d.toISOString().slice(0, 10);
-}
-
-function initToday() {
-  const today = getLocalDate();
+function initToday(){
+  const today = getTodayISO();
+  document.getElementById('today-badge').textContent = '📅 '+today;
   const tabKey = DAY_MAP[today];
-  const badge = document.getElementById('today-badge');
-  badge.textContent = '📅 ' + today;
-
-  if (tabKey) {
-    const btn = document.getElementById('btn-' + tabKey);
-    if (btn) {
-      btn.classList.add('today-tab');
-      // Auto-jump to today
-      setTimeout(() => {
-        showTab(tabKey, btn);
-      }, 300);
-    }
+  if(tabKey){
+    const btn = document.getElementById('btn-'+tabKey);
+    if(btn){ btn.classList.add('today-tab'); setTimeout(()=>showTab(tabKey,btn),350); }
   }
 }
 
 // ── URGENT BANNER ──
-const URGENT_ITEMS = [
-  { deadline: '2026-03-19', travel: '2026-03-20', label: '🚂 La Spezia→Milan train (Mar 20 10:10)', url: 'https://www.trenitalia.com/en.html' },
-  { deadline: '2026-03-20', travel: '2026-03-21', label: '🏰 Balbianello entry (Sat Mar 21)', url: 'https://www.fondoambiente.it/luoghi/villa-del-balbianello/?lm=ticketing' },
-  { deadline: '2026-03-20', travel: '2026-03-21', label: '🚂 Varenna→Lucerne train (Mar 21 13:35)', url: 'https://www.sbb.ch/en/buying/pages/fahrplan/fahrplan.xhtml?von=Varenna-Esino&nach=Luzern&datum=21.03.2026&zeit=13:00&an=0' },
-  { deadline: '2026-03-20', travel: '2026-03-21', label: '🏨 Barabas Luzern hotel (Mar 21–24)', url: 'https://www.booking.com/hotel/ch/barabas.html?checkin=2026-03-21&checkout=2026-03-24&group_adults=2&no_rooms=1' },
-  { deadline: '2026-03-22', travel: '2026-03-24', label: '🚂 Lucerne→Venice train (Mar 24 08:18)', url: 'https://www.sbb.ch/en/buying/pages/fahrplan/fahrplan.xhtml?von=Luzern&nach=Venezia+Santa+Lucia&datum=24.03.2026&zeit=08:00&an=0' },
-  { deadline: '2026-03-22', travel: '2026-03-24', label: '🏨 Hotel Antiche Figure, Venice (Mar 24–26)', url: 'https://www.booking.com/hotel/it/antiche-figure.html?checkin=2026-03-24&checkout=2026-03-26&group_adults=2&no_rooms=1' },
-  { deadline: '2026-03-24', travel: '2026-03-26', label: '🚂 Venice→Florence train (Mar 26 10:26)', url: 'https://www.trenitalia.com/en.html' },
-  { deadline: '2026-03-25', travel: '2026-03-27', label: '🖼️ Uffizi Gallery tickets (Mar 27)', url: 'https://www.uffizi.it/en/tickets' },
-  { deadline: '2026-03-25', travel: '2026-03-28', label: '🏨 Hotel Davanzati, Florence (Mar 26–28)', url: 'https://www.booking.com/hotel/it/davanzati.html?checkin=2026-03-26&checkout=2026-03-28&group_adults=2&no_rooms=1' },
-  { deadline: '2026-03-26', travel: '2026-03-28', label: '🚗 Car rental Florence (Mar 28 pickup)', url: 'https://www.rentalcars.com/en/?pick_up=Florence%2C+Italy&drop_off=Rome%2C+Italy&pu_date=2026-03-28&do_date=2026-03-30' },
-  { deadline: '2026-03-26', travel: '2026-03-28', label: '🏨 Hotel Artemide, Rome (Mar 28–30)', url: 'https://www.booking.com/hotel/it/artemide.html?checkin=2026-03-28&checkout=2026-03-30&group_adults=2&no_rooms=1' },
-  { deadline: '2026-03-27', travel: '2026-03-30', label: '✈️ Flight FCO→Penang (Mar 30)', url: 'https://www.turkishairlines.com/en-int/' },
-];
-
-function initUrgentBanner() {
-  const today = getLocalDate();
-  const active = URGENT_ITEMS.filter(i => i.deadline >= today && i.travel > today).slice(0, 3);
-  if (!active.length) return;
-
+function initUrgentBanner(){
+  if(localStorage.getItem('ub-dismissed')) return;
+  const today = getTodayISO();
+  const active = URGENT_ITEMS.filter(i=>i.deadline>=today && i.travel>today).slice(0,3);
+  if(!active.length) return;
   const container = document.getElementById('urgent-items');
-  active.forEach(item => {
-    const div = document.createElement('div');
-    div.className = 'urgent-item';
-    div.innerHTML = `<span class="urgent-item-text">${item.label}</span><a href="${item.url}" target="_blank" class="urgent-book-btn">Book →</a>`;
+  active.forEach(item=>{
+    const div=document.createElement('div'); div.className='urgent-item';
+    div.innerHTML=`<span class="urgent-item-text">${item.label}</span><a href="${item.url}" target="_blank" class="urgent-book-btn">Book →</a>`;
     container.appendChild(div);
   });
   document.getElementById('urgent-banner').classList.add('visible');
 }
 
-// ── PWA SERVICE WORKER ──
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js').catch(() => {});
+// ── TRAIN COUNTDOWN ──
+let countdownTrain = null;
+function initCountdown(){
+  const now = Date.now();
+  countdownTrain = TRAINS.find(t => new Date(t.utc).getTime() > now) || null;
+  if(!countdownTrain){ document.getElementById('countdown-bar').classList.remove('visible'); return; }
+  document.getElementById('countdown-label').textContent = countdownTrain.label;
+  document.getElementById('countdown-link').href = countdownTrain.url;
+  document.getElementById('countdown-bar').classList.add('visible');
+  updateCountdown();
 }
 
-// ── PWA INSTALL PROMPT ──
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  deferredPrompt = e;
-  if (!localStorage.getItem('pwa-dismissed')) {
-    setTimeout(() => document.getElementById('pwa-prompt').classList.add('show'), 2000);
-  }
-});
+function updateCountdown(){
+  if(!countdownTrain) return;
+  const diff = new Date(countdownTrain.utc).getTime() - Date.now();
+  if(diff <= 0){ document.getElementById('countdown-bar').classList.remove('visible'); return; }
+  const h = Math.floor(diff/3600000);
+  const m = Math.floor((diff%3600000)/60000);
+  const s = Math.floor((diff%60000)/1000);
+  document.getElementById('countdown-timer').textContent =
+    h>0 ? `${h}h ${pad(m)}m` : m>0 ? `${m}m ${pad(s)}s` : `${s}s`;
+}
 
-document.getElementById('pwa-install-btn').addEventListener('click', async () => {
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    deferredPrompt = null;
-    document.getElementById('pwa-prompt').classList.remove('show');
-  } else {
-    // iOS fallback
-    alert('On iPhone: tap the Share button → "Add to Home Screen" → Add');
+// ── WEATHER ──
+async function initWeather(){
+  const today = getTodayISO();
+  const city = WEATHER_CITIES[today] || 'Rome';
+  document.getElementById('w-city').textContent = city;
+  try {
+    const r = await fetch(`https://wttr.in/${encodeURIComponent(city)}?format=j1`,{signal:AbortSignal.timeout(5000)});
+    const d = await r.json();
+    const cc = d.current_condition[0];
+    const temp = cc.temp_C;
+    const desc = cc.weatherDesc[0].value;
+    const icon = getWeatherIcon(cc.weatherCode);
+    document.getElementById('w-temp').textContent = icon+' '+temp+'°C';
+    document.getElementById('w-desc').textContent = desc;
+  } catch(e) {
+    document.getElementById('w-temp').textContent = '—';
+    document.getElementById('w-desc').textContent = 'Weather unavailable';
   }
+}
+
+function getWeatherIcon(code){
+  code = parseInt(code);
+  if(code===113) return '☀️';
+  if(code<=116) return '⛅';
+  if(code<=122) return '☁️';
+  if(code<=143) return '🌫️';
+  if(code<=185) return '🌦️';
+  if(code<=200) return '⛈️';
+  if(code<=230) return '🌨️';
+  if(code<=284) return '🌧️';
+  if(code<=314) return '🌧️';
+  if(code<=350) return '❄️';
+  return '🌡️';
+}
+
+// ── PWA ──
+if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e=>{
+  e.preventDefault(); deferredPrompt=e;
+  if(!localStorage.getItem('pwa-d')) setTimeout(()=>document.getElementById('pwa-prompt').classList.add('show'),3000);
+});
+document.getElementById('pwa-install-btn').addEventListener('click', async()=>{
+  if(deferredPrompt){ deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null; document.getElementById('pwa-prompt').classList.remove('show'); }
+  else alert('iPhone: tap Share → "Add to Home Screen" → Add');
 });
 
 // ── INIT ──
 initToday();
 initUrgentBanner();
+initCountdown();
+initWeather();
+setInterval(updateCountdown, 1000);
+updateSwipeNav();
 </script>
 </body>
 </html>
