@@ -527,7 +527,7 @@ details.intel[open] summary::after { transform: rotate(90deg); }
   </div>
   <div class="tab-inner">
     <div class="luggage-note">🧳 Full checkout Le Giare. All bags on trains all day.</div>
-    <div class="warning">⚠️ Balbianello CLOSED Fridays — visiting Sat Mar 21 ✅</div>
+    <div class="tip"><strong>📍 Tomorrow Mar 21:</strong> Balbianello Giornate FAI — walk-in, arrive 08:00 ferry from Varenna dock</div>
     <div class="card"><div class="card-header"><span class="card-icon">🚂</span><span class="card-title">Train: Riomaggiore → Varenna <span class="tag booked">✅ BOOKED · €76.80</span></span></div>
       <div class="train-box">
         <div class="train-route"><span class="train-from">Riomaggiore</span><span class="train-arrow">→</span><span class="train-to">Varenna-Esino</span></div>
@@ -1052,7 +1052,7 @@ const WEATHER_CITIES = {'2026-03-18':'Riomaggiore','2026-03-19':'Riomaggiore','2
 
 // CET (UTC+1) train times as UTC
 const TRAINS = [
-  { label:'La Spezia → Milan', utc:'2026-03-20T09:10:00Z', url:'https://www.trenitalia.com/en.html' },
+  { label:'Riomaggiore → Varenna', utc:'2026-03-20T08:55:00Z', url:'https://www.trenitalia.com/en.html' },
   { label:'Varenna → Lucerne', utc:'2026-03-21T12:35:00Z', url:'https://www.sbb.ch/en/buying/pages/fahrplan/fahrplan.xhtml?von=Varenna-Esino&nach=Luzern&datum=21.03.2026&zeit=13:00&an=0' },
   { label:'Lucerne → Engelberg', utc:'2026-03-22T07:10:00Z', url:'https://www.sbb.ch/en/buying/pages/fahrplan/fahrplan.xhtml?von=Luzern&nach=Engelberg&datum=22.03.2026&zeit=08:00&an=0' },
   { label:'Lucerne → Interlaken', utc:'2026-03-23T07:06:00Z', url:'https://www.sbb.ch/en/buying/pages/fahrplan/fahrplan.xhtml?von=Luzern&nach=Interlaken+Ost&datum=23.03.2026&zeit=08:00&an=0' },
@@ -1061,9 +1061,10 @@ const TRAINS = [
 ];
 
 const URGENT_ITEMS = [
-  { deadline:'2026-03-19', travel:'2026-03-20', label:'🚂 La Spezia→Milan (Mar 20 10:10)', url:'https://www.trenitalia.com/en.html' },
-  { deadline:'2026-03-20', travel:'2026-03-21', label:'🏰 Balbianello entry (Sat Mar 21)', url:'https://www.fondoambiente.it/luoghi/villa-del-balbianello/?lm=ticketing' },
-  { deadline:'2026-03-20', travel:'2026-03-21', label:'🏨 ibis Luzern (Mar 21–24) ✅', url:'https://www.booking.com/hotel/ch/barabas.html?checkin=2026-03-21&checkout=2026-03-24&group_adults=2&no_rooms=1' },
+  // ✅ DONE: Riomaggiore→Varenna (Mar 20) — BOOKED
+  // ✅ DONE: Varenna→Lucerne (Mar 21) — BOOKED
+  // ✅ DONE: ibis Luzern (Mar 21–24) — BOOKED
+  // ✅ DONE: Balbianello (Mar 21) — walk-in, no booking needed
   { deadline:'2026-03-22', travel:'2026-03-24', label:'🚂 Lucerne→Venice (Mar 24 08:18)', url:'https://www.sbb.ch/en/buying/pages/fahrplan/fahrplan.xhtml?von=Luzern&nach=Venezia+Santa+Lucia&datum=24.03.2026&zeit=08:00&an=0' },
   { deadline:'2026-03-23', travel:'2026-03-24', label:'🏨 Hotel Antiche Figure Venice', url:'https://www.booking.com/hotel/it/antiche-figure.html?checkin=2026-03-24&checkout=2026-03-26&group_adults=2&no_rooms=1' },
   { deadline:'2026-03-24', travel:'2026-03-26', label:'🚂 Venice→Florence (Mar 26 10:26)', url:'https://www.trenitalia.com/en.html' },
