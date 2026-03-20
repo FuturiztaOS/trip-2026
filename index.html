@@ -281,6 +281,28 @@ details.intel[open] summary::after { transform: rotate(90deg); }
 .cmodal-note { font-size: 12px; color: rgba(255,255,255,.4); margin-bottom: 18px; line-height: 1.6; background: rgba(251,191,36,.07); border: 1px solid rgba(251,191,36,.2); border-radius: 10px; padding: 10px 12px; }
 .cmodal-btn { width: 100%; background: #7c6af7; border: none; color: #fff; padding: 15px; border-radius: 13px; font-size: 15px; font-weight: 700; cursor: pointer; margin-bottom: 8px; }
 .cmodal-btn-sec { width: 100%; background: none; border: 1px solid rgba(255,255,255,.12); color: rgba(255,255,255,.45); padding: 11px; border-radius: 13px; font-size: 14px; cursor: pointer; }
+
+/* ── CHAT WIDGET (embedded in Overview) ── */
+.chat-widget { background: var(--surface,#13131a); border: 1px solid rgba(124,106,247,.25); border-radius: 18px; margin-bottom: 16px; overflow: hidden; }
+.cw-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; cursor: pointer; }
+.cw-header-left { display: flex; align-items: center; gap: 12px; }
+.cw-icon { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg,#7c6af7,#a78bfa); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.cw-title { font-size: 14px; font-weight: 700; }
+.cw-sub { font-size: 11px; color: rgba(255,255,255,.4); margin-top: 1px; }
+.cw-header-right { display: flex; align-items: center; gap: 8px; }
+.cw-model { font-size: 11px; color: #a78bfa; background: rgba(124,106,247,.15); border-radius: 10px; padding: 3px 9px; }
+.cw-chevron { font-size: 20px; color: rgba(255,255,255,.3); transition: transform .3s; display: block; }
+.chat-widget.open .cw-chevron { transform: rotate(90deg); }
+.cw-body { display: none; border-top: 1px solid rgba(255,255,255,.07); }
+.chat-widget.open .cw-body { display: flex; flex-direction: column; }
+.cw-qs { padding: 10px 14px 6px; display: flex; gap: 7px; overflow-x: auto; scrollbar-width: none; }
+.cw-qs::-webkit-scrollbar { display: none; }
+.chat-msgs { max-height: 320px; overflow-y: auto; padding: 10px 14px; display: flex; flex-direction: column; gap: 9px; -webkit-overflow-scrolling: touch; }
+.cw-api-bar { margin: 0 14px 10px; background: rgba(124,106,247,.1); border: 1px dashed rgba(124,106,247,.3); border-radius: 12px; padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; font-size: 13px; color: #a78bfa; }
+.cw-api-arrow { font-size: 18px; }
+.chat-input-wrap { padding: 8px 12px 12px; }
+.chat-input-row { display: flex; align-items: flex-end; gap: 8px; background: rgba(28,28,40,.8); border: 1px solid rgba(255,255,255,.1); border-radius: 20px; padding: 6px 6px 6px 13px; transition: border-color .2s; }
+.chat-input-row:focus-within { border-color: #7c6af7; }
 </style>
 </head>
 <body>
@@ -307,7 +329,6 @@ details.intel[open] summary::after { transform: rotate(90deg); }
 
 <!-- TAB NAV -->
 <div class="tab-nav" id="tab-nav">
-  <button class="tab-btn" id="btn-chat" onclick="showTab('chat',this)"><span class="day-num">💬</span><span class="day-name">AI Chat</span></button>
   <button class="tab-btn active" id="btn-overview" onclick="showTab('overview',this)"><span class="day-num">📋</span><span class="day-name">Overview</span></button>
   <button class="tab-btn" id="btn-mar18" onclick="showTab('mar18',this)"><span class="day-num">Mar 18</span><span class="day-name">Arrive</span></button>
   <button class="tab-btn" id="btn-mar19" onclick="showTab('mar19',this)"><span class="day-num">Mar 19</span><span class="day-name">Cinque Terre</span></button>
@@ -345,58 +366,62 @@ details.intel[open] summary::after { transform: rotate(90deg); }
 </div>
 
 <!-- OVERVIEW -->
-<div id="tab-chat" class="tab-content">
-  <div class="chat-header-row">
-    <div class="chat-title-wrap">
-      <div class="ct-title">✈️ Italy AI Assistant</div>
-      <div class="ct-sub">Ask anything about your trip · Powered by GPT-4o</div>
-    </div>
-    <button class="api-connect-btn" id="chatApiBtn" onclick="openChatApiModal()">🔑 Setup</button>
-  </div>
-  <div class="chat-meta-row">
-    <button class="model-cycle" id="chatModelBtn" onclick="cycleChatModel()">⚡ No API key</button>
-    <button class="chat-clear" onclick="clearChatMsgs()">Clear ✕</button>
-  </div>
-  <div class="chat-qs" id="chatQs">
-    <div class="qs-pill" onclick="chatQuick(this)">🚂 Lucerne → Venice trains</div>
-    <div class="qs-pill" onclick="chatQuick(this)">🏨 Best hotel in Venice</div>
-    <div class="qs-pill" onclick="chatQuick(this)">🗺️ Florence 2-day plan</div>
-    <div class="qs-pill" onclick="chatQuick(this)">🍕 Best restaurants Rome</div>
-    <div class="qs-pill" onclick="chatQuick(this)">🎫 Colosseum booking tips</div>
-    <div class="qs-pill" onclick="chatQuick(this)">🚗 Florence to Rome options</div>
-    <div class="qs-pill" onclick="chatQuick(this)">🛍️ What to buy in Italy</div>
-    <div class="qs-pill" onclick="chatQuick(this)">⛅ Weather March 24–30</div>
-  </div>
-  <div class="chat-msgs" id="chatMsgsBox">
-    <div class="chat-intro-card">
-      <div class="ci-emoji">🇮🇹</div>
-      <div class="ci-title">Your Italy trip assistant</div>
-      <div class="ci-text">Ask me anything about your Italy + Switzerland trip — hotels, trains, restaurants, what to see, packing tips, local phrases. I know your exact itinerary.</div>
-    </div>
-    <div class="cmsg ai">
-      <div class="ai-ava">✈️</div>
-      <div class="cbubble">
-        <p>Ciao! I'm your Italy trip assistant 🇮🇹🇨🇭</p>
-        <p>I know your full route: <strong>Riomaggiore → Varenna → Lucerne → Venice → Florence → Rome</strong> (Mar 18–30).</p>
-        <p>Ask me anything — trains, hotels, restaurants, what not to miss, or how to handle the luggage-heavy days.</p>
-      </div>
-      <div class="cmsg-time" id="chatFirstTime"></div>
-    </div>
-  </div>
-  <div class="chat-input-wrap">
-    <div class="chat-input-row">
-      <textarea class="chat-textarea" id="chatTextarea" placeholder="Ask about your Italy trip..." rows="1"
-        onkeydown="chatHandleKey(event)" oninput="chatAutoResize(this)"></textarea>
-      <button class="chat-send" id="chatSendBtn" onclick="sendChatMsg()" disabled>➤</button>
-    </div>
-  </div>
-</div>
-
 <div id="tab-overview" class="tab-content active">
   <div class="day-hero" style="background-image:url('https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=900&q=80&auto=format&fit=crop')">
     <div class="day-hero-info"><div class="day-hero-label">🗺️ Trip Overview</div><div class="day-hero-sub">Italy + Switzerland · Mar 18–30 · 6 cities</div></div>
   </div>
   <div class="tab-inner">
+    <!-- ── AI CHAT WIDGET ── -->
+    <div class="chat-widget" id="chatWidget">
+      <div class="cw-header" onclick="toggleChatWidget()">
+        <div class="cw-header-left">
+          <span class="cw-icon">✈️</span>
+          <div>
+            <div class="cw-title">Italy AI Assistant</div>
+            <div class="cw-sub">Ask anything about your trip</div>
+          </div>
+        </div>
+        <div class="cw-header-right">
+          <span class="cw-model" id="cwModelLabel">⚡ Setup</span>
+          <span class="cw-chevron" id="cwChevron">›</span>
+        </div>
+      </div>
+      <div class="cw-body" id="cwBody">
+        <div class="cw-qs" id="cwQs">
+          <div class="qs-pill" onclick="chatQuick(this)">🚂 Lucerne → Venice trains</div>
+          <div class="qs-pill" onclick="chatQuick(this)">🏨 Venice hotel</div>
+          <div class="qs-pill" onclick="chatQuick(this)">🗺️ Florence 2-day plan</div>
+          <div class="qs-pill" onclick="chatQuick(this)">🍕 Best restaurants Rome</div>
+          <div class="qs-pill" onclick="chatQuick(this)">🎫 Colosseum booking</div>
+          <div class="qs-pill" onclick="chatQuick(this)">🚗 Florence to Rome</div>
+          <div class="qs-pill" onclick="chatQuick(this)">⛅ Weather late March</div>
+        </div>
+        <div class="chat-msgs" id="chatMsgsBox">
+          <div class="cmsg ai">
+            <div class="ai-ava">✈️</div>
+            <div class="cbubble"><p>Ciao! Ask me anything about your Italy + Switzerland trip 🇮🇹🇨🇭</p><p>I know your full route: <strong>Riomaggiore → Varenna → Lucerne → Venice → Florence → Rome</strong> (Mar 18–30).</p></div>
+            <div class="cmsg-time" id="chatFirstTime"></div>
+          </div>
+        </div>
+        <div class="cw-api-bar" id="cwApiBar" onclick="openChatApiModal()" style="display:none">
+          <span>🔑 Connect OpenAI to start chatting</span>
+          <span class="cw-api-arrow">›</span>
+        </div>
+        <div class="chat-input-wrap" id="cwInputWrap">
+          <div class="chat-input-row">
+            <textarea class="chat-textarea" id="chatTextarea" placeholder="Ask about your Italy trip..." rows="1"
+              onkeydown="chatHandleKey(event)" oninput="chatAutoResize(this)"></textarea>
+            <button class="chat-send" id="chatSendBtn" onclick="sendChatMsg()" disabled>➤</button>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;padding:0 2px">
+            <button class="model-cycle" id="chatModelBtn" onclick="cycleChatModel()">⚡ No API key</button>
+            <button class="chat-clear" onclick="clearChatMsgs()">Clear ✕</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ── END CHAT WIDGET ── -->
+
     <div class="stats-grid">
       <div class="stat-card"><div class="stat-value">12</div><div class="stat-label">Days</div></div>
       <div class="stat-card"><div class="stat-value">6</div><div class="stat-label">Cities</div></div>
@@ -1525,17 +1550,31 @@ YOUR STYLE:
 
   function chatFmtTime(d){ return d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}); }
 
+
+  window.toggleChatWidget = function(){
+    const w = document.getElementById('chatWidget');
+    w.classList.toggle('open');
+    if(w.classList.contains('open') && !chatApiKey){
+      document.getElementById('cwApiBar').style.display='flex';
+      document.getElementById('cwInputWrap').style.display='none';
+    }
+  };
+
   function chatUpdateStatus(){
-    const btn = document.getElementById('chatApiBtn');
     const mb  = document.getElementById('chatModelBtn');
+    const wm  = document.getElementById('cwModelLabel');
+    const bar = document.getElementById('cwApiBar');
+    const inp = document.getElementById('cwInputWrap');
     if(chatApiKey){
-      btn.textContent = '✅ Connected';
-      btn.className = 'api-connect-btn ok';
-      mb.textContent = '⚡ ' + (CHAT_MODEL_LABELS[chatModel] || chatModel);
+      if(mb) mb.textContent = '⚡ ' + (CHAT_MODEL_LABELS[chatModel] || chatModel);
+      if(wm) wm.textContent = '⚡ ' + (CHAT_MODEL_LABELS[chatModel] || chatModel);
+      if(bar) bar.style.display='none';
+      if(inp) inp.style.display='block';
     } else {
-      btn.textContent = '🔑 Setup';
-      btn.className = 'api-connect-btn';
-      mb.textContent = '⚡ No API key';
+      if(mb) mb.textContent = '⚡ No API key';
+      if(wm) wm.textContent = '⚡ Setup';
+      if(bar) bar.style.display='flex';
+      if(inp) inp.style.display='none';
     }
   }
 
@@ -1678,6 +1717,9 @@ YOUR STYLE:
 
   // Init
   document.addEventListener('DOMContentLoaded', function(){
+    // Open chat widget by default
+    const cw = document.getElementById('chatWidget');
+    if(cw) cw.classList.add('open');
     chatUpdateStatus();
     const ft=document.getElementById('chatFirstTime');
     if(ft) ft.textContent=chatFmtTime(new Date());
