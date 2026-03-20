@@ -1507,12 +1507,12 @@ setTimeout(scrollToCurrentTime, 800);
 // ═══════════════════════════════════════════════
 (function(){
   let chatApiKey = localStorage.getItem('italy_apikey') || '';
-  let chatModel  = localStorage.getItem('italy_model')  || 'gpt-4o';
+  let chatModel  = localStorage.getItem('italy_model')  || 'claude-sonnet-4-6';
   let chatHistory = [];
   let chatBusy = false;
   let chatTypCount = 0;
-  const CHAT_MODELS = ['gpt-4o','gpt-4o-mini','gpt-3.5-turbo'];
-  const CHAT_MODEL_LABELS = {'gpt-4o':'GPT-4o','gpt-4o-mini':'4o-mini','gpt-3.5-turbo':'GPT-3.5'};
+  const CHAT_MODELS = ['claude-sonnet-4-6','claude-opus-4-6','claude-haiku-3-5'];
+  const CHAT_MODEL_LABELS = {'claude-sonnet-4-6':'Sonnet','claude-opus-4-6':'Opus','claude-haiku-3-5':'Haiku'};
 
   const ITALY_SYSTEM = `You are an expert travel assistant for a specific Italy + Switzerland trip.
 
@@ -1588,7 +1588,7 @@ YOUR STYLE:
   };
   window.saveChatApiKey = function(){
     const k = document.getElementById('chatApiKeyInput').value.trim();
-    if(!k.startsWith('sk-')){ alert('Enter a valid OpenAI API key (starts with sk-)'); return; }
+    if(!k.startsWith('sk-ant-')){ alert('Enter a valid Claude API key (starts with sk-ant-)'); return; }
     chatApiKey = k;
     localStorage.setItem('italy_apikey', k);
     chatUpdateStatus();
@@ -1647,13 +1647,15 @@ YOUR STYLE:
     const typId = showChatTyping();
     chatBusy = true;
     try {
-      const resp = await fetch('https://api.openai.com/v1/chat/completions',{
+      const resp = await fetch('https://api.anthropic.com/v1/messages',{
         method:'POST',
-        headers:{'Content-Type':'application/json','Authorization':'Bearer '+chatApiKey},
+        headers:{'Content-Type':'application/json','x-api-key':chatApiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
         body: JSON.stringify({
           model: chatModel,
-          messages: [{role:'system',content:ITALY_SYSTEM},...chatHistory],
-          stream: true, temperature: 0.7, max_tokens: 1500
+          max_tokens: 1500,
+          system: ITALY_SYSTEM,
+          stream: true,
+          messages: chatHistory
         })
       });
       if(!resp.ok){ const e=await resp.json().catch(()=>({})); throw new Error(e.error?.message||'API error '+resp.status); }
@@ -1667,7 +1669,7 @@ YOUR STYLE:
         const lines=dec.decode(value).split('\n').filter(l=>l.startsWith('data: '));
         for(const line of lines){
           const d=line.slice(6); if(d==='[DONE]') continue;
-          try{ const p=JSON.parse(d); full+=(p.choices?.[0]?.delta?.content||''); bub.innerHTML=chatMd(full)+'<span style="animation:tdBounce 1s infinite;display:inline-block;margin-left:2px">▌</span>'; chatScrollBottom(); }catch{}
+          try{ const p=JSON.parse(d); if(p.type==='content_block_delta'&&p.delta?.type==='text_delta'){ full+=p.delta.text; bub.innerHTML=chatMd(full)+'<span style="animation:tdBounce 1s infinite;display:inline-block;margin-left:2px">▌</span>'; chatScrollBottom(); } }catch{}
         }
       }
       bub.innerHTML=chatMd(full);
@@ -1676,7 +1678,7 @@ YOUR STYLE:
       chatScrollBottom();
     } catch(err){
       removeChatTyping(typId);
-      const msg = err.message.includes('401')?'Invalid API key — check Setup':err.message.includes('429')?'Rate limit — wait a moment':err.message.includes('quota')?'OpenAI quota exceeded — check billing':'Error: '+err.message;
+      const msg = err.message.includes('401')?'Invalid Claude API key — check Setup':err.message.includes('429')?'Rate limit — wait a moment':err.message.includes('overloaded')?'Claude is busy, try again shortly':'Error: '+err.message;
       appendChatMsg('ai','⚠️ '+msg);
     } finally {
       chatBusy=false;
@@ -1731,10 +1733,10 @@ YOUR STYLE:
 <div class="chat-modal-overlay" id="chatApiModal">
   <div class="chat-modal-sheet">
     <div class="cmodal-handle"></div>
-    <div class="cmodal-title">Connect OpenAI 🔑</div>
-    <div class="cmodal-sub">Your API key is saved only on this device — never sent anywhere except directly to OpenAI to process your questions.</div>
+    <div class="cmodal-title">Connect Claude 🔑</div>
+    <div class="cmodal-sub">Your API key is saved only on this device — never sent anywhere except directly to Anthropic to process your questions.</div>
     <input type="password" class="cmodal-input" id="chatApiKeyInput" placeholder="sk-..." autocomplete="off">
-    <div class="cmodal-note">💡 Get your key at <strong>platform.openai.com/api-keys</strong><br>GPT-4o costs ~$0.01–0.03 per chat. Much cheaper than calling a travel agent.</div>
+    <div class="cmodal-note">💡 Get your key at <strong>console.anthropic.com/api-keys</strong><br>Claude Sonnet costs ~$0.003–0.015 per chat. Free tier available.</div>
     <button class="cmodal-btn" onclick="saveChatApiKey()">Save & Connect</button>
     <button class="cmodal-btn-sec" onclick="closeChatApiModal()">Cancel</button>
   </div>
