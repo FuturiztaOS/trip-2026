@@ -220,6 +220,67 @@ details.intel[open] summary::after { transform: rotate(90deg); }
 #pwa-dismiss { background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; padding: 0; line-height: 1; }
 
 @media (max-width: 480px) { .grid-2 { grid-template-columns: 1fr; } }
+
+/* ── AI CHAT TAB ── */
+#tab-chat { background: var(--bg, #0a0a0f); display: flex; flex-direction: column; height: 100%; }
+#tab-chat.active { display: flex; }
+.chat-header-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 10px; background: rgba(10,10,15,.98); border-bottom: 1px solid rgba(255,255,255,.07); flex-shrink: 0; }
+.chat-title-wrap .ct-title { font-size: 16px; font-weight: 700; }
+.chat-title-wrap .ct-sub { font-size: 11px; color: var(--muted,rgba(255,255,255,.38)); margin-top: 2px; }
+.chat-meta-row { display: flex; align-items: center; justify-content: space-between; padding: 6px 16px 8px; background: rgba(10,10,15,.98); flex-shrink: 0; }
+.api-connect-btn { background: rgba(124,106,247,.15); border: 1px solid rgba(124,106,247,.35); color: #a78bfa; padding: 5px 12px; border-radius: 16px; font-size: 12px; cursor: pointer; font-weight: 600; }
+.api-connect-btn.ok { border-color: rgba(52,211,153,.35); color: #34d399; background: rgba(52,211,153,.1); }
+.model-cycle { background: none; border: none; color: rgba(255,255,255,.38); font-size: 11px; cursor: pointer; padding: 4px 8px; border-radius: 8px; }
+.model-cycle:active { background: rgba(255,255,255,.07); }
+.chat-clear { background: none; border: none; color: rgba(255,255,255,.3); font-size: 12px; cursor: pointer; }
+.chat-qs { padding: 6px 16px 4px; display: flex; gap: 8px; overflow-x: auto; flex-shrink: 0; scrollbar-width: none; }
+.chat-qs::-webkit-scrollbar { display: none; }
+.qs-pill { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 6px 13px; font-size: 12px; white-space: nowrap; cursor: pointer; flex-shrink: 0; transition: all .2s; }
+.qs-pill:active, .qs-pill:hover { background: #7c6af7; border-color: #7c6af7; color: #fff; }
+.chat-msgs { flex: 1; overflow-y: auto; padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; -webkit-overflow-scrolling: touch; }
+.cmsg { display: flex; flex-direction: column; max-width: 86%; animation: fadeUp .3s ease; }
+.cmsg.user { align-self: flex-end; align-items: flex-end; }
+.cmsg.ai { align-self: flex-start; align-items: flex-start; }
+.cbubble { padding: 11px 14px; border-radius: 18px; font-size: 14px; line-height: 1.6; word-break: break-word; }
+.cmsg.user .cbubble { background: #7c6af7; border-bottom-right-radius: 4px; }
+.cmsg.ai .cbubble { background: rgba(28,28,46,.9); border: 1px solid rgba(255,255,255,.08); border-bottom-left-radius: 4px; }
+.cmsg.ai .cbubble p { margin-bottom: 6px; } .cmsg.ai .cbubble p:last-child { margin-bottom: 0; }
+.cmsg.ai .cbubble strong { color: #a78bfa; }
+.cmsg.ai .cbubble h3 { font-size: 13px; color: #a78bfa; margin: 8px 0 3px; }
+.cmsg.ai .cbubble ul { padding-left: 16px; margin: 4px 0; }
+.cmsg.ai .cbubble li { margin-bottom: 3px; }
+.cmsg.ai .cbubble a { color: #a78bfa; text-decoration: none; }
+.cmsg-time { font-size: 10px; color: rgba(255,255,255,.3); margin-top: 3px; padding: 0 4px; }
+.ai-ava { width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg,#7c6af7,#a78bfa); display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; margin-bottom: 3px; }
+.typing-ind { display: flex; align-items: center; gap: 4px; padding: 13px 15px; background: rgba(28,28,46,.9); border: 1px solid rgba(255,255,255,.08); border-radius: 18px; border-bottom-left-radius: 4px; }
+.td { width: 6px; height: 6px; background: rgba(255,255,255,.38); border-radius: 50%; animation: tdBounce 1.2s ease-in-out infinite; }
+.td:nth-child(2){animation-delay:.2s}.td:nth-child(3){animation-delay:.4s}
+@keyframes tdBounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+.chat-input-wrap { padding: 10px 14px; padding-bottom: calc(10px + env(safe-area-inset-bottom,0px)); background: rgba(10,10,15,.98); border-top: 1px solid rgba(255,255,255,.07); flex-shrink: 0; }
+.chat-input-row { display: flex; align-items: flex-end; gap: 9px; background: rgba(28,28,40,.8); border: 1px solid rgba(255,255,255,.1); border-radius: 22px; padding: 7px 7px 7px 14px; transition: border-color .2s; }
+.chat-input-row:focus-within { border-color: #7c6af7; }
+.chat-textarea { flex: 1; background: none; border: none; outline: none; color: rgba(255,255,255,.92); font-size: 15px; line-height: 1.5; resize: none; max-height: 110px; font-family: inherit; }
+.chat-textarea::placeholder { color: rgba(255,255,255,.3); }
+.chat-send { width: 34px; height: 34px; border-radius: 50%; background: #7c6af7; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; transition: all .2s; }
+.chat-send:disabled { background: rgba(255,255,255,.1); opacity: .5; cursor: not-allowed; }
+.chat-send:not(:disabled):active { transform: scale(.9); }
+.chat-intro-card { background: linear-gradient(135deg,rgba(124,106,247,.12),rgba(167,139,250,.06)); border: 1px solid rgba(124,106,247,.2); border-radius: 16px; padding: 20px; text-align: center; margin-bottom: 4px; }
+.chat-intro-card .ci-emoji { font-size: 36px; margin-bottom: 10px; }
+.chat-intro-card .ci-title { font-size: 16px; font-weight: 700; margin-bottom: 5px; }
+.chat-intro-card .ci-text { font-size: 12px; color: rgba(255,255,255,.5); line-height: 1.6; }
+/* API MODAL */
+.chat-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.65); backdrop-filter: blur(10px); z-index: 600; display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .3s; }
+.chat-modal-overlay.open { opacity: 1; pointer-events: all; }
+.chat-modal-sheet { background: #1c1c26; border-radius: 22px 22px 0 0; padding: 22px; width: 100%; max-width: 480px; padding-bottom: calc(22px + env(safe-area-inset-bottom,0px)); transform: translateY(100%); transition: transform .35s cubic-bezier(.32,.72,0,1); }
+.chat-modal-overlay.open .chat-modal-sheet { transform: translateY(0); }
+.cmodal-handle { width: 34px; height: 4px; background: rgba(255,255,255,.15); border-radius: 2px; margin: 0 auto 18px; }
+.cmodal-title { font-size: 17px; font-weight: 800; margin-bottom: 5px; }
+.cmodal-sub { font-size: 13px; color: rgba(255,255,255,.45); margin-bottom: 16px; line-height: 1.6; }
+.cmodal-input { width: 100%; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); border-radius: 12px; padding: 13px 15px; color: rgba(255,255,255,.92); font-size: 15px; outline: none; font-family: inherit; margin-bottom: 10px; }
+.cmodal-input:focus { border-color: #7c6af7; }
+.cmodal-note { font-size: 12px; color: rgba(255,255,255,.4); margin-bottom: 18px; line-height: 1.6; background: rgba(251,191,36,.07); border: 1px solid rgba(251,191,36,.2); border-radius: 10px; padding: 10px 12px; }
+.cmodal-btn { width: 100%; background: #7c6af7; border: none; color: #fff; padding: 15px; border-radius: 13px; font-size: 15px; font-weight: 700; cursor: pointer; margin-bottom: 8px; }
+.cmodal-btn-sec { width: 100%; background: none; border: 1px solid rgba(255,255,255,.12); color: rgba(255,255,255,.45); padding: 11px; border-radius: 13px; font-size: 14px; cursor: pointer; }
 </style>
 </head>
 <body>
@@ -246,6 +307,7 @@ details.intel[open] summary::after { transform: rotate(90deg); }
 
 <!-- TAB NAV -->
 <div class="tab-nav" id="tab-nav">
+  <button class="tab-btn" id="btn-chat" onclick="showTab('chat',this)"><span class="day-num">💬</span><span class="day-name">AI Chat</span></button>
   <button class="tab-btn active" id="btn-overview" onclick="showTab('overview',this)"><span class="day-num">📋</span><span class="day-name">Overview</span></button>
   <button class="tab-btn" id="btn-mar18" onclick="showTab('mar18',this)"><span class="day-num">Mar 18</span><span class="day-name">Arrive</span></button>
   <button class="tab-btn" id="btn-mar19" onclick="showTab('mar19',this)"><span class="day-num">Mar 19</span><span class="day-name">Cinque Terre</span></button>
@@ -283,6 +345,53 @@ details.intel[open] summary::after { transform: rotate(90deg); }
 </div>
 
 <!-- OVERVIEW -->
+<div id="tab-chat" class="tab-content">
+  <div class="chat-header-row">
+    <div class="chat-title-wrap">
+      <div class="ct-title">✈️ Italy AI Assistant</div>
+      <div class="ct-sub">Ask anything about your trip · Powered by GPT-4o</div>
+    </div>
+    <button class="api-connect-btn" id="chatApiBtn" onclick="openChatApiModal()">🔑 Setup</button>
+  </div>
+  <div class="chat-meta-row">
+    <button class="model-cycle" id="chatModelBtn" onclick="cycleChatModel()">⚡ No API key</button>
+    <button class="chat-clear" onclick="clearChatMsgs()">Clear ✕</button>
+  </div>
+  <div class="chat-qs" id="chatQs">
+    <div class="qs-pill" onclick="chatQuick(this)">🚂 Lucerne → Venice trains</div>
+    <div class="qs-pill" onclick="chatQuick(this)">🏨 Best hotel in Venice</div>
+    <div class="qs-pill" onclick="chatQuick(this)">🗺️ Florence 2-day plan</div>
+    <div class="qs-pill" onclick="chatQuick(this)">🍕 Best restaurants Rome</div>
+    <div class="qs-pill" onclick="chatQuick(this)">🎫 Colosseum booking tips</div>
+    <div class="qs-pill" onclick="chatQuick(this)">🚗 Florence to Rome options</div>
+    <div class="qs-pill" onclick="chatQuick(this)">🛍️ What to buy in Italy</div>
+    <div class="qs-pill" onclick="chatQuick(this)">⛅ Weather March 24–30</div>
+  </div>
+  <div class="chat-msgs" id="chatMsgsBox">
+    <div class="chat-intro-card">
+      <div class="ci-emoji">🇮🇹</div>
+      <div class="ci-title">Your Italy trip assistant</div>
+      <div class="ci-text">Ask me anything about your Italy + Switzerland trip — hotels, trains, restaurants, what to see, packing tips, local phrases. I know your exact itinerary.</div>
+    </div>
+    <div class="cmsg ai">
+      <div class="ai-ava">✈️</div>
+      <div class="cbubble">
+        <p>Ciao! I'm your Italy trip assistant 🇮🇹🇨🇭</p>
+        <p>I know your full route: <strong>Riomaggiore → Varenna → Lucerne → Venice → Florence → Rome</strong> (Mar 18–30).</p>
+        <p>Ask me anything — trains, hotels, restaurants, what not to miss, or how to handle the luggage-heavy days.</p>
+      </div>
+      <div class="cmsg-time" id="chatFirstTime"></div>
+    </div>
+  </div>
+  <div class="chat-input-wrap">
+    <div class="chat-input-row">
+      <textarea class="chat-textarea" id="chatTextarea" placeholder="Ask about your Italy trip..." rows="1"
+        onkeydown="chatHandleKey(event)" oninput="chatAutoResize(this)"></textarea>
+      <button class="chat-send" id="chatSendBtn" onclick="sendChatMsg()" disabled>➤</button>
+    </div>
+  </div>
+</div>
+
 <div id="tab-overview" class="tab-content active">
   <div class="day-hero" style="background-image:url('https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=900&q=80&auto=format&fit=crop')">
     <div class="day-hero-info"><div class="day-hero-label">🗺️ Trip Overview</div><div class="day-hero-sub">Italy + Switzerland · Mar 18–30 · 6 cities</div></div>
@@ -1367,6 +1476,226 @@ setInterval(updateCountdown, 1000);
 updateSwipeNav();
 // Auto-scroll to current time after tab jump
 setTimeout(scrollToCurrentTime, 800);
+
+// ═══════════════════════════════════════════════
+//  ITALY AI CHAT — injected
+// ═══════════════════════════════════════════════
+(function(){
+  let chatApiKey = localStorage.getItem('italy_apikey') || '';
+  let chatModel  = localStorage.getItem('italy_model')  || 'gpt-4o';
+  let chatHistory = [];
+  let chatBusy = false;
+  let chatTypCount = 0;
+  const CHAT_MODELS = ['gpt-4o','gpt-4o-mini','gpt-3.5-turbo'];
+  const CHAT_MODEL_LABELS = {'gpt-4o':'GPT-4o','gpt-4o-mini':'4o-mini','gpt-3.5-turbo':'GPT-3.5'};
+
+  const ITALY_SYSTEM = `You are an expert travel assistant for a specific Italy + Switzerland trip.
+
+TRIP DETAILS:
+- Travellers: Teh Jia Jun + Wong Khai Yee (couple, Malaysian, 2 large bags + 1 small)
+- Route: Nice/Monaco (Mar 15-18, done) → Riomaggiore/Cinque Terre (Mar 18-20) → Varenna/Lake Como (Mar 20-22) → Lucerne (Mar 21-24) → Venice (Mar 24-26) → Florence (Mar 26-28) → Rome (Mar 28-30)
+- Fly: Rome FCO → Penang, Mar 30
+- Budget: ~RM500/night hotels, flexible
+
+BOOKED:
+- Le Giare, Riomaggiore: Mar 18-20 ✅ RM819
+- Hotel Olivedo, Varenna: Mar 20-22 ✅ RM671
+- ibis Luzern: Mar 21-24 ✅ RM1,117
+- Riomaggiore→Varenna train ✅ €76.80 (IC 666 PNR LGLXHN)
+- Varenna→Luzern train ✅ CHF 144 (IC 684)
+
+STILL TO BOOK:
+- Lucerne → Venice (Mar 24)
+- Hotel Venice (Mar 24-26) — Hotel Antiche Figure near Santa Lucia station
+- Venice → Florence Frecciarossa (Mar 26)
+- Hotel Florence (Mar 26-28) — Hotel Davanzati
+- Hotel Rome (Mar 28-30) — Hotel Artemide
+- Uffizi Gallery tickets Mar 27 — book on uffizi.it
+- Colosseum Mar 29 — book on coopculture.it
+- FCO → Penang flight Mar 30
+
+YOUR STYLE:
+- Specific recommendations with real prices (EUR/CHF/RM)
+- Hour-by-hour when asked for day plans
+- Flag booking windows (what sells out)
+- Train-first, no car rental unless necessary
+- Hotels within 10min walk of station always
+- Bold key prices and times
+- Keep answers concise and actionable`;
+
+  function chatFmtTime(d){ return d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}); }
+
+  function chatUpdateStatus(){
+    const btn = document.getElementById('chatApiBtn');
+    const mb  = document.getElementById('chatModelBtn');
+    if(chatApiKey){
+      btn.textContent = '✅ Connected';
+      btn.className = 'api-connect-btn ok';
+      mb.textContent = '⚡ ' + (CHAT_MODEL_LABELS[chatModel] || chatModel);
+    } else {
+      btn.textContent = '🔑 Setup';
+      btn.className = 'api-connect-btn';
+      mb.textContent = '⚡ No API key';
+    }
+  }
+
+  window.openChatApiModal = function(){
+    document.getElementById('chatApiKeyInput').value = chatApiKey;
+    document.getElementById('chatApiModal').classList.add('open');
+    setTimeout(()=>document.getElementById('chatApiKeyInput').focus(), 350);
+  };
+  window.closeChatApiModal = function(){
+    document.getElementById('chatApiModal').classList.remove('open');
+  };
+  window.saveChatApiKey = function(){
+    const k = document.getElementById('chatApiKeyInput').value.trim();
+    if(!k.startsWith('sk-')){ alert('Enter a valid OpenAI API key (starts with sk-)'); return; }
+    chatApiKey = k;
+    localStorage.setItem('italy_apikey', k);
+    chatUpdateStatus();
+    closeChatApiModal();
+    const ta = document.getElementById('chatTextarea');
+    document.getElementById('chatSendBtn').disabled = !ta.value.trim();
+  };
+  window.cycleChatModel = function(){
+    if(!chatApiKey){ openChatApiModal(); return; }
+    const i = CHAT_MODELS.indexOf(chatModel);
+    chatModel = CHAT_MODELS[(i+1)%CHAT_MODELS.length];
+    localStorage.setItem('italy_model', chatModel);
+    document.getElementById('chatModelBtn').textContent = '⚡ '+(CHAT_MODEL_LABELS[chatModel]||chatModel);
+  };
+  window.clearChatMsgs = function(){
+    chatHistory = [];
+    const box = document.getElementById('chatMsgsBox');
+    box.innerHTML = `
+      <div class="chat-intro-card"><div class="ci-emoji">🇮🇹</div><div class="ci-title">Italy trip assistant</div><div class="ci-text">Chat cleared. Ask me anything about your Mar 18–30 Italy + Switzerland trip.</div></div>
+      <div class="cmsg ai"><div class="ai-ava">✈️</div><div class="cbubble"><p>Ready! What do you need help with? 🇮🇹🇨🇭</p></div><div class="cmsg-time">${chatFmtTime(new Date())}</div></div>`;
+  };
+  window.chatHandleKey = function(e){
+    if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendChatMsg(); }
+  };
+  window.chatAutoResize = function(el){
+    el.style.height='auto';
+    el.style.height=Math.min(el.scrollHeight,110)+'px';
+    document.getElementById('chatSendBtn').disabled = !el.value.trim() || !chatApiKey;
+  };
+  window.chatQuick = function(el){
+    const prompts = {
+      '🚂 Lucerne → Venice trains': 'What is the best train from Lucerne to Venice on March 24? Give me specific times, duration, price, and how to book.',
+      '🏨 Best hotel in Venice': 'I need a hotel in Venice near Santa Lucia station for March 24-26. Recommend 3 tiers: budget, mid-range, splurge. With prices.',
+      '🗺️ Florence 2-day plan': 'Give me a detailed hour-by-hour plan for 2 days in Florence (Mar 26-28). Practical, not tourist-trap heavy.',
+      '🍕 Best restaurants Rome': 'Top 5 restaurants in Rome near the historic centre. Specific dishes to order, prices, reservation needed?',
+      '🎫 Colosseum booking tips': 'How to book Colosseum tickets for March 29? Best time slot, skip-the-line tips, what else is included.',
+      '🚗 Florence to Rome options': 'Best way to get from Florence to Rome on March 28 with 2 large bags. Train vs car rental — what is smarter?',
+      '🛍️ What to buy in Italy': 'Best things to buy in Italy as souvenirs or for value — food, fashion, ceramics. Where to buy them.',
+      '⛅ Weather March 24–30': 'What weather should we expect in Venice, Florence, and Rome from March 24-30? What to pack?'
+    };
+    const txt = prompts[el.textContent] || el.textContent;
+    document.getElementById('chatTextarea').value = txt;
+    chatAutoResize(document.getElementById('chatTextarea'));
+    if(chatApiKey) sendChatMsg(); else openChatApiModal();
+  };
+
+  window.sendChatMsg = async function(){
+    if(chatBusy || !chatApiKey) return;
+    const ta = document.getElementById('chatTextarea');
+    const txt = ta.value.trim();
+    if(!txt) return;
+    ta.value=''; ta.style.height='auto';
+    document.getElementById('chatSendBtn').disabled = true;
+    appendChatMsg('user', txt);
+    chatHistory.push({role:'user', content:txt});
+    const typId = showChatTyping();
+    chatBusy = true;
+    try {
+      const resp = await fetch('https://api.openai.com/v1/chat/completions',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+chatApiKey},
+        body: JSON.stringify({
+          model: chatModel,
+          messages: [{role:'system',content:ITALY_SYSTEM},...chatHistory],
+          stream: true, temperature: 0.7, max_tokens: 1500
+        })
+      });
+      if(!resp.ok){ const e=await resp.json().catch(()=>({})); throw new Error(e.error?.message||'API error '+resp.status); }
+      removeChatTyping(typId);
+      const aiEl = appendChatMsg('ai','',true);
+      const bub = aiEl.querySelector('.cbubble');
+      let full='';
+      const reader = resp.body.getReader(), dec = new TextDecoder();
+      while(true){
+        const {done,value}=await reader.read(); if(done) break;
+        const lines=dec.decode(value).split('\n').filter(l=>l.startsWith('data: '));
+        for(const line of lines){
+          const d=line.slice(6); if(d==='[DONE]') continue;
+          try{ const p=JSON.parse(d); full+=(p.choices?.[0]?.delta?.content||''); bub.innerHTML=chatMd(full)+'<span style="animation:tdBounce 1s infinite;display:inline-block;margin-left:2px">▌</span>'; chatScrollBottom(); }catch{}
+        }
+      }
+      bub.innerHTML=chatMd(full);
+      aiEl.querySelector('.cmsg-time').textContent=chatFmtTime(new Date());
+      chatHistory.push({role:'assistant',content:full});
+      chatScrollBottom();
+    } catch(err){
+      removeChatTyping(typId);
+      const msg = err.message.includes('401')?'Invalid API key — check Setup':err.message.includes('429')?'Rate limit — wait a moment':err.message.includes('quota')?'OpenAI quota exceeded — check billing':'Error: '+err.message;
+      appendChatMsg('ai','⚠️ '+msg);
+    } finally {
+      chatBusy=false;
+      document.getElementById('chatSendBtn').disabled=!document.getElementById('chatTextarea').value.trim();
+    }
+  };
+
+  function appendChatMsg(role,text,streaming=false){
+    const box=document.getElementById('chatMsgsBox');
+    const d=document.createElement('div'); d.className='cmsg '+role;
+    if(role==='ai'){
+      d.innerHTML=`<div class="ai-ava">✈️</div><div class="cbubble">${streaming?'':chatMd(text)}</div><div class="cmsg-time">${streaming?'':chatFmtTime(new Date())}</div>`;
+    } else {
+      d.innerHTML=`<div class="cbubble">${chatEsc(text)}</div><div class="cmsg-time">${chatFmtTime(new Date())}</div>`;
+    }
+    box.appendChild(d); chatScrollBottom(); return d;
+  }
+  function showChatTyping(){
+    const id='ct-'+chatTypCount++;
+    const box=document.getElementById('chatMsgsBox');
+    const d=document.createElement('div'); d.className='cmsg ai'; d.id=id;
+    d.innerHTML='<div class="ai-ava">✈️</div><div class="typing-ind"><div class="td"></div><div class="td"></div><div class="td"></div></div>';
+    box.appendChild(d); chatScrollBottom(); return id;
+  }
+  function removeChatTyping(id){ document.getElementById(id)?.remove(); }
+  function chatScrollBottom(){ const b=document.getElementById('chatMsgsBox'); b.scrollTop=b.scrollHeight; }
+  function chatMd(t){
+    return t
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>')
+      .replace(/^### (.+)$/gm,'<h3>$1</h3>').replace(/^## (.+)$/gm,'<h3>$1</h3>').replace(/^# (.+)$/gm,'<h3>$1</h3>')
+      .replace(/^\- (.+)$/gm,'<li>$1</li>').replace(/^(\d+)\. (.+)$/gm,'<li>$2</li>')
+      .replace(/(<li>.*<\/li>\n?)+/g,s=>`<ul>${s}</ul>`)
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank">$1</a>')
+      .replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>').replace(/^(.+)$/,'<p>$1</p>');
+  }
+  function chatEsc(t){ return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'); }
+
+  // Init
+  document.addEventListener('DOMContentLoaded', function(){
+    chatUpdateStatus();
+    const ft=document.getElementById('chatFirstTime');
+    if(ft) ft.textContent=chatFmtTime(new Date());
+  });
+})();
 </script>
+
+<!-- ITALY CHAT API MODAL -->
+<div class="chat-modal-overlay" id="chatApiModal">
+  <div class="chat-modal-sheet">
+    <div class="cmodal-handle"></div>
+    <div class="cmodal-title">Connect OpenAI 🔑</div>
+    <div class="cmodal-sub">Your API key is saved only on this device — never sent anywhere except directly to OpenAI to process your questions.</div>
+    <input type="password" class="cmodal-input" id="chatApiKeyInput" placeholder="sk-..." autocomplete="off">
+    <div class="cmodal-note">💡 Get your key at <strong>platform.openai.com/api-keys</strong><br>GPT-4o costs ~$0.01–0.03 per chat. Much cheaper than calling a travel agent.</div>
+    <button class="cmodal-btn" onclick="saveChatApiKey()">Save & Connect</button>
+    <button class="cmodal-btn-sec" onclick="closeChatApiModal()">Cancel</button>
+  </div>
+</div>
 </body>
 </html>
